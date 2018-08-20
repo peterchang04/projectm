@@ -1,6 +1,6 @@
 <template>
   <div id="testOutput">
-    {{ msg }}
+    Page B
   </div>
 </template>
 
