@@ -1,13 +1,13 @@
 <!-- This is the main landing component -->
 <template>
   <div id="app">
-    <TestOutput msg="Welcome. This is <Layout />"/>
+    <TestOutput msg="Welcome. This is the Layout "/>
 
-    <nav>
+    <!-- <nav>
       <router-link to="/">Home</router-link>
       <router-link to="/a">Page A</router-link>
       <router-link to="/b">Page B</router-link>
-    </nav>
+    </nav> -->
 
     <router-view />
   </div>

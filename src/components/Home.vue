@@ -1,31 +1,40 @@
 <template>
   <div id="testOutput">
     Home Component
-    <input name="message" v-model="message" v-on:keydown="inputSubmit" />
+    <div id="identifier">
+      <span v-if="identifier">{{ identifier }}</span>
+      <span v-else>loading...</span>
+    </div>
+    <input v-if="identifier" name="message" v-model="message" v-on:keydown="inputSubmit" placeholder="invite browser" />
   </div>
 </template>
 
 <script>
-  // import { init } from '../rtc';
-  // init();
-  import socket from '../utils/socketio';
+  import loader from '../utils/loader';
 
   export default {
     name: 'testOutput',
     props: {
       msg: String,
     },
+    beforeCreate: function() {
+      loader.init((socketObj) => {
+        this.identifier = socketObj.identifier;
+        this.socketObj = socketObj;
+      });
+    },
     methods: {
       inputSubmit: function (event) {
-        if (event.keyCode === 13) {
-          socket.send('test', this.message);
-          this.message = '';
+        if (event.keyCode === 13 && this.message) {
+          this.socketObj.sendOffer(this.message);
+          this.message = ''; // reset the input to blank
         }
       }
     },
-    data: () => {
+    data: () => { // this is how you set default values
       return {
         message: '',
+        identifier: ''
       };
     }
   };
@@ -35,6 +44,12 @@
 <style scoped>
   #testOutput {
 
+  }
+  #identifier {
+    padding: 15px;
+    color: green;
+    font-size: 18px;
+    font-weight: 500;
   }
   input[name=message] {
     display: block;
