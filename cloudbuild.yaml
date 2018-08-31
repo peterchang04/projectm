@@ -24,4 +24,4 @@ steps:
   args:
   - '-c'
   - |
-    gcloud app deploy ~/app.yaml
+    gcloud app deploy app-development.yaml
