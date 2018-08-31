@@ -1,5 +1,5 @@
 ### google app engine
-runtime: nodejs
+runtime: custom
 api_version: '1.0'
 env: flexible
 threadsafe: true
