@@ -19,3 +19,8 @@ yarn run build
 ```
 yarn run lint
 ```
+
+### Docker build
+docker build -t peterchang04/projectm .
+docker push peterchang04/projectm
+docker run -it -v %cd%:/app -p 8080:8080 peterchang04/projectm
