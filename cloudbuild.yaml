@@ -20,4 +20,4 @@ steps:
   args: ['push', 'gcr.io/projectmvue/development']
 # deploy to kubernetes 1st time only, in absence of Kube Engine/Workload
 - name: 'gcr.io/cloud-builders/gcloud'
-  args: ['app', 'deploy', 'app-development.yaml']
+  args: ['app', 'deploy', 'app-development.yaml', '--log-http', '--verbosity=debug']
