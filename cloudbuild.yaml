@@ -18,6 +18,3 @@ steps:
 # push ready-to-deploy image to container registry
 - name: 'gcr.io/cloud-builders/docker'
   args: ['push', 'gcr.io/projectmvue/development']
-# deploy to kubernetes 1st time only, in absence of Kube Engine/Workload
-- name: 'gcr.io/cloud-builders/gcloud'
-  args: ['app', 'deploy', 'app-development.yaml']
