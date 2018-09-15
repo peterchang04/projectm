@@ -20,6 +20,16 @@ yarn run build
 yarn run lint
 ```
 
+### Google Cloud Infrastructure
+* Load Balancer (projectm-loadbalancer-development)
+  * Static IP (projectm-staticip-development) (35.241.63.177)
+  * Health Check (projectm-lbhealthcheck-development)
+  * Backend Service (projectm-backendservice-development)
+    * Instance Group (projectm-instancegroup-development)
+      * Instance Template (projectm-instancetemplate-development)
+        * gcr.io/projectmvue/development:latest
+      * Health Check (projectm-ighealthcheck-development)
+
 ### Docker build
 docker build -t peterchang04/projectm .
 docker push peterchang04/projectm

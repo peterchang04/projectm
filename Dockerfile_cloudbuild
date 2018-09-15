@@ -10,22 +10,31 @@ EXPOSE 80
 ENV APP_DIR /app
 WORKDIR $APP_DIR
 
+# Environment Defaults - see instance template
+ARG env_default=local
+ARG apiroot_default=http://localhost:51337
+ARG revision_id=unavailable
+
+# Environment Variables
+ENV env=$env_default
+ENV apiroot=$apiroot_default
+ENV revision_id=$revision_id
+
 # Copy package manager files
 COPY package*.json ./
 COPY yarn.lock ./
 
-# Get Dependencies
-RUN yarn install
-RUN yarn global add @vue/cli
-
-# Copy Current dir into image
+# Copy Current dir into image - when running locally, -v volume will overwrite dir
 COPY . $APP_DIR
 
-RUN yarn build
+# Get Dependencies
+RUN yarn install \
+ && yarn global add @vue/cli \
+ && yarn build
 
 # Healthcheck
 ENV HEALTHCHECK_URI "http://127.0.0.1:${PORT}/"
 HEALTHCHECK --interval=20s --timeout=30s --retries=15 CMD curl --fail ${HEALTHCHECK_URI} || exit 1
 
-# Launch
+# Launch express server
 CMD yarn serveDist

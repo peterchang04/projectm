@@ -12,9 +12,36 @@ steps:
 # yarn globals
 - name: 'gcr.io/cloud-builders/yarn'
   args: ['global', 'add', '@vue/cli']
-# build docker image locally
+# build Dockerfile_cloudbuild locally -- substitutions stored at cloud build trigger
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/projectmvue/development', '-f', 'Dockerfile_cloudbuild', '.']
+  args: ['build',
+    '-t', 'gcr.io/projectmvue/development',
+    '-f', 'Dockerfile_cloudbuild',
+    '--build-arg', 'env=${_ENV}',
+    '--build-arg', 'apiroot=${_API_ROOT}',
+    '--build-arg', 'revision_id=$REVISION_ID'
+    '.'
+  ]
 # push ready-to-deploy image to container registry
 - name: 'gcr.io/cloud-builders/docker'
   args: ['push', 'gcr.io/projectmvue/development']
+# update cloud instance group with latest image
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+    gcloud beta compute instance-groups managed rolling-action start-update projectm-instancegroup-development --version template=projectm-instancetemplate-development --zone us-west1-b
+# build Dockerfile_local, for local development -- substitutions stored at cloud build trigger
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build',
+    '-t', 'gcr.io/projectmvue/local',
+    '-f', 'Dockerfile_local',
+    '--build-arg', 'env=${_ENV_LOCAL}',
+    '--build-arg', 'apiroot=${_API_ROOT_LOCAL}',
+    '--build-arg', 'revision_id=$REVISION_ID'
+    '.'
+  ]
+# push local development image to container Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/projectmvue/local']

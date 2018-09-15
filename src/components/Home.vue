@@ -11,7 +11,7 @@
 
 <script>
   import loader from '../utils/loader';
-
+  console.log('heyox', process.env);
   export default {
     name: 'testOutput',
     props: {
