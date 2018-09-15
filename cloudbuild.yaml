@@ -19,7 +19,7 @@ steps:
     '-f', 'Dockerfile_cloudbuild',
     '--build-arg', 'env=${_ENV}',
     '--build-arg', 'apiroot=${_API_ROOT}',
-    '--build-arg', 'revision_id=$REVISION_ID'
+    '--build-arg', 'revision_id=$REVISION_ID',
     '.'
   ]
 # push ready-to-deploy image to container registry
@@ -39,7 +39,7 @@ steps:
     '-f', 'Dockerfile_local',
     '--build-arg', 'env=${_ENV_LOCAL}',
     '--build-arg', 'apiroot=${_API_ROOT_LOCAL}',
-    '--build-arg', 'revision_id=$REVISION_ID'
+    '--build-arg', 'revision_id=$REVISION_ID',
     '.'
   ]
 # push local development image to container Registry
