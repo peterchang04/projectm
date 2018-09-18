@@ -15,7 +15,7 @@ steps:
 # build Dockerfile_cloudbuild locally -- substitutions stored at cloud build trigger
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build',
-    '-t', 'gcr.io/projectmvue/development',
+    '-t', 'gcr.io/projectmvue/development:$REVISION_ID',
     '-f', 'Dockerfile_cloudbuild',
     '--build-arg', 'env=${_ENV}',
     '--build-arg', 'apiroot=${_API_ROOT}',
