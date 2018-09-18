@@ -24,14 +24,29 @@ steps:
   ]
 # push ready-to-deploy image to container registry
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/projectmvue/development']
+  args: ['push', 'gcr.io/projectmvue/development:$REVISION_ID']
+# create a new instance template, to update instance groups to.
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: [
+    'beta', 'compute', 'instance-templates',
+    'create-with-container', 'projectm-instancetemplate-development-$REVISION_ID',
+    '--container-image', 'gcr.io/projectmvue/development:$REVISION_ID',
+    '--boot-disk-device-name', 'projectm-instancetemplate-development-bootdisk-$REVISION_ID',
+    '--boot-disk-size', '10GB',
+    '--boot-disk-type', 'pd-standard',
+    '--machine-type', 'f1-micro',
+    '--maintenance-policy', 'MIGRATE',
+    '--region', 'us-west1',
+    '--image-family', 'cos-stable'
+  ]
 # update cloud instance group with latest image
 - name: 'gcr.io/cloud-builders/gcloud'
-  entrypoint: 'bash'
-  args:
-  - '-c'
-  - |
-    gcloud beta compute instance-groups managed rolling-action start-update projectm-instancegroup-development --version template=projectm-instancetemplate-development --zone us-west1-b
+  args: [
+    'beta', 'compute', 'instance-groups', 'managed', 'rolling-action',
+    'start-update', 'projectm-instancegroup-development',
+    '--version', 'template=projectm-instancetemplate-development-$REVISION_ID',
+    '--zone', 'us-west1-b'
+  ]
 # build Dockerfile_local, for local development -- substitutions stored at cloud build trigger
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build',
