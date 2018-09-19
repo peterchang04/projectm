@@ -1,4 +1,4 @@
-# projectm
+# projectm (projectmvue)
 
 ## Project setup
 ```
