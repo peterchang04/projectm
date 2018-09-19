@@ -25,6 +25,14 @@ steps:
 # push ready-to-deploy image to container registry
 - name: 'gcr.io/cloud-builders/docker'
   args: ['push', 'gcr.io/projectmvue/development:$REVISION_ID']
+
+# make sure the instance template name we want to use doesn't exist
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: [
+    'beta', 'compute', 'instance-templates',
+    'delete', 'prjm-itmp-dev-$REVISION_ID',
+    '--quiet'
+  ]
 # create a new instance template, to update instance groups to.
 - name: 'gcr.io/cloud-builders/gcloud'
   args: [
