@@ -36,8 +36,7 @@ steps:
     '--boot-disk-type', 'pd-standard',
     '--machine-type', 'f1-micro',
     '--maintenance-policy', 'MIGRATE',
-    '--region', 'us-west1',
-    '--image-project', 'cos-cloud'
+    '--region', 'us-west1'
   ]
 # update cloud instance group with latest image
 - name: 'gcr.io/cloud-builders/gcloud'
