@@ -1,3 +1,4 @@
+// built images of projectm use this server to serve vue
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 80;

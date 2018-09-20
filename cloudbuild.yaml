@@ -54,9 +54,6 @@ steps:
   args: ['build',
     '-t', 'gcr.io/projectmvue/local',
     '-f', 'Dockerfile_local',
-    '--build-arg', 'env=${_ENV_LOCAL}',
-    '--build-arg', 'apiroot=${_API_ROOT_LOCAL}',
-    '--build-arg', 'revision_id=$REVISION_ID',
     '.'
   ]
 # push local development image to container Registry

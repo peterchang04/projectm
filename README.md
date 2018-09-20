@@ -26,11 +26,12 @@ yarn run lint
   * Health Check (projectm-lbhealthcheck-development)
   * Backend Service (projectm-backendservice-development)
     * Instance Group (projectm-instancegroup-development)
-      * Instance Template (projectm-instancetemplate-development)
-        * gcr.io/projectmvue/development:latest
+      * Instance Template (prjm-it-dev:$revision_id)
+        * gcr.io/projectmvue/development:$revision_id
       * Health Check (projectm-ighealthcheck-development)
 
 ### Docker build
-docker build -t peterchang04/projectm .
-docker push peterchang04/projectm
-docker run -it -v %cd%:/app -p 8080:8080 peterchang04/projectm
+docker pull gcr.io/projectmvue/local:latest
+docker run -it -v %cd%:/app -p 80:80 gcr.io/projectmvue/local:latest
+docker build -t gcr.io/projectmvue/local -f Dockerfile_local
+docker push gcr.io/projectmvue/local
