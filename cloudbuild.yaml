@@ -37,7 +37,7 @@ steps:
     '--machine-type', 'f1-micro',
     '--maintenance-policy', 'MIGRATE',
     '--region', 'us-west1',
-    '--tags', 'http-server,https,http'
+    '--tags', 'http-server,https-server'
   ]
 # update cloud instance group with latest image
 - name: 'gcr.io/cloud-builders/gcloud'
