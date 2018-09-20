@@ -8,10 +8,12 @@ const options = {
 };
 
 const request = http.request(options, (res) => {
-  console.log(`HEALTHCHECK STATUS: ${res.statusCode}`);
+  console.log(`HEALTHCHECK STATUS: ${res.statusCode} ${typeof res.statusCode}`);
   if (res.statusCode == 200) {
+    console.log('healthy');
     process.exit(0);
   } else {
+    console.log('unhealthy');
     process.exit(1);
   }
 });

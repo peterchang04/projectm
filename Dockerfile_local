@@ -29,7 +29,7 @@ RUN yarn install \
   && yarn global add @vue/cli
 
 # Healthcheck
-HEALTHCHECK --interval=20s --timeout=30s --retries=15 CMD node /healthcheck.js
+HEALTHCHECK --interval=20s --timeout=12s --start-period=30s --retries=3 CMD node healthcheck.js
 
 # enable hot loading within container
 ENV CHOKIDAR_USEPOLLING=true

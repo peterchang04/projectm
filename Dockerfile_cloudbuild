@@ -38,7 +38,7 @@ RUN yarn install \
  && yarn build
 
 # Healthcheck
-HEALTHCHECK --interval=20s --timeout=30s --retries=15 CMD node /healthcheck.js
+HEALTHCHECK --interval=20s --timeout=12s --start-period=30s --retries=3 CMD node healthcheck.js
 
 # Launch express server
 CMD yarn serveDist

@@ -45,7 +45,7 @@ steps:
     'beta', 'compute', 'instance-groups', 'managed', 'rolling-action',
     'start-update', 'projectm-instancegroup-development',
     '--version', 'template=prjm-itmp-dev-$REVISION_ID',
-    '--max-surge', '2',
+    '--max-surge', '1',
     '--max-unavailable', '1',
     '--zone', 'us-west1-b'
   ]
