@@ -46,7 +46,7 @@ steps:
     'start-update', 'projectm-instancegroup-development',
     '--version', 'template=prjm-itmp-dev-$REVISION_ID',
     '--max-surge', '2',
-    '--max-unavailable', '2',
+    '--max-unavailable', '1',
     '--zone', 'us-west1-b'
   ]
 # build Dockerfile_local, for local development -- substitutions stored at cloud build trigger
