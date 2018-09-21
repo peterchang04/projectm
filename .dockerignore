@@ -1,2 +1,1 @@
-# Dockerfile_*s image build will insert .env manually so Dockerfile_cloudbuild + Dockerfile_local can both behave same way
-*/.env*
+# nothing at the moment
