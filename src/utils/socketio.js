@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 import { cookie } from 'cookie_js';
 cookie.expiresMultiplier = 60 * 60 * 24; // default expiration is by day. set to hour
-let serverUrl = 'http://localhost:51337?';
+let serverUrl = process.env.VUE_APP_APIROOT || process.env.VUE_APP_APIROOT_DEFAULT;
 // use the window obj to persist socket through hot reloads
 if (!window.socket) {
   window.socket = io(serverUrl, { path: '/io' });
