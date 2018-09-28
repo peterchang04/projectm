@@ -18,7 +18,7 @@ steps:
     '-t', 'gcr.io/projectmvue/development:$REVISION_ID',
     '-f', 'Dockerfile_cloudbuild',
     '--build-arg', 'env=${_ENV}',
-    '--build-arg', 'apiroot=${_API_ROOT}',
+    '--build-arg', 'apiroot=${_APIROOT}',
     '--build-arg', 'revision_id=$REVISION_ID',
     '.'
   ]
