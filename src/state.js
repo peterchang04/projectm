@@ -2,6 +2,7 @@
 const state = {
   identifier: null,
   socketStatus: null, // -2:error, -1:unconnected, 0:connecting, 1:connected
+  isHost: null, // null: hasn't picked, 0: no, 1: yes
 };
 // functions to trigger when state changes. fn(value, oldValue, key, state)
 const stateTriggers = {};

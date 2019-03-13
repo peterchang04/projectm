@@ -6,7 +6,15 @@
       <span v-if="identifier">{{ identifier }}</span>
       <span v-else>loading...</span>
     </div>
-    <input v-if="identifier && socketStatus == 1" name="message" v-model="message" v-on:keydown="inputSubmit" placeholder="invite browser" />
+
+    <input v-if="identifier && socketStatus == 1" name="message" v-model="message" v-on:keydown="inputSubmit" placeholder="Join" />
+
+    <hr />
+    <div id="hr-or">or</div>
+
+    <div id="hostOrNot" v-if="isHost == null">
+      <button>HOST</button>
+    </div>
 
   </div>
 </template>
@@ -16,7 +24,7 @@
   import peers from '../utils/peers';
 
   export default {
-    name: 'testOutput',
+    name: 'home',
     props: {
       msg: String,
     },
@@ -26,6 +34,9 @@
       });
       state.onChange('socketStatus', (value) => {
         this.socketStatus = value;
+      });
+      state.onChange('isHost', (value) => {
+        this.isHost = value;
       });
     },
     methods: {
@@ -41,7 +52,8 @@
       return {
         message: '',
         identifier: '',
-        socketStatus: null
+        socketStatus: null,
+        isHost: null,
       };
     },
     computed: {
@@ -62,8 +74,14 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  #testOutput {
-
+  hr {
+    border: 1px solid #ddd;
+  }
+  #hr-or {
+    height: 20px;
+    margin: -18px auto 20px auto;
+    width: 41px;
+    background-color: #fff;
   }
   #socketStatus {
     position: absolute;

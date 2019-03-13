@@ -1,0 +1,21 @@
+<template>
+  <svg version="1.1" baseProfile="basic" id="Layer_1"
+  	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="24px" height="24px"
+  	 viewBox="-305.5 396.5 100 100" xml:space="preserve">
+  <path d="M-23.17,20.42"/>
+  <path d="M-209.5,396.5h-92v26l44.16,22l-7.36,16l-22.08,4l16.56,14l-5.52,18l20.24-8l20.24,8l-5.52-18l16.56-14l-22.08-4l-7.36-16
+  	l44.16-22V396.5z M-240.78,426.5l-14.72,6l-14.72-6v-16h29.44V426.5z"/>
+  </svg>
+</template>
+
+<script>
+  export default {
+    props: {
+      // msg: String
+    }
+  };
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+</style>

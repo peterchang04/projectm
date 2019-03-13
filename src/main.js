@@ -14,5 +14,8 @@ peers.init();
 
 new Vue({
   router,
-  render: h => h(Layout)
+  render: h => h(Layout),
+  data: {
+    currentRoute: window.location.pathname,
+  }
 }).$mount('#app');
