@@ -1,14 +1,11 @@
 <template>
   <div id="controls" class="proportionateHeightWrapper">
     <div class="content">
-      <div style="padding: 1vw">
-        <Slider />
+      <div class="forwardThrustDiv">
+        <Slider title="Forward Thrust" :initialPercent="43" />
       </div>
-      <div style="padding: 1vw">
-        <Slider />
-      </div>
-      <div style="padding: 1vw">
-        <Slider />
+      <div class="angularThrustDiv">
+        <Slider title="Angular Thrust" :initialPercent="75" />
       </div>
     </div>
   </div>
@@ -43,4 +40,18 @@
     text-align: left;
   }
   /* END This allows for proportionate height / width ratio across viewports */
+
+  .forwardThrustDiv {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    padding: 2vw;
+  }
+
+  .angularThrustDiv {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    padding: 2vw;
+  }
 </style>

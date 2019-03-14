@@ -113,6 +113,7 @@
   }
   .crewMember .captain .roleIcon {
     fill: #d6b752;
+    bottom: 1.3vw;
   }
   .crewMember .pilot .roleIcon {
     fill: #e54646;

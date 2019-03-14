@@ -56,7 +56,7 @@
     margin: auto;
     height: 100%;
     width: 100%;
-    background-color: #0E1F2C;
+    background-color: #0c171f;
     /* max-width: 480px;
     max-height: 853px; */
   }
