@@ -21,7 +21,6 @@
       msg: String
     },
     created: function() {
-      console.log(this);
     }
   };
 </script>
