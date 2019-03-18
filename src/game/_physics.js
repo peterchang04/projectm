@@ -1,5 +1,6 @@
 // TODO: update distance to reflect camera resolution to pixel ratio
 import cardinalDirection from '../utils/cardinalDirection.js';
+import globals from '../utils/globals.js';
 
 function add(obj) {
   if (obj.x === undefined) obj.x = 150; // coordinate
@@ -13,17 +14,19 @@ function add(obj) {
   obj.lastPositionUpdate = Date.now();
   obj.angle = cardinalDirection.toAngle(obj.d);
   obj.radian = cardinalDirection.toRadian(obj.d);
+  obj.distX = 0; // tracks the last dist update
+  obj.distY = 0; // tracks the last dist update
 
   obj.updatePosition = function() {
     const now = Date.now();
     const elapsed = now - this.lastPositionUpdate;
-    const sin = Math.sin(this.radian);
-    const cos = Math.cos(this.radian);
+    const sin = Math.sin(this.d * globals.constants.RADIAN);
+    const cos = Math.cos(this.d * globals.constants.RADIAN);
     const dist = this.s * (elapsed / 1000);
-    const distY = cos * dist * -1;
-    const distX = sin * dist;
-    this.x += distX;
-    this.y += distY;
+    this.distY = cos * dist * -1;
+    this.distX = sin * dist;
+    this.x += this.distX;
+    this.y += this.distY;
     return true;
   };
 

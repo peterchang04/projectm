@@ -1,28 +1,27 @@
+import globals from '../utils/globals.js';
+
 let id = 0;
-let pi2 = Math.PI * 2; // pre calculate
 
 function add(obj) {
-  obj.id = newId();
+  obj.id = globals.game.newId();
+  if (!obj.c) obj.c = '#fff';
+  obj.updates = [];
+  obj.draws = [];
   obj.update = function () {
-    if (!obj.updates) return;
+    if (!obj.updates.length) return;
 
     obj.updates.forEach((word) => {
       // console.log(obj.id, word, obj);
       obj[word]();
     });
-
   };
-  obj.updates = [];
   obj.draw = function(context) {
-    context.beginPath();
-    context.arc(this.x, this.y, this.w, 0, pi2);
-    context.fillStyle = '#fff';
-    context.fill();
-  }
-}
+    if (!obj.draws.length) return;
 
-function newId() {
-  return id++;
+    obj.draws.forEach((word) => {
+      obj[word](context);
+    });
+  };
 }
 
 export default { add };

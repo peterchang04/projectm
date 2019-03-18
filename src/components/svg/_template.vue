@@ -1,9 +1,7 @@
   <!-- refactor this into higher order component -->
 <template>
   <svg
-    :classname="class"
-    :height="height"
-    :widht="width"
+     v-bind:width="width" v-bind:height="height" v-bind:class="classname"
   >
   </svg>
 </template>

@@ -13,6 +13,7 @@
 
 <script>
   import Slider from './Slider.vue';
+  import shipCanvas from '../game/shipCanvas.js';
 
   export default {
     name: 'pilotControls',
@@ -20,7 +21,12 @@
     props: {
       msg: String
     },
-    created: function() {
+    mounted: function() {
+      console.log(shipCanvas);
+
+      setTimeout(() => {
+        console.log(shipCanvas);
+      }, 3000);
     }
   };
 </script>

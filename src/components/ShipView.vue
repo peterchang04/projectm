@@ -1,12 +1,17 @@
 <template>
   <div id="shipView">
+    <!-- BOTTOM LAYER -->
+    <canvas id="canvas_grid"></canvas>
+    <canvas id="canvas_background"></canvas>
     <!-- actors -->
-    <canvas id="canvas_myShip"></canvas>
+    <canvas id="canvas_myShip">
+    </canvas>
     <canvas id="canvas_ships"></canvas>
     <canvas id="canvas_bullets"></canvas>
     <!-- parallax stuff -->
-    <canvas id="canvas_foreground"></canvas>
-    <canvas id="canvas_background"></canvas>
+    <!-- <canvas id="canvas_foreground"></canvas> -->
+    <canvas id="canvas_listener"></canvas>
+    <!-- TOP LAYER -->
   </div>
 </template>
 
@@ -14,7 +19,7 @@
   import Main from '../game/main.js';
 
   export default {
-    name: 'shipView',
+    components: {},
     props: {
       msg: String
     },
@@ -39,5 +44,13 @@
     width: 100%;
     left: 0;
     top: 0;
+  }
+  #canvas_myShip {
+    height: auto;
+    width: 30%;
+    left: 35%;
+    right: 35%;
+    top: auto;
+    bottom: 20%;
   }
 </style>

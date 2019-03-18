@@ -2,7 +2,6 @@
 <template>
   <div id="app">
     <!-- <TestOutput msg="Welcome. This is the Layout "/> -->
-
     <nav>
       <!-- <router-link to="/">Home</router-link> -->
       <router-link v-if="$route.path !== '/pilot'" id="pilotLink" to="/pilot">TO PILOT</router-link>
@@ -12,15 +11,18 @@
       <router-view />
     </div>
 
+    <!-- assets are here to be loaded first -->
+    <Assets />
+
   </div>
 </template>
 
 <script>
-  import TestOutput from './components/TestOutput.vue';
+  import Assets from './components/Assets.vue';
 
   export default {
     name: 'app',
-    components: { TestOutput },
+    components: { Assets },
     afterCreate: function () {
       console.log(this.pathname);
     },

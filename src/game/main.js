@@ -1,35 +1,28 @@
-import background from './background.js';
+import backgroundCanvas from './backgroundCanvas.js';
+import shipCanvas from './shipCanvas.js';
+import globals from '../utils/globals.js';
 
 const stats = {
   updateCount: 0,
-  id: 0, // increments, each actor etc gets a new one,
-  lastRender: null, // epoch ms from Date.now()
+  lastDraw: null, // epoch ms from Date.now()
   renderCount: 0,
+};
 
-};
-const constants = {
-  RADIAN: Math.PI / 180, // precalculate radian multiplier
-  fps: 40,
-};
 const actors = {};
 const bullets = {};
-const backgroundParticles = {};
-const forgroundParticles = {};
 const canvas = {};
 
 function init() {
   // get the shipView's dimensions
-  stats.width = document.getElementById('shipView').offsetWidth;
-  stats.height = document.getElementById('shipView').offsetHeight;
+  globals.viewport.update(document.getElementById('shipView').offsetWidth, document.getElementById('shipView').offsetHeight);
 
   // identify canvases
-  canvas.myShip = document.getElementById('canvas_myShip').getContext('2d');
   canvas.ships = document.getElementById('canvas_ships').getContext('2d');
   canvas.bullets = document.getElementById('canvas_bullets').getContext('2d');
-  canvas.fore = document.getElementById('canvas_foreground').getContext('2d');
 
   // init dependencies
-  background.init(stats.width, stats.height);
+  backgroundCanvas.init();
+  shipCanvas.init();
 
   // start the update loop
   stats.loopId = setInterval(() => {
@@ -42,17 +35,19 @@ function init() {
 }
 
 function update() {
-  background.update();
+  if (!document.hasFocus) {
+    console.warn('document lost focus');
+    return;
+  }
+  backgroundCanvas.update();
+  shipCanvas.update();
 }
 
 function draw() { // draws at the refresh rate of device monitor. Mostly 60, but could be 100+
-  stats.lastRender = Date.now();
-  background.draw(canvas.back, stats.lastRender);
+  stats.lastDraw = Date.now();
+  backgroundCanvas.draw();
+  shipCanvas.draw();
   requestAnimationFrame(draw);
-}
-
-function getId() {
-
 }
 
 export default { init };
