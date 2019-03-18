@@ -1,6 +1,6 @@
 // TODO: update distance to reflect camera resolution to pixel ratio
-import cardinalDirection from '../utils/cardinalDirection.js';
-import globals from '../utils/globals.js';
+import cardinalDirection from '../../utils/cardinalDirection.js';
+import globals from '../../utils/globals.js';
 
 function add(obj) {
   if (obj.x === undefined) obj.x = 150; // coordinate

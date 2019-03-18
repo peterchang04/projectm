@@ -3,7 +3,7 @@ import Router from 'vue-router';
 import PageA from './components/PageA.vue';
 import PageB from './components/PageB.vue';
 import Home from './components/Home.vue';
-import _Pilot from './components/_Pilot.vue';
+import Pilot from './components/page/Pilot.vue';
 
 Vue.use(Router);
 
@@ -16,7 +16,7 @@ export default new Router({
     },
     {
       path: '/pilot',
-      component: _Pilot,
+      component: Pilot,
     },
     {
       path: '/a',

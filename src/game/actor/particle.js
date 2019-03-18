@@ -1,6 +1,6 @@
-import physics from './_physics.js';
-import globals from '../utils/globals';
-import drawable from './_drawable.js';
+import physics from '../decorator/_physics.js';
+import globals from '../../utils/globals';
+import drawable from '../decorator/_drawable.js';
 
 export default class Particle {
   constructor(initialObj = {}) { // e.g. { x,y,w,h,d,s }

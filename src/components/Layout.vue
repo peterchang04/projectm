@@ -18,13 +18,12 @@
 </template>
 
 <script>
-  import Assets from './components/Assets.vue';
+  import Assets from './Assets.vue';
 
   export default {
     name: 'app',
     components: { Assets },
     afterCreate: function () {
-      console.log(this.pathname);
     },
   };
 </script>

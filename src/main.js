@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import Layout from './Layout.vue';
+import Layout from './components/Layout.vue';
 import router from './router';
 import state from './state';
 import socket from './utils/socketio';

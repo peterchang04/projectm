@@ -16,7 +16,7 @@
 </template>
 
 <script>
-  import svg from '../game/svg.js';
+  import svg from '../utils/svg.js';
   import MyShipSVG from '../assets/svg/myShip.svg';
 
 

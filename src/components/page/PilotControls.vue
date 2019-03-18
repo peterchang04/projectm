@@ -12,8 +12,8 @@
 </template>
 
 <script>
-  import Slider from './Slider.vue';
-  import shipCanvas from '../game/shipCanvas.js';
+  import Slider from '../controls/Slider.vue';
+  import shipCanvas from '../../game/canvas/shipCanvas.js';
 
   export default {
     name: 'pilotControls',

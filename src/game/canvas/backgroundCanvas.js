@@ -1,6 +1,6 @@
-import Particle from './particle.js';
-import random from '../utils/random.js';
-import globals from '../utils/globals.js';
+import Particle from '../actor/particle.js';
+import random from '../../utils/random.js';
+import globals from '../../utils/globals.js';
 
 const starSpecs = {
   15: { w: 1, s: .01, opacity: .3, trail: 0, pregen: 60 },

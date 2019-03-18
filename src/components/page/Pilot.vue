@@ -8,10 +8,10 @@
 </template>
 
 <script>
-  import TargetsBar from './TargetsBar.vue';
-  import CrewBar from './CrewBar.vue';
+  import TargetsBar from '../targetBar/TargetsBar.vue';
+  import CrewBar from '../crewBar/CrewBar.vue';
   import Controls from './PilotControls.vue';
-  import ShipView from './ShipView.vue';
+  import ShipView from '../ShipView.vue';
 
   export default {
     name: 'pilot',

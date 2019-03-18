@@ -25,14 +25,14 @@
 </template>
 
 <script>
-  import IconCaptain from './svg/icon/captain.vue';
-  import IconIntel from './svg/icon/intel.vue';
-  import IconEngineer from './svg/icon/engineer.vue';
-  import IconPilot from './svg/icon/pilot.vue';
-  import Portrait1 from './svg/portrait/portrait1.vue';
-  import Portrait2 from './svg/portrait/portrait2.vue';
-  import Portrait3 from './svg/portrait/portrait3.vue';
-  import Portrait4 from './svg/portrait/portrait4.vue';
+  import IconCaptain from '../../assets/svg/medal100.svg';
+  import IconPilot from '../../assets/svg/pilot100.svg';
+  import IconEngineer from '../../assets/svg/wrench100.svg';
+  import IconIntel from '../../assets/svg/radar100.svg';
+  import Portrait1 from '../../assets/svg/portrait1.svg';
+  import Portrait2 from '../../assets/svg/portrait2.svg';
+  import Portrait3 from '../../assets/svg/portrait3.svg';
+  import Portrait4 from '../../assets/svg/portrait4.svg';
 
   export default {
     name: 'crewBar',

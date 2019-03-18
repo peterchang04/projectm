@@ -1,5 +1,5 @@
-import globals from '../utils/globals.js';
-import Ship from './ship.js';
+import globals from '../../utils/globals.js';
+import Ship from '../actor/ship.js';
 
 const stats = {
   updateCount: 0,

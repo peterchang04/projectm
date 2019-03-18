@@ -1,5 +1,5 @@
-import backgroundCanvas from './backgroundCanvas.js';
-import shipCanvas from './shipCanvas.js';
+import backgroundCanvas from './canvas/backgroundCanvas.js';
+import shipCanvas from './canvas/shipCanvas.js';
 import globals from '../utils/globals.js';
 
 const stats = {

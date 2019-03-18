@@ -1,7 +1,7 @@
-import physics from './_physics.js';
-import drawable from './_drawable.js';
-import mappable from './_mappable.js';
-import svg from './svg.js';
+import physics from '../decorator/_physics.js';
+import drawable from '../decorator/_drawable.js';
+import mappable from '../decorator/_mappable.js';
+import svg from '../../utils/svg.js';
 
 export default class Ship {
   constructor(initialObj = {}) { // e.g. { x,y,w,h,d,s }

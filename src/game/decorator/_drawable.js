@@ -1,4 +1,4 @@
-import globals from '../utils/globals.js';
+import globals from '../../utils/globals.js';
 
 let id = 0;
 

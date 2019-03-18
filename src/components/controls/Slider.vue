@@ -26,7 +26,7 @@
 </template>
 
 <script>
-  import multiDrag from '../utils/multiDrag.js';
+  import multiDrag from '../../utils/multiDrag.js';
 
   export default {
     name: 'slider',
