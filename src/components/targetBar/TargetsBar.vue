@@ -1,9 +1,9 @@
 <template>
   <div id="targetsBar" class="proportionateHeightWrapper">
     <div class="content">
-      <Target :index="0" callsign="DB" />
-      <Target :index="1" callsign="WX" />
-      <Target :index="2" />
+      <Target :index="0" />
+      <Target :index="1" />
+      <Target :index="2" callsign="WX" />
       <Target :index="3" />
     </div>
   </div>
@@ -24,7 +24,7 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   /* START This allows even height / width ratios across viewports */
-  .proportionateHeightWrapper { position: relative; width: 100%; }
+  .proportionateHeightWrapper { position: absolute; width: 100%; }
   .proportionateHeightWrapper:before{ content: ""; display: block;
     padding-top: 16%; /* HEIGHT PROPORTION */
   }

@@ -17,14 +17,22 @@ function init() {
   context = canvas.getContext('2d');
 
   // set canvas resolution
-  canvas.width = globals.viewport.pixelWidth * .2;
-  canvas.height = globals.viewport.pixelWidth * .2; // width again because square
+  canvas.width = globals.viewport.pixelWidth * .3;
+  canvas.height = globals.viewport.pixelWidth * .3; // width again because square
 
   myShip = new Ship();
   // register myShip with constants
   globals.game.myShip = myShip;
-}
 
+  // calculate the position of the ship on viewport
+  globals.game.setMyShipPixelLength(canvas.height / 1.42);
+  const canvasPos = canvas.getBoundingClientRect();
+  globals.viewport.shipX = canvasPos.x + (canvasPos.width / 2);
+  globals.viewport.shipY = canvasPos.y + (canvasPos.height / 2);
+  globals.viewport.shipPixelX = globals.viewport.shipX * globals.viewport.pixelRatio;
+  globals.viewport.shipPixelY = globals.viewport.shipY * globals.viewport.pixelRatio;
+  console.log(globals);
+}
 
 function update(speed = 0, direction = 0) {
   stats.updateCount++;

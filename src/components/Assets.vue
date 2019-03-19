@@ -16,7 +16,8 @@
 </template>
 
 <script>
-  import svg from '../utils/svg.js';
+  import canvasSvg from '../utils/canvasSvg.js';
+  import canvasText from '../utils/canvasText.js';
   import MyShipSVG from '../assets/svg/myShip.svg';
 
 
@@ -29,7 +30,9 @@
     },
     mounted: function (){
       // processes all the assets
-      svg.init();
+      canvasSvg.init();
+      // creates an in-memory canvas to prerender letters and numbers for performance
+      canvasText.init();
     }
   };
 </script>

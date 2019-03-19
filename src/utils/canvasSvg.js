@@ -79,8 +79,9 @@ function svgToCanvas(id) {
     svg[id].context.arc(svg[id].canvas.width / 2, svg[id].canvas.height / 2, svg[id].canvas.width / 2, 0, globals.constants.PI2);
     svg[id].context.stroke();
     // draw the 100x100 frame of original svg
-    svg[id].context.rect(21 * globals.viewport.pixelRatio, 21 * globals.viewport.pixelRatio, 100 * globals.viewport.pixelRatio, 100 * globals.viewport.pixelRatio);
+    svg[id].context.beginPath();
     svg[id].context.strokeStyle = '#fff';
+    svg[id].context.rect(21 * globals.viewport.pixelRatio, 21 * globals.viewport.pixelRatio, 100 * globals.viewport.pixelRatio, 100 * globals.viewport.pixelRatio);
     svg[id].context.stroke();
   }
 }

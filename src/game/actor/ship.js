@@ -1,7 +1,7 @@
 import physics from '../decorator/_physics.js';
 import drawable from '../decorator/_drawable.js';
 import mappable from '../decorator/_mappable.js';
-import svg from '../../utils/svg.js';
+import canvasSvg from '../../utils/canvasSvg.js';
 
 export default class Ship {
   constructor(initialObj = {}) { // e.g. { x,y,w,h,d,s }
@@ -9,10 +9,12 @@ export default class Ship {
     physics.add(this);
     mappable.add(this);
 
+    this.length = initialObj.length || 20;
+
     // add a fn to the draws queue
     this.drawMyShip = function(context) {
       context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-      svg.draw(context, 'MyShipSVG', { direction: 0, x: context.canvas.width / 2, y: context.canvas.height / 2 });
+      canvasSvg.draw(context, 'MyShipSVG', { direction: 0, x: context.canvas.width / 2, y: context.canvas.height / 2 });
     };
     this.draws.push('drawMyShip');
   }

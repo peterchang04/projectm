@@ -36,7 +36,6 @@
     z-index: 1000;
     background-color: black;
     flex-grow: 1;
-    margin-top: -100px; /* temporary to create illution of shipview behind targetsBar */
   }
   canvas {
     position: absolute;
@@ -51,6 +50,6 @@
     left: 35%;
     right: 35%;
     top: auto;
-    bottom: 20%;
+    bottom: 17%;
   }
 </style>

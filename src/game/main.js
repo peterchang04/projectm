@@ -1,6 +1,8 @@
 import backgroundCanvas from './canvas/backgroundCanvas.js';
+import backgroundGridCanvas from './canvas/backgroundGridCanvas.js';
 import shipCanvas from './canvas/shipCanvas.js';
 import globals from '../utils/globals.js';
+import canvasText from '../utils/canvasText.js';
 
 const stats = {
   updateCount: 0,
@@ -21,7 +23,9 @@ function init() {
   canvas.bullets = document.getElementById('canvas_bullets').getContext('2d');
 
   // init dependencies
+  canvasText.init();
   backgroundCanvas.init();
+  backgroundGridCanvas.init();
   shipCanvas.init();
 
   // start the update loop
@@ -46,6 +50,7 @@ function update() {
 function draw() { // draws at the refresh rate of device monitor. Mostly 60, but could be 100+
   stats.lastDraw = Date.now();
   backgroundCanvas.draw();
+  backgroundGridCanvas.draw();
   shipCanvas.draw();
   requestAnimationFrame(draw);
 }

@@ -22,11 +22,6 @@
       msg: String
     },
     mounted: function() {
-      console.log(shipCanvas);
-
-      setTimeout(() => {
-        console.log(shipCanvas);
-      }, 3000);
     }
   };
 </script>
