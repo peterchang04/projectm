@@ -24,9 +24,9 @@ function init() {
 
   // init dependencies
   canvasText.init();
+  shipCanvas.init();
   backgroundCanvas.init();
   backgroundGridCanvas.init();
-  shipCanvas.init();
 
   // start the update loop
   stats.loopId = setInterval(() => {

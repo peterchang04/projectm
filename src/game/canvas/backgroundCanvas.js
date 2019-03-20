@@ -37,7 +37,7 @@ function update() {
     if (isOOB(particles[id])) delete particles[id];
   }
 
-  $g.game.myShip.mY += .01;
+  $g.game.myShip.mY += .10;
   generateStars();
 }
 

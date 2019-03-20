@@ -31,7 +31,7 @@ function init() {
   textCanvas.height = $g.viewport.pixelWidth; // minus 3 to force a bit of alpha blend
   textCanvas.width = $g.viewport.pixelWidth; // minus 3 to force a bit of alpha blend
   // set the font
-  textContext.font = `${15*$g.viewport.pixelRatio}px 'Share Tech Mono'`;
+  textContext.font = `${15*$g.viewport.pixelRatio}px 'Share Tech Mono', 'Courier New'`;
 
   // solve for letter dimensions
   letterWidth = textContext.measureText('M').width;
@@ -92,4 +92,8 @@ function draw(targetContext, text, x, y, type = 0 /* 0: white, 1: grey, 2: red *
   }
 }
 
-export default { init, draw, height: letterHeight };
+function getLetterHeight() {
+  return letterHeight;
+}
+
+export default { init, draw, getLetterHeight };
