@@ -2,10 +2,18 @@
   <div id="controls" class="proportionateHeightWrapper">
     <div class="content">
       <div class="forwardThrustDiv">
-        <Slider title="Forward Thrust" :initialPercent="43" />
+        <Slider
+          title="Forward Thrust"
+          :initialPercent="0"
+          v-on:update="updateThrust"
+        />
       </div>
       <div class="angularThrustDiv">
-        <Slider title="Angular Thrust" :initialPercent="75" />
+        <Slider
+          title="Angular Thrust"
+          :initialPercent="0"
+          v-on:update="updateAngular"
+        />
       </div>
     </div>
   </div>
@@ -14,6 +22,7 @@
 <script>
   import Slider from '../controls/Slider.vue';
   import shipCanvas from '../../game/canvas/shipCanvas.js';
+  import $g from '../../utils/globals.js';
 
   export default {
     name: 'pilotControls',
@@ -21,7 +30,16 @@
     props: {
       msg: String
     },
+
     mounted: function() {
+    },
+    methods: {
+      updateThrust(value) {
+        $g.game.myShip.a = 3 * (value / 100);
+      },
+      updateAngular(value) {
+        $g.game.myShip.aA = 3 * (value / 100);
+      }
     }
   };
 </script>

@@ -38,16 +38,26 @@ function init(width, height) {
   screenGridCount = screenGridCount * 2;
 }
 
+let coordinates = '';
+let speedText = '';
 function draw() {
   context.clearRect(0, 0, canvas.width, canvas.height);
   drawLatitudes();
   drawLongitudes();
   // draw coordinates for debugging
+  coordinates = `(LAT ${$g.game.myShip.mX.toFixed(1)} m , LNG ${$g.game.myShip.mY.toFixed(1)} m)`;
   canvasText.draw(
     context,
-    `(LAT ${$g.game.myShip.mX.toFixed(1)} m , LNG ${$g.game.myShip.mY.toFixed(1)} m)`,
-    $g.viewport.shipPixelX - ($g.game.myShipPixelLength / 2),
+    coordinates,
+    $g.viewport.shipPixelX - (context.measureText(coordinates).width * $g.viewport.pixelRatio / 2),
     $g.viewport.shipPixelY + ($g.game.myShipPixelLength / 1.5)
+  );
+  speedText = `${$g.game.myShip.s.toFixed(1)} m/s`;
+  canvasText.draw(
+    context,
+    speedText,
+    $g.viewport.shipPixelX - (context.measureText(speedText).width * $g.viewport.pixelRatio / 2),
+    $g.viewport.shipPixelY + ($g.game.myShipPixelLength / 1.5) + canvasText.getLetterHeight()
   );
 }
 
@@ -74,7 +84,7 @@ function drawLatitudes() {
       shipLAT = $g.game.myShip.mY - (shipYPixelDist / $g.viewport.pixelsPerMeter);
     }
 
-    currentYText = `LAT ${Math.round(shipLAT).toFixed(0)}m`;
+    currentYText = `LAT ${Math.round(shipLAT).toFixed(0)} m`;
     canvasText.draw(
       context,
       currentYText,
@@ -109,7 +119,7 @@ function drawLongitudes() {
       shipLONG = $g.game.myShip.mX - (shipXPixelDist / $g.viewport.pixelsPerMeter);
     }
 
-    currentXText = `LNG ${Math.round(shipLONG).toFixed(0)}m`;
+    currentXText = `LNG ${Math.round(shipLONG).toFixed(0)} m`;
     canvasText.draw(
       context,
       currentXText,

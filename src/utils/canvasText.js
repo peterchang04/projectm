@@ -6,12 +6,12 @@ const dictionary = {
   K:10, L:11, M:12, N:13, O:14,
   P:15, Q:16, R:17, S:18, T:19,
   U:20, V:21, W:22, X:23, Y:24, Z:25,
-  '-':26, '.':27, ',':28, '(':29, ')':30,
-  a:31, b:32, c:33, d:34, e:35,
-  f:36, g:37, h:38, i:39, j:40,
-  k:41, l:42, m:43, n:44, o:45,
-  p:46, q:47, r:48, s:49, t:50,
-  u:51, v:52, w:53, x:54, y:55, z:56,
+  a:26, b:27, c:28, d:29, e:30,
+  f:31, g:32, h:33, i:34, j:35,
+  k:36, l:37, m:38, n:39, o:40,
+  p:41, q:42, r:43, s:44, t:45,
+  u:46, v:47, w:48, x:49, y:50, z:51,
+  '-':52, '.':53, ',':54, '(':55, ')':56, '/':57
 };
 
 let textCanvas = null;
@@ -21,15 +21,21 @@ let letterHeight = 0;
 let letterSpacing = 0;
 let initted = false;
 
-function init() {
-  if (initted) return;
+function reset() {
+  init();
+}
+
+function init() { // init called by index.html font resource onload
   initted = true;
+  window.addEventListener('reloadCanvasText', () => {
+    reset(); // if the font loads after init is called, reload all text elements
+  });
   // load all assets and sort them into respective canvases
   textCanvas = document.createElement("canvas");
   textContext = textCanvas.getContext('2d');
   textCanvas.id = 'textCanvas';
-  textCanvas.height = $g.viewport.pixelWidth; // minus 3 to force a bit of alpha blend
-  textCanvas.width = $g.viewport.pixelWidth; // minus 3 to force a bit of alpha blend
+  textCanvas.height = $g.viewport.pixelWidth * 1.5; // 1.5 to help all the letters fit
+  textCanvas.width = $g.viewport.pixelWidth * 1.5; // 1.5 to help all the letters fit
   // set the font
   textContext.font = `${15*$g.viewport.pixelRatio}px 'Share Tech Mono', 'Courier New'`;
 
@@ -46,22 +52,27 @@ function init() {
 
   // white
   textContext.fillStyle = '#FFFFFF';
-  textContext.fillText('0123456789', 0, letterHeight * 3);
-  textContext.fillText(Object.keys(dictionary).join(''), 0, letterHeight * 4);
+  textContext.fillText('0123456789', 0, letterHeight * 1);
+  textContext.fillText(Object.keys(dictionary).join(''), 0, letterHeight * 2);
   // red
   textContext.fillStyle = '#FF0000';
-  textContext.fillText('0123456789', 0, letterHeight);
-  textContext.fillText(Object.keys(dictionary).join(''), 0, letterHeight * 2);
+  textContext.fillText('0123456789', 0, letterHeight * 3);
+  textContext.fillText(Object.keys(dictionary).join(''), 0, letterHeight * 4);
   // grey
   textContext.fillStyle = 'rgba(255, 255, 255, .3)';
   textContext.fillText('0123456789', 0, letterHeight * 5);
   textContext.fillText(Object.keys(dictionary).join(''), 0, letterHeight * 6);
+
+
+
+  global.initCanvasText = init;
 }
 
 // origin of draw will be upper left pixel
 let i = 0;
 let sourceX = 0, sourceY = 0, destX = 0, destY = 0, sourceYMod = 0;
 function draw(targetContext, text, x, y, type = 0 /* 0: white, 1: grey, 2: red */) {
+  if (!initted) return;
   sourceY = type * letterHeight * 2; // for color
   destX = x;
   destY = y;

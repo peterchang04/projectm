@@ -1,5 +1,6 @@
 import backgroundCanvas from './canvas/backgroundCanvas.js';
 import backgroundGridCanvas from './canvas/backgroundGridCanvas.js';
+import steeringCanvas from './canvas/steeringCanvas.js';
 import shipCanvas from './canvas/shipCanvas.js';
 import globals from '../utils/globals.js';
 import canvasText from '../utils/canvasText.js';
@@ -23,28 +24,25 @@ function init() {
   canvas.bullets = document.getElementById('canvas_bullets').getContext('2d');
 
   // init dependencies
-  canvasText.init();
   shipCanvas.init();
   backgroundCanvas.init();
   backgroundGridCanvas.init();
+  steeringCanvas.init();
 
   // start the update loop
+  clearInterval(stats.loopId);
   stats.loopId = setInterval(() => {
-    stats.frame++;
     update();
-  }, 16.66 /* 60fps updates */ );
+  }, 16.66 /* 60 fps updates */ );
 
   // start the draw loop;
   draw();
 }
 
 function update() {
-  if (!document.hasFocus) {
-    console.warn('document lost focus');
-    return;
-  }
-  backgroundCanvas.update();
-  shipCanvas.update();
+  stats.updateCount++;
+  backgroundCanvas.update(stats.updateCount);
+  shipCanvas.update(stats.updateCount);
 }
 
 function draw() { // draws at the refresh rate of device monitor. Mostly 60, but could be 100+
@@ -52,6 +50,7 @@ function draw() { // draws at the refresh rate of device monitor. Mostly 60, but
   backgroundCanvas.draw();
   backgroundGridCanvas.draw();
   shipCanvas.draw();
+  steeringCanvas.draw();
   requestAnimationFrame(draw);
 }
 

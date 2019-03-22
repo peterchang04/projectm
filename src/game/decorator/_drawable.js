@@ -1,23 +1,19 @@
-import globals from '../../utils/globals.js';
+import $g from '../../utils/globals.js';
 
 let id = 0;
 
-function add(obj) {
-  obj.id = globals.game.newId();
+function add(obj = {}) {
+  obj.id = $g.game.newId();
+  obj.temp = {};
   if (!obj.c) obj.c = '#fff';
   obj.updates = [];
   obj.draws = [];
-  obj.update = function () {
-    if (!obj.updates.length) return;
-
+  obj.update = function (updateCount = -1) {
     obj.updates.forEach((word) => {
-      // console.log(obj.id, word, obj);
-      obj[word]();
+      obj[word](updateCount);
     });
   };
   obj.draw = function(context) {
-    if (!obj.draws.length) return;
-
     obj.draws.forEach((word) => {
       obj[word](context);
     });

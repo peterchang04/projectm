@@ -55,18 +55,18 @@
     },
     mounted: function () {
       // target the handle
-      const $leverHandle = this.$el.querySelector('.leverHandle');
-      const $leverGrooveInner = this.$el.querySelector('.leverGrooveInner');
+      const leverHandle = this.$el.querySelector('.leverHandle');
+      const leverGrooveInner = this.$el.querySelector('.leverGrooveInner');
 
       // calculate the pixel width of slider for this viewport
-      const rect = $leverGrooveInner.getBoundingClientRect();
+      const rect = leverGrooveInner.getBoundingClientRect();
       this.minX = rect.x;
       this.maxX = rect.x + rect.width;
       this.grooveWidth = rect.width;
 
       // init the dragging actions
       multiDrag.activate({
-        el: $leverHandle,
+        el: leverHandle,
         onMove: (e) => {
           // stop any current setTimeouts
           clearTimeout(this.clearTimeoutActualProgress);
@@ -103,6 +103,10 @@
             if (this.actualPercent < this.percent) {
               this.actualPercent = this.actualPercent + 5;
             }
+
+            // report the update to onChange
+            this.$emit('update', this.actualPercent);
+
             // exit the loop
             if (this.actualPercent === this.percent) return;
             // didn't exit, setup the next call

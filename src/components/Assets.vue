@@ -19,7 +19,7 @@
   import canvasSvg from '../utils/canvasSvg.js';
   import canvasText from '../utils/canvasText.js';
   import MyShipSVG from '../assets/svg/myShip.svg';
-
+  import $g from '../utils/globals.js';
 
   export default {
     components: {
@@ -43,8 +43,8 @@
     position: fixed;
     height: 100%;
     width: 100%;
-    top: -500px;
-    left: 0px;
+    top: -1000px;
+    left: -1000px;
     z-index: 9999;
     text-align: left;
   }

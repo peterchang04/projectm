@@ -9,7 +9,7 @@ export default class Ship {
     physics.add(this);
     mappable.add(this);
 
-    this.length = initialObj.length || 20;
+    applyType(this);
 
     // add a fn to the draws queue
     this.drawMyShip = function(context) {
@@ -19,3 +19,16 @@ export default class Ship {
     this.draws.push('drawMyShip');
   }
 }
+
+function applyType(ship, type = 0) {
+  Object.assign(ship, shipTypes[type]);
+}
+
+const shipTypes = {
+  0: { // 0
+    sMax: 30,
+    aSMax: 45,
+    length: 20,
+    mass: 80000, // kg
+  }
+};

@@ -12,19 +12,23 @@
     <!-- <canvas id="canvas_foreground"></canvas> -->
     <canvas id="canvas_listener"></canvas>
     <!-- TOP LAYER -->
+    <PilotSteering v-if="$route.path == '/pilot'"/>
+    <canvas id="canvas_steering" v-if="$route.path == '/pilot'" />
   </div>
 </template>
 
 <script>
   import Main from '../game/main.js';
+  import PilotSteering from './page/PilotSteering.vue';
 
   export default {
-    components: {},
+    components: { PilotSteering },
     props: {
       msg: String
     },
     mounted: function () {
       Main.init();
+      console.log(this.$route);
     }
   };
 </script>
@@ -52,4 +56,17 @@
     top: auto;
     bottom: 17%;
   }
+  #canvas_steering { /* same as PilotSteering #steering */
+   position: absolute;
+   left: 50%;
+   bottom: 13%;
+   overflow: hidden;
+   background-color: transparent;
+   width: 50vw;
+   height: 50vw;
+   margin-left: -25vw;
+   border-radius: 50vw;
+   pointer-events: none;
+   top: auto;
+ }
 </style>

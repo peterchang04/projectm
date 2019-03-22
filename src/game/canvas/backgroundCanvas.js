@@ -26,9 +26,11 @@ function init() {
   canvas.height = $g.viewport.pixelHeight;
 
   prepopulateStars();
+  console.log($g.game.myShip);
 }
 
 function update() {
+  return;
   stats.updateCount++;
   for (const id in particles) {
     particles[id].update();
@@ -36,12 +38,11 @@ function update() {
     // TODO: PERFORMANCE - pregenerate particles as rastor
     if (isOOB(particles[id])) delete particles[id];
   }
-
-  $g.game.myShip.mY += .10;
   generateStars();
 }
 
 function draw() {
+  return;
   stats.drawCount++;
   stats.lastDraw = Date.now();
   context.clearRect(0, 0, canvas.width, canvas.height);
