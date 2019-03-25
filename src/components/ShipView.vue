@@ -28,7 +28,6 @@
     },
     mounted: function () {
       Main.init();
-      console.log(this.$route);
     }
   };
 </script>

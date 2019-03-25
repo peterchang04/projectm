@@ -114,7 +114,7 @@
             this.clearTimeoutActualProgress = setTimeout(() => {
               this.animate = true;
               moveActualProgress();
-            }, 500);
+            }, 250);
           };
 
           moveActualProgress(); // kick it off

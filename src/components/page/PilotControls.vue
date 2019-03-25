@@ -38,7 +38,8 @@
         $g.game.myShip.a = 3 * (value / 100);
       },
       updateAngular(value) {
-        $g.game.myShip.aA = 3 * (value / 100);
+        $g.game.myShip.aSMax = 20 * (value / 100);
+        if ($g.game.myShip.aSMax === 0) $g.game.myShip.aSMax = 1; // minimum aSMax
       }
     }
   };

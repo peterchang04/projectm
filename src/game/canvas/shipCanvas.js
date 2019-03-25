@@ -1,5 +1,6 @@
 import $g from '../../utils/globals.js';
 import Ship from '../actor/ship.js';
+import perf from '../../utils/perf.js';
 
 const stats = {
   updateCount: 0,
@@ -12,7 +13,7 @@ let context = null;
 let svgs = {};
 let myShip = null;
 
-function init() {
+function init() { let p = perf.start('shipCanvas.init');
   canvas = document.getElementById('canvas_myShip');
   context = canvas.getContext('2d');
 
@@ -20,7 +21,7 @@ function init() {
   canvas.width = $g.viewport.pixelWidth * .3;
   canvas.height = $g.viewport.pixelWidth * .3; // width again because square
 
-  myShip = new Ship();
+  myShip = new Ship({ angle: 45, d: 45 });
   // register myShip with constants
   $g.game.myShip = myShip;
 
@@ -31,20 +32,23 @@ function init() {
   $g.viewport.shipY = canvasPos.y + (canvasPos.height / 2);
   $g.viewport.shipPixelX = $g.viewport.shipX * $g.viewport.pixelRatio;
   $g.viewport.shipPixelY = $g.viewport.shipY * $g.viewport.pixelRatio;
+  perf.stop('shipCanvas.init', p);
 }
 
-function update(parentUpdateCount) {
+function update(parentUpdateCount) { let p = perf.start('shipCanvas.update');
   stats.updateCount++;
   myShip.update(parentUpdateCount);
+  perf.stop('shipCanvas.update', p);
 }
 
-function draw() {
+function draw() { let p = perf.start('shipCanvas.draw');
   context.clearRect(0, 0, canvas.width, canvas.height);
 
   stats.drawCount++;
   stats.lastDraw = Date.now();
 
   myShip.draw(context);
+  perf.stop('shipCanvas.draw', p);
 }
 
 export default { init, update, draw, myShip };

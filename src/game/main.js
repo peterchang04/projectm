@@ -4,6 +4,7 @@ import steeringCanvas from './canvas/steeringCanvas.js';
 import shipCanvas from './canvas/shipCanvas.js';
 import globals from '../utils/globals.js';
 import canvasText from '../utils/canvasText.js';
+import perf from '../utils/perf.js';
 
 const stats = {
   updateCount: 0,
@@ -39,18 +40,21 @@ function init() {
   draw();
 }
 
-function update() {
+function update() { let p = perf.start('main.update');
   stats.updateCount++;
   backgroundCanvas.update(stats.updateCount);
   shipCanvas.update(stats.updateCount);
+  perf.stop('main.update', p);
 }
 
-function draw() { // draws at the refresh rate of device monitor. Mostly 60, but could be 100+
+// draws at the refresh rate of device monitor. Mostly 60, but could be 100+
+function draw() { let p = perf.start('main.draw');
   stats.lastDraw = Date.now();
   backgroundCanvas.draw();
   backgroundGridCanvas.draw();
   shipCanvas.draw();
   steeringCanvas.draw();
+  perf.stop('main.draw', p);
   requestAnimationFrame(draw);
 }
 

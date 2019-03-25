@@ -1,9 +1,10 @@
 import physics from '../decorator/_physics.js';
 import globals from '../../utils/globals';
 import drawable from '../decorator/_drawable.js';
+import perf from '../../utils/perf.js';
 
 export default class Particle {
-  constructor(initialObj = {}) { // e.g. { x,y,w,h,d,s }
+  constructor(initialObj = {}) { /* e.g. { x,y,w,h,d,s } */ let p = perf.start('Particle.constructor');
     // set initial values
     for (const key in initialObj) {
       this[key] = initialObj[key];
@@ -12,7 +13,7 @@ export default class Particle {
     physics.add(this);
 
     // add a fn to the draws queue
-    this.drawParticle = function(context) {
+    this.drawParticle = function(context) {  let p = perf.start('Particle.drawParticle');
       context.beginPath();
       context.arc(
         this.x, this.y,
@@ -40,7 +41,9 @@ export default class Particle {
           context.fill();
         }
       }
+      perf.stop('Particle.drawParticle', p);
     };
     this.draws.push('drawParticle');
+    perf.stop('Particle.constructor', p);
   }
 }

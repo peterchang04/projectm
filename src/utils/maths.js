@@ -60,6 +60,10 @@ function radianToDegree(radian) {
   return angleToDegree(radianToAngle(radian));
 }
 
+function roundHalf(number) {
+  return Math.ceil(number * 2) / 2;
+}
+
 export default {
   getAngle2P,
   getRadian2P,
@@ -71,4 +75,5 @@ export default {
   angleToDegree,
   radianToDegree,
   radianToAngle,
+  roundHalf,
 };
