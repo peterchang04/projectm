@@ -2,9 +2,10 @@ import backgroundCanvas from './canvas/backgroundCanvas.js';
 import backgroundGridCanvas from './canvas/backgroundGridCanvas.js';
 import steeringCanvas from './canvas/steeringCanvas.js';
 import shipCanvas from './canvas/shipCanvas.js';
-import globals from '../utils/globals.js';
+import $g from '../utils/globals.js';
 import canvasText from '../utils/canvasText.js';
 import perf from '../utils/perf.js';
+import Ship from '../game/actor/ship.js';
 
 const stats = {
   updateCount: 0,
@@ -18,11 +19,14 @@ const canvas = {};
 
 function init() {
   // get the shipView's dimensions
-  globals.viewport.update(document.getElementById('shipView').offsetWidth, document.getElementById('shipView').offsetHeight);
+  $g.viewport.update(document.getElementById('shipView').offsetWidth, document.getElementById('shipView').offsetHeight);
 
   // identify canvases
   canvas.ships = document.getElementById('canvas_ships').getContext('2d');
   canvas.bullets = document.getElementById('canvas_bullets').getContext('2d');
+
+  // register myShip with constants
+  $g.game.myShip = new Ship({ mX: 15, mY: -35, angle: 90, d: 0 }); // 35 55
 
   // init dependencies
   shipCanvas.init();

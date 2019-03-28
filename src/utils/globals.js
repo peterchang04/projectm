@@ -25,8 +25,8 @@ const viewport = {
   viewportWidth: 0,
   viewportHeight: 0,
   update: function(viewportWidth, viewportHeight) {
-    this.viewportWidth = viewportWidth;
-    this.viewportHeight = viewportHeight;
+    this.width = viewportWidth;
+    this.height = viewportHeight;
     this.pixelWidth = viewportWidth * window.devicePixelRatio;
     this.pixelHeight = viewportHeight * window.devicePixelRatio;
     this.vwPixels = this.pixelWidth / 100;

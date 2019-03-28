@@ -1,5 +1,4 @@
 import $g from '../../utils/globals.js';
-import Ship from '../actor/ship.js';
 import perf from '../../utils/perf.js';
 
 const stats = {
@@ -11,7 +10,6 @@ let canvas = null;
 let context = null;
 
 let svgs = {};
-let myShip = null;
 
 function init() { let p = perf.start('shipCanvas.init');
   canvas = document.getElementById('canvas_myShip');
@@ -20,10 +18,6 @@ function init() { let p = perf.start('shipCanvas.init');
   // set canvas resolution
   canvas.width = $g.viewport.pixelWidth * .3;
   canvas.height = $g.viewport.pixelWidth * .3; // width again because square
-
-  myShip = new Ship({ angle: 45, d: 45 });
-  // register myShip with constants
-  $g.game.myShip = myShip;
 
   // calculate the position of the ship on viewport
   $g.game.setMyShipPixelLength(canvas.height / 1.42);
@@ -37,7 +31,7 @@ function init() { let p = perf.start('shipCanvas.init');
 
 function update(parentUpdateCount) { let p = perf.start('shipCanvas.update');
   stats.updateCount++;
-  myShip.update(parentUpdateCount);
+  $g.game.myShip.update(parentUpdateCount);
   perf.stop('shipCanvas.update', p);
 }
 
@@ -47,8 +41,8 @@ function draw() { let p = perf.start('shipCanvas.draw');
   stats.drawCount++;
   stats.lastDraw = Date.now();
 
-  myShip.draw(context);
+  $g.game.myShip.draw(context);
   perf.stop('shipCanvas.draw', p);
 }
 
-export default { init, update, draw, myShip };
+export default { init, update, draw };

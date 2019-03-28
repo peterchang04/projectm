@@ -1,10 +1,10 @@
 <template>
   <div id="targetsBar" class="proportionateHeightWrapper">
     <div class="content">
-      <Target :index="0" callsign="WX" />
+      <Target :index="0" />
       <Target :index="1" />
       <Target :index="2" />
-      <Target :index="3" />
+      <Target :index="3" callsign="WX" />
     </div>
   </div>
 </template>

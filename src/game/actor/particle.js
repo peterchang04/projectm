@@ -21,7 +21,7 @@ export default class Particle {
         0,
         globals.constants.PI2
       );
-      context.fillStyle = '#fff';
+      context.fillStyle = this.c || '#fff';
       if (this.opacity) context.fillStyle = `rgba(255,255,255,${this.opacity})`;
       context.fill();
 
