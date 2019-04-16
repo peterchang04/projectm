@@ -26,7 +26,7 @@ function init() {
   canvas.bullets = document.getElementById('canvas_bullets').getContext('2d');
 
   // register myShip with constants
-  $g.game.myShip = new Ship({ mX: 15, mY: -35, angle: 90, d: 0 }); // 35 55
+  $g.game.myShip = new Ship({ mX: 0, mY: 0, angle: 90, d: 0 }); // 35 55
 
   // init dependencies
   shipCanvas.init();

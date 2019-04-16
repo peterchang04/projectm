@@ -1,4 +1,4 @@
-let activate = false;
+let activate = true;
 let logs = {};
 let now = null;
 let metrics = {};

@@ -36,6 +36,7 @@
     methods: {
       updateThrust(value) {
         $g.game.myShip.a = 3 * (value / 100);
+        $g.game.myShip.sMax = 20 * (value / 100);
       },
       updateAngular(value) {
         $g.game.myShip.aSMax = 20 * (value / 100);

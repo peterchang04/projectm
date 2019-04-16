@@ -1,0 +1,944 @@
+iframe#video {
+  position: absolute;
+  top: 60px;
+  transform:scaleX(1.6) scaleY(1.6);
+}
+body {
+  overflow: hidden;
+  margin: 0;
+}
+#textboxBackground {
+  position:absolute;
+  z-index: 900;
+  transform: skewY(2deg);
+  top:55%;
+  left:2%;
+  height:31%;
+  width:39%;
+  background-color:#000;
+  opacity:.8;
+  border-radius: 12px;
+  box-shadow:0 0 6px rgba(0, 0, 0, 1);
+}
+#textbox {
+  position: absolute;
+  top:1%;
+  left:1.5%;
+  height:100%;
+  width: 100%;
+  overflow: hidden;
+  font-family: 'Noto Sans', sans-serif;
+}
+.textboxText {
+  color: #ddd;
+  font-family: 'Noto Sans', sans-serif;
+  padding: 2px 5px 0px 5px;
+  font-size: 2vh;
+  line-height: 3.1vh;
+  white-space: nowrap;
+  position: relative;
+}
+.textboxText .hexagon {
+  transform: scale(.5);
+  position: relative;
+  display: inline-block;
+  height: 10px;
+  margin-left: 16px;
+  margin-right: -68px;
+  margin-top: 16px;
+  vertical-align: top;
+}
+.trophyChat {
+  position: relative;
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+}
+.trophyChat span {
+  position: absolute;
+  z-index: 99;
+  left: 13px;
+  color: white;
+  font-size: 21px;
+  top: -5px;
+  font-family: 'Russo One';
+}
+.trophyChat i {
+  color: gold;
+  font-size: 32px;
+}
+.chatLowRank {
+  background-color: #444;
+  width: 33px;
+  height: 33px;
+  display: inline-block;
+  border-radius: 40px;
+  text-align: center;
+  font-size: 18px;
+  letter-spacing: 1px;
+  line-height: 35px;
+  margin-top: 4px;
+  vertical-align: top;
+  font-family: 'Russo One';
+}
+.chatPlayer {
+  color: white;
+  font-family: 'Russo One';
+  margin-left: 4px;
+}
+.player {
+  font-weight: bold;
+  display: inline;
+  color: white;
+}
+.player i {
+  font-size: 15px;
+  padding: 0px 4px;
+  position: relative;
+  vertical-align: middle;
+}
+.textboxText b {
+  color: white;
+}
+.textboxText i b {
+  position: absolute;
+  color: #444;
+  font-size: 9px;
+  font-family: 'Noto Sans', sans-serif;
+}
+.textboxText i.fa-trophy b {
+  top: 1px;
+  left: 10px;
+}
+.textboxText i.fa-circle b {
+  top: 3px;
+  left: 7px;
+}
+#textInput {
+  width: 96%;
+  position: absolute;
+  left: 0;
+  bottom: 4%;
+  height: 11%;
+  color: white;
+  background-color: rgba(51, 51, 51, .5);
+  border: none;
+  padding: .5% 1.5%;
+  font-size: 2.2vh;
+  box-sizing: border-box;
+}
+input:focus {
+  outline: none;
+}
+button {
+  padding: 5px 10px;
+}
+#textBox table td {
+}
+
+#gameOverlay {
+  position: absolute;
+  top: 33px;
+  left: 8px;
+  opacity: 0;
+  display: none;
+  width: 1280px;
+  height: 720px;
+  background-color: red;
+  color: white;
+  font-size: 72px;
+  font-weight: bold;
+  font-family: 'Noto Sans', sans-serif;
+  text-align: center;
+  line-height: 720px;
+}
+
+
+#healthbars {
+  position: absolute;
+  top:9%;
+  right: 3.5%;
+  width: 33%;
+  height: 7%;
+  background-color: rgba(0, 0, 0, .5);
+  border-radius:12px;
+  transform:skewY(-11.5deg) rotate(11.5deg);
+  z-index:999;
+}
+
+#health {
+  position: absolute;
+  width: 75%;
+  left: 1.5%;
+  background-color: rgba(0, 0, 0, .7);
+  height: 56.5%;
+  top: 9.5%;
+  border-radius: 5px;
+}
+#healthText {
+  font-size: 45px;
+  color: white;
+  position: absolute;
+  font-family: 'Russo One';
+  width: 100%;
+  text-align: center;
+  text-shadow: 0 0 10px rgba(255, 255, 255, .5);
+  z-index: 99;
+  transition: color 1s;
+}
+#mana {
+  position: absolute;
+  width: 75%;
+  left: 1.5%;
+  background-color: rgba(0, 0, 0, .7);
+  height: 13%;
+  top: 77%;
+  border-radius: 5px;
+}
+#healthFill {
+  background-color: #3bc745;
+  box-shadow: 0 0 7px rgb(151, 208, 158);
+  height: 100%;
+  width: 100%;
+  transition: width 1s;
+}
+#healthChunks {
+  width:75%;
+  height: 60px;
+  list-style-type: none;
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin: 0;
+  padding: 7px;
+  display: flex;
+}
+#healthChunks li {
+  flex-grow: 1;
+  border-right: 4px solid rgba(0, 0, 0, .2);
+}
+#healthChunks li:last-child {
+  border-right: none;
+}
+#manaFill {
+  background-color: #53c1e0;
+  box-shadow: 0 0 7px rgb(151, 208, 158);
+  height: 100%;
+  width: 100%;
+  transition: width 1.4s;
+}
+#compass {
+  filter: blur(1px);
+  position: absolute;
+  bottom: -260px;
+  z-index: 99;
+  left: 50%;
+  margin-left: -250px;
+  width: 500px;
+  height: 500px;
+  border-radius: 300px;
+  /*background-color: rgba(0, 0, 0, .96); */
+  background: radial-gradient(      rgba(0, 0, 0, 0) 10%,      rgba(0, 0, 0, 0) 19%,      rgba(0, 0, 0, .96) 22%    );
+  box-shadow: 0 0 12px rgba(0, 0, 0, 1);
+  background-origin: border-box;
+  border: 12px solid transparent;
+}
+.compassDir {
+  height: 100%;
+  width: 100%;
+  border-radius: 300px;
+  position: absolute;
+  overflow: hidden;
+  top: 0;
+  lefT: 0;
+}
+.compassPoint {
+  border-left: 35px solid transparent;
+  border-right: 35px solid transparent;
+  border-top: 153px solid rgba(51, 47, 47, 0.3);
+  position: absolute;
+  top: 0;
+  left: 50%;
+  margin-left: -35px;
+}
+.compassPoint.main {
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  border-top: 28px solid rgba(216, 10, 10, 0.3);
+  margin-left: -50px;
+}
+.compassDir .fas {
+  position: absolute;
+  top: 2%;
+  left: 42%;
+  font-size: 77px;
+  color: #444;
+}
+.compassDir.cp4 .fas, .compassDir.cp5 .fas, .compassDir.cp6 .fas, .compassDir.cp7 .fas {
+  color: #be0e0e57;
+  top: 13%;
+}
+#topGame {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 20%;
+  margin-left:-10%;
+  background-color: rgba(0, 0, 0, .5);
+  z-index: 1010;
+  padding-top: .5%;
+  border-bottom-left-radius: 20%;
+  border-bottom-right-radius: 20%;
+  text-align: center;
+}
+#gameMode {
+  font-family: 'Russo One';
+  color: white;
+  width: 100%;
+  text-align: center;
+  font-size: 4vh;
+  display: block;
+  text-shadow: 0 0 10px rgba(255, 255, 255, .5);
+}
+#blueScore, #redScore {
+  color: white;
+  font-family: 'Russo One';
+  font-size: 6vh;
+  display: inline-block;
+  padding: 0 1.3vh;
+  margin-top: -1vh;
+}
+#blueScore {
+  color: #4e94ff;
+  text-shadow: 0 0 10px rgba(3, 29, 88, 0.5);
+}
+#redScore {
+  color: #ff4343;
+  text-shadow: 0 0 10px rgba(70, 0, 0, 0.5)
+}
+#time {
+  display:inline-block;
+  color: white;
+  margin-top: -1.5vh;
+  letter-spacing: .3vh;
+  vertical-align: top;
+  width: 133px;
+  line-height: 109px;
+  font-size: 3.5vh;
+  font-family: 'Russo One';
+  text-shadow: 0 0 10px rgba(255, 255, 255, .5);
+}
+#time.low {
+  animation: color_change .5s infinite alternate;
+}
+@keyframes color_change {
+	from {
+    color: white;
+    font-size:3.5vh;
+    margin-left:0px;
+  }
+	to {
+    color: #bf2c2c;
+    font-size:4vh;
+    margin-left:-5px;
+  }
+}
+
+.capturePoints {
+  margin-top: -24px;
+  padding: 14px;
+}
+.capturePoint {
+  display: inline-block;
+  height: 75px;
+  width: 75px;
+  border-radius: 100px;
+  line-height: 75px;
+  font-size: 50px;
+  font-family: 'Russo One';
+  color: white;
+  background-color: #585858;
+  margin: 0px 28px;
+  transition: background-color 1s;
+}
+.capturePoint.blue {
+  background-color: #4e94ff;
+}
+.capturePoint.red {
+  background-color: #ff4343;
+}
+
+#teamBars {
+  position: absolute;
+  left: 3%;
+  top: 7%;
+  z-index: 999;
+  width: 21%;
+  transform: skewY(2deg);
+}
+
+.teamBar {
+  display: inline-block;
+  background-color: rgba(0, 0, 0, .5);
+  border-radius: 10px;
+  height: 160px;
+  width: 100%;
+  margin: 3%;
+  position: relative;
+}
+
+.teamBar img {
+  height: 144px;
+  width: 144px;
+  z-index:999;
+  border-radius: 5px;
+  position: absolute;
+}
+
+.teamBar span.name {
+  font-family: 'Russo One';
+  font-size: 40px;
+  color: white;
+  position: absolute;
+  top: 4px;
+  left: 170px;
+  padding: 2px 12px;
+  text-shadow: 0 0 10px rgba(255, 255, 255, .5);
+}
+
+.teamBar.damaged span.name, .teamBar.damaged .teamHealthBar span  {
+  color: #ff2828;
+}
+
+.teamHealthBar {
+  background-color: rgba(0, 0, 0, .5);
+  width: 353px;
+  height: 66px;
+  position: absolute;
+  left: 168px;
+  top: 57px;
+}
+
+.teamHealthChunks {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  list-style-type: none;
+  display: flex;
+  padding:0;
+  margin:0;
+}
+.teamHealthChunks li {
+  border-right: 3px solid rgba(0, 0, 0, .15);
+  flex-grow: 1;
+}
+.teamHealthChunks li:last-child {
+  border-right: none;
+}
+
+.teamManaBar {
+  background-color: rgba(0, 0, 0, .5);
+  width: 353px;
+  height: 16px;
+  position: absolute;
+  left: 168px;
+  bottom: 10px;
+}
+
+.teamHealthBar span {
+  font-family: 'Russo One';
+  font-size: 35px;
+  color: white;
+  position: absolute;
+  top: 12px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.teamHealthBarFill {
+  height: 100%;
+  width: 100%;
+  background-color: #3bc745;
+  box-shadow: 0 0 7px rgb(196, 237, 252);
+  transition: width .8s;
+}
+
+.teamManaBarFill {
+  height: 100%;
+  width: 100%;
+  background-color: #53c1e0;
+  box-shadow: 0 0 7px rgb(151, 208, 158);
+  transition: width 1.3s;
+}
+.teamBar i {
+  position: absolute;
+  left: 99px;
+  top: -12px;
+  font-size: 55px;
+  z-index: 998;
+  color: rgba(255, 255, 255, .3);
+}
+.teamBar i:last-child {
+  left: 5px;
+  top: 90px;
+}
+
+#kevinImg {
+  background-image: linear-gradient(#8972a7, #251c30);
+}
+
+#rogerImg {
+  background-image: linear-gradient(#59944a, #232523);
+}
+
+#therapistImg {
+  background-image: linear-gradient(#ca4242, #251a1a);
+}
+
+#banner b {
+  background-color: #171717;
+  border-radius: 100px;
+  width: 164px;
+  height: 164px;
+  display: inline-block;
+  line-height: 170px;
+}
+
+.imageWrap {
+  overflow: hidden;
+  height: 144px;
+  width: 144px;
+  border-radius: 8px;
+  margin: 8px;
+  box-sizing: content-box;
+  opacity: .7;
+  transition: filter 1s;
+}
+
+.teamBar.death .imageWrap {
+  filter: grayscale(100%);
+}
+
+.imageWrap span {
+  position: absolute;
+  font-size: 57px;
+  width: 100%;
+  text-align: center;
+  color:black;
+  font-family: 'Russo One';
+  z-index: 1000;
+  opacity: 0;
+  top: 5px;
+  transition: opacity 1s;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, .5);
+}
+
+.teamBar.death .imageWrap span {
+  opacity: 1;
+}
+
+
+
+#banner {
+  position: absolute;
+  left: 0;
+  top: 20%;
+  height: 20%;
+  width: 100%;
+  background-color: #0c0303;
+  z-index: 120;
+  font-size: 138px;
+  font-family: 'Russo One';
+  color: white;
+  mix-blend-mode: multiply;
+  text-align: center;
+  line-height: 265px;
+  text-shadow: 0 0 11px white;
+  opacity: 0;
+}
+
+#skull {
+  position: absolute;
+  z-index: 119;
+  left: 50%;
+  top: 25%;
+  width: 400px;
+  margin-left: -200px;
+  opacity: 0;
+  transform: scale(0);
+}
+
+#deathOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(90, 90, 90, 0.73);
+  z-index: 1;
+  opacity: 0;
+}
+
+#deathOverlay img {
+  position: absolute;
+  opacity: .25;
+  top: -5%;
+  left: 27%;
+  width: 2200px;
+}
+
+#deathOverlay img:last-child {
+  left: -12%;
+}
+
+#ggBanner {
+  position: absolute;
+  left: 0;
+  top: 29%;
+  height: 39%;
+  width: 100%;
+  background-color: #195ad2;
+  z-index: 1001;
+  font-size: 115px;
+  font-family: 'Russo One';
+  color: white;
+  mix-blend-mode: multiply;
+  text-align: center;
+  line-height: 321px;
+  text-shadow: 0 0 11px white;
+  opacity: 0;
+  animation: gg_throb 1.5s infinite alternate;
+}
+#blings {
+  position: absolute;
+  left: 50%;
+  transform: scale(.8);
+  top: 43%;
+  margin-left: -20%;
+  height: 34%;
+  width: 40%;
+  z-index: 1001;
+  font-size: 80px;
+  font-family: 'Russo One';
+  color: white;
+  text-align: center;
+  line-height: 60px;
+  text-shadow: 0 0 11px white;
+  opacity: 0;
+  display: flex;
+}
+#blings i {
+  display: block;
+}
+#blings div {
+  text-shadow: none;
+  flex-grow: 1;
+}
+#blings span {
+  font-size: 49px;
+}
+#microtransactions {
+  position: absolute;
+  left: 50%;
+  top: 56%;
+  transform: scale(.8);
+  margin-left: -20%;
+  height: 6%;
+  width: 40%;
+  z-index: 1001;
+  font-size: 30px;
+  font-family: 'Russo One';
+  color: white;
+  text-align: center;
+  line-height: 37px;
+  opacity: 0;
+  display: flex;
+}
+#microtransactions div {
+  flex-grow: 1;
+  text-align: center;
+  margin: 0 24px;
+  border-radius: 10px;
+  background-color: #444;
+  height: 124px;
+  width: 200px;
+  border: 3px solid white;
+}
+#microtransactions b {
+  margin-top: 23px;
+  display: block;
+}
+#microtransactions span {
+  display: block;
+  line-height: 39px;
+}
+#microtransactions div.deal {
+  background-color:#ff8200;
+  animation: dealthrob .3s infinite alternate;
+}
+
+@keyframes dealthrob {
+	from {
+    background-color:: #ff8200;
+    font-size:30px;
+  }
+	to {
+    background-color:: #feb100;
+    font-size:35px;
+  }
+}
+
+#ggHeading {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  width: 25%;
+  margin-left:-12.5%;
+  line-height: 120px;
+  font-size: 40px;
+}
+#ggOverlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #000;
+  z-index: 1000;
+  opacity: 0;
+  transition: background-color: 2s;
+}
+#ggOverlay.blueWins {
+  background-color: #0000FF;
+}
+#ggOverlay.redWins {
+  background-color: #4c0000;
+}
+
+@keyframes gg_throb {
+	from {
+    transform: scale(1);
+  }
+	to {
+    transform: scale(1.2);
+  }
+}
+
+.hexagonFG {
+  transform: scale(.5);
+  position: absolute;
+  left: -44px;
+  top: -53px;
+}
+.hexagonFG svg {
+  fill: rgba(0, 0, 0, .5);
+}
+
+.hexagonBG {
+  transform: scale(.4);
+  position: absolute;
+  left: -44px;
+  top: -53px;
+}
+.hexagonBG svg {
+  fill: #dab800;
+}
+
+.hexagon {
+  position: absolute;
+  left: -40px;
+  top: -21px;
+  z-index: 998;
+  width: 87px;
+  height: 96px;
+  z-index: 998;
+}
+.hexagonText {
+  font-family: 'Russo One';
+  z-index: 999;
+  font-size: 55px;
+  line-height: 97px;
+  position: absolute;
+  width: 100%;
+  color: white;
+  left: -2px;
+  top: 0;
+  text-align: center;
+}
+.hexagon.silver .hexagonBG svg {
+  fill: #8d6939;
+}
+
+.hexagon.silver .hexagonText {
+  font-size: 45px;
+}
+
+#therapistRank {
+  position: absolute;
+  left: -40px;
+  top: -21px;
+  position: absolute;
+  width: 87px;
+  height: 87px;
+}
+#therapistRankBG {
+  position: absolute;
+  width: 87px;
+  height: 87px;
+  background-color: rgba(0, 0, 0, .5);
+  border-radius: 100px;
+  z-index: 998;
+}
+#therapistRankFG {
+  position: absolute;
+  width: 72px;
+  height: 72px;
+  left: 7px;
+  top: 7px;
+  border-radius: 77px;
+  background-color: #404040;
+  z-index: 999;
+}
+#therapistRankText {
+  font-family: 'Russo One';
+  z-index: 999;
+  font-size: 42px;
+  line-height: 91px;
+  position: absolute;
+  width: 100%;
+  color: white;
+  left: 0px;
+  top: 0;
+  text-align: center;
+}
+#meiPortrait {
+  position: absolute;
+  right: 13px;
+  top: -77px;
+  width: 170px;
+}
+#meiPortrait img {
+  width: 96%;
+  transform: skewX(8deg);
+  position: absolute;
+  z-index: 999;
+  height: 98%;
+  margin-top: 3px;
+}
+#meiImageWrap {
+  background-image:linear-gradient(#ca4242, #251a1a);
+  overflow: hidden;
+  position: absolute;
+  z-index: 99;
+  height: 159px;
+  width:171px;
+  z-index:999;
+  border-radius: 8px;
+  transform: filter 1s;
+}
+#meiImageWrap.death {
+  filter: grayscale(100%);
+}
+#meiImageWrap i {
+  position: absolute;
+  left: 106px;
+  top: -12px;
+  font-size: 68px;
+  z-index: 998;
+  color: rgba(255, 255, 255, .3);
+}
+
+#meiImageWrap i:last-child {
+  left: 0px;
+  top: 90px;
+}
+
+#meiName {
+  z-index: 90;
+  position: absolute;
+  font-size:61px;
+  font-family: 'Russo One';
+  color: white;
+  width: 400px;
+  right: -12px;
+  padding-left: 43px;
+  padding-right: 92px;
+  top:-9px;
+  line-height: 109px;
+  height: 86px;
+  background-color: rgba(0, 0, 0, .5);
+  border-top-left-radius: 10px;
+  border-top-right-radius:10px;
+  transition: color 1s;
+}
+#meiName.damaged, #healthText.damaged {
+  color: #ff2828;
+}
+#meiPortrait i.fg {
+  position: absolute;
+  color: #dab800;
+  top: -19px;
+  right: -34px;
+  font-size: 70px;
+  z-index: 1001;
+  transform: skewX(8deg);
+}
+.trophyBG {
+  position: absolute;
+  right: -50px;
+  top: -29px;
+  height: 62px;
+  width: 112px;
+  z-index: 1000;
+  overflow: hidden;
+}
+#meiPortrait i.bg {
+  position: absolute;
+  color: rgba(0, 0, 0, .5);
+  top: 0;
+  right: 0;
+  font-size: 98px;
+  z-index: 1000;
+  transform: skewX(8deg) scaleX(.9);
+}
+.trophyBG2 {
+  position: absolute;
+  top: 33px;
+  right: -30px;
+  width: 62px;
+  height: 25px;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, .5);
+  border-top-left-radius: 11px;
+  border-top-right-radius: 11px;
+}
+.trophyRank {
+  position: absolute;
+  z-index: 1002;
+  right: -2px;
+  top: -24px;
+  font-family: 'Russo One';
+  font-size: 52px;
+  color: white;
+  transform: skewX(8deg);
+}
+#respawnTimer {
+  position: fixed;
+  z-index: 2000;
+  left: 50%;
+  top: 28.5%;
+  font-family: 'Russo One';
+  font-size: 130px;
+  color: black;
+  width: 137px;
+  height: 100px;
+  opacity: 0;
+  margin-left: -67px;
+  text-align: center;
+  filter: blur(1px);
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, .5);
+}

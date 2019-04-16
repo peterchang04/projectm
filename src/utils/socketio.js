@@ -1,3 +1,4 @@
+const enabled = false;
 // maintain an open connection to socketio server
 // socketio connection is used by webRTC to coordinate peer connections
 import io from 'socket.io-client';
@@ -7,10 +8,13 @@ cookie.expiresMultiplier = 60 * 60 * 24; // default expiration is by day. set to
 let serverUrl = process.env.VUE_APP_APIROOT || process.env.VUE_APP_APIROOT_DEFAULT;
 
 // use the window obj to persist socket through hot reloads (development)
-if (!window.socket)  window.socket = io(serverUrl, { path: '/io', reconnectionAttempts: 5 });
+if (!window.socket && enabled) {
+  window.socket = io(serverUrl, { path: '/io', reconnectionAttempts: 5 });
+}
 
 function init() {
   state.set('socketStatus', -1); // unconnected
+  if (!enabled) return;
   setupEvents();
   connect();
 }

@@ -1,6 +1,6 @@
 // cache randoms to speed up random generator
-const randomSets = { 10: [], 100: [], 1000: [], 2000: [] };
-const setSize = 500;
+const randomSets = { 10: [], 100: [], 1000: [], 2000: [], 5000: [] };
+const setSize = 1000;
 let iterator = rand(setSize);
 // seed with 1000 randoms
 for (let i = 0; i < setSize; i++) {

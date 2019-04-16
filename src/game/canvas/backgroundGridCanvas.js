@@ -18,7 +18,7 @@ let currentXPixel = 0;
 let currentYText = '';
 let currentXText = '';
 // calculations
-const gridDistance = 134.426666666; // meters
+const gridDistance = 152.7236296296296 * 2; // meters
 let gridPixels = 0; // how many pixels in between grids?
 let screenGridCount = 0; // how many grids can fit on screen?
 
