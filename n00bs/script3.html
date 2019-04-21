@@ -67,11 +67,11 @@
 						setTimeout(() => {
 							startHealth -= (healthDist / 30);
 							if (startHealth < 0) startHealth = 0;
-							let theHealth = Math.ceil(startHealth * 2400 / 100);
+							let theHealth = Math.ceil(startHealth * 1800 / 100);
 							if (theHealth <= 1) {
 								theHealth = 0;
 							}
-							$('#healthText').text(`${theHealth} / 2400`);
+							$('#healthText').text(`${theHealth} / 1800`);
 						}, 32 * i);
 					}
 				}
@@ -87,9 +87,9 @@
 
 				// don't do this if dead
 				if (health <= 0) return;
-				$('#meiImageWrap img').attr('src', './mei_b.png');
+				$('#meiImageWrap img').attr('src', './roger_b.png');
 				setTimeout(() => {
-					$('#meiImageWrap img').attr('src', './mei.png');
+					$('#meiImageWrap img').attr('src', './roger.png');
 				}, 700);
 			}
 
@@ -243,7 +243,7 @@
 				if (state === 0) {
 					desc = `waypoint ${letter} lost`;
 					$(`.capturePoint.${letter.toLowerCase()}`).removeClass('blue').removeClass('red');
-					$('#banner').html(`<b>${letter.toUpperCase()}</b> LOST`).css({ backgroundColor: '#444'});
+					$('#banner').html(`WAYPOINT <b>${letter.toUpperCase()}</b> LOST`).css({ backgroundColor: '#444'});
 				}
 				if (state === 1) {
 					desc = `blue takes waypoint ${letter}`;
@@ -253,13 +253,13 @@
 				if (state === 2) {
 					desc = `red takes waypoint ${letter}`;
 					$(`.capturePoint.${letter.toLowerCase()}`).removeClass('blue').addClass('red');
-					$('#banner').html(`<b>${letter.toUpperCase()}</b> LOST`).css({ backgroundColor: '#310000'});
+					$('#banner').html(`WAYPOINT <b>${letter.toUpperCase()}</b> LOST`).css({ backgroundColor: '#310000'});
 				}
 				if (!silent) {
 					$('#banner').animate({ opacity: 1}, 700);
 					setTimeout(() => {
 						$('#banner').animate({ opacity: 0}, 700);
-					}, 2000);
+					}, 3000);
 					// also show in feed
 					// nevermind, redundant actionFeed(desc);
 				}
@@ -337,7 +337,9 @@
         player = new YT.Player('video', {
           height: window.innerHeight, // + 200,
           width: window.innerWidth,
-					videoId: 'iAWzxtPNBLs', // 4k closed beta
+          videoId: 'nH3nHGfBygY', //assassin gameplay
+          // videoId: 'aBgeVC4MniE', // titan gameplay
+          //videoId: 'iAWzxtPNBLs', // 4k closed beta
           // videoId: '3765XMJ4eXE',
 					//videoId: 'KFNrVe__Ndw',
           events: {
@@ -348,7 +350,8 @@
       }
 
       function onPlayerReady(event) {
-				player.seekTo(42);
+				// player.seekTo(42); 4k closed beta
+        player.seekTo(63);
 				player.setPlaybackRate(.75);
 				// let buffer for 8 secs
 				setTimeout(() => {
@@ -363,7 +366,7 @@
         }
 				if (event.data == YT.PlayerState.PLAYING && !started) {
 					// player.setPlaybackQuality('highres');
-					startScript();
+					startScript(3);
 					started = true;
 				}
       }
@@ -376,14 +379,14 @@
 				// load up team assets
 				team[0] = {
 					health: 100,
-					maxHealth: 3200,
+					maxHealth: 2400,
 					$mana: $('.player0 .teamManaBarFill'),
 					$health: $('.player0 .teamHealthBarFill'),
 					$bar: $('.player0')
 				};
 				team[1] = {
 					health: 100,
-					maxHealth: 1800,
+					maxHealth: 3200,
 					$mana: $('.player1 .teamManaBarFill'),
 					$health: $('.player1 .teamHealthBarFill'),
 					$bar: $('.player1')
@@ -629,7 +632,49 @@
 
 		<div id="teamBars">
 			<div class="teamBar player0">
-				<div class="hexagon">
+				<!-- <div class="hexagon">
+					<div class="hexagonFG" style="">
+						<svg width="175" height="200">
+							<polyline id="hexagon" points="87,0 174,50 174,150 87,200 0,150 0,50 87,0" onclick="changeFill()"/>
+						</svg>
+					</div>
+					<div class="hexagonBG" style="">
+						<svg width="175" height="200">
+							<polyline id="hexagon" points="87,0 174,50 174,150 87,200 0,150 0,50 87,0" onclick="changeFill()"/>
+						</svg>
+					</div>
+					<div class="hexagonText">4</div>
+				</div> -->
+        <div class="meiTrophy">
+					<i class="fas fa-trophy fg"></i>
+					<div class="trophyBG"><i class="fas fa-trophy bg"></i></div>
+					<div class="trophyBG2"></div>
+					<div class="trophyRank">1</div>
+				</div>
+				<span class="name">MiniBoss</span>
+				<div class="imageWrap" id="kevinImg">
+					<img src="./mei.png" />
+					<span>10</span>
+					<i class="fas fa-crosshairs" style="color: rgb(255, 67,67)"></i>
+					<i class="fas fa-crosshairs" style="color: rgb(255, 67,67)"></i>
+				</div>
+
+				<div class="teamHealthBar">
+					<div class="teamHealthBarFill"></div>
+					<ul class="teamHealthChunks">
+						<li></li> <li></li> <li></li> <li></li>
+						<li></li> <li></li> <li></li> <li></li>
+						<li></li> <li></li> <li></li> <li></li>
+					</ul>
+					<span>2400 / 2400</span>
+				</div>
+				<div class="teamManaBar">
+					<div class="teamManaBarFill"></div>
+				</div>
+			</div>
+
+			<div class="teamBar player1">
+        <div class="hexagon">
 					<div class="hexagonFG" style="">
 						<svg width="175" height="200">
 							<polyline id="hexagon" points="87,0 174,50 174,150 87,200 0,150 0,50 87,0" onclick="changeFill()"/>
@@ -642,59 +687,22 @@
 					</div>
 					<div class="hexagonText">4</div>
 				</div>
-
 				<span class="name">KevAndJane637</span>
-				<div class="imageWrap" id="kevinImg">
+				<div class="imageWrap" id="rogerImg">
 					<img src="./kevin.png" />
 					<span>10</span>
 					<i class="fas fa-shield-alt"></i>
 					<i class="fas fa-shield-alt"></i>
 				</div>
-
 				<div class="teamHealthBar">
 					<div class="teamHealthBarFill"></div>
 					<ul class="teamHealthChunks">
 						<li></li> <li></li> <li></li> <li></li>
 						<li></li> <li></li> <li></li> <li></li>
-						<li></li> <li></li> <li></li> <li></li>
-						<li></li> <li></li> <li></li> <li></li>
+            <li></li> <li></li> <li></li> <li></li>
+            <li></li> <li></li> <li></li> <li></li>
 					</ul>
 					<span>3200 / 3200</span>
-				</div>
-				<div class="teamManaBar">
-					<div class="teamManaBarFill"></div>
-				</div>
-			</div>
-
-			<div class="teamBar player1">
-				<div class="hexagon silver">
-					<div class="hexagonFG" style="">
-						<svg width="175" height="200">
-							<polyline id="hexagon" points="87,0 174,50 174,150 87,200 0,150 0,50 87,0" onclick="changeFill()"/>
-						</svg>
-					</div>
-					<div class="hexagonBG" style="">
-						<svg width="175" height="200">
-							<polyline id="hexagon" points="87,0 174,50 174,150 87,200 0,150 0,50 87,0" onclick="changeFill()"/>
-						</svg>
-					</div>
-					<div class="hexagonText">12</div>
-				</div>
-				<span class="name">ItsPuddinTime</span>
-				<div class="imageWrap" id="rogerImg">
-					<img src="./roger.png" />
-					<span>10</span>
-					<i class="fas fa-plus-circle"></i>
-					<i class="fas fa-plus-circle"></i>
-				</div>
-				<div class="teamHealthBar">
-					<div class="teamHealthBarFill"></div>
-					<ul class="teamHealthChunks">
-						<li></li> <li></li> <li></li> <li></li>
-						<li></li> <li></li> <li></li> <li></li>
-						<li></li>
-					</ul>
-					<span>1800 / 1800</span>
 				</div>
 				<div class="teamManaBar">
 					<div class="teamManaBarFill"></div>
@@ -732,10 +740,9 @@
 
     <div id="healthbars">
       <div id="health">
-				<span id="healthText">2400 / 2400</span>
+				<span id="healthText">1800 / 1800</span>
 				<div id="healthFill"></div></div>
 				<ul id="healthChunks">
-					<li></li>					<li></li>
 					<li></li>					<li></li>
 					<li></li>					<li></li>
 					<li></li>					<li></li>
@@ -744,19 +751,44 @@
 				</ul>
       <div id="mana"><div id="manaFill"></div></div>
 			<div id="meiPortrait">
-
-				<div class="meiTrophy">
+        <div class="hexagon silver">
+					<div class="hexagonFG" style="">
+						<svg width="175" height="200">
+							<polyline id="hexagon" points="87,0 174,50 174,150 87,200 0,150 0,50 87,0" onclick="changeFill()"/>
+						</svg>
+					</div>
+					<div class="hexagonBG" style="">
+						<svg width="175" height="200">
+							<polyline id="hexagon" points="87,0 174,50 174,150 87,200 0,150 0,50 87,0" onclick="changeFill()"/>
+						</svg>
+					</div>
+					<div class="hexagonText">12</div>
+				</div>
+        <!-- <div class="hexagon">
+					<div class="hexagonFG" style="">
+						<svg width="175" height="200">
+							<polyline id="hexagon" points="87,0 174,50 174,150 87,200 0,150 0,50 87,0" onclick="changeFill()"/>
+						</svg>
+					</div>
+					<div class="hexagonBG" style="">
+						<svg width="175" height="200">
+							<polyline id="hexagon" points="87,0 174,50 174,150 87,200 0,150 0,50 87,0" onclick="changeFill()"/>
+						</svg>
+					</div>
+					<div class="hexagonText">4</div>
+				</div> -->
+				<!-- <div class="meiTrophy">
 					<i class="fas fa-trophy fg"></i>
 					<div class="trophyBG"><i class="fas fa-trophy bg"></i></div>
 					<div class="trophyBG2"></div>
 					<div class="trophyRank">1</div>
-				</div>
+				</div> -->
 
-				<div id="meiName">MiniBoss</div>
+				<div id="meiName" style="padding-right:322px;">ItsPuddinTime</div>
 				<div id="meiImageWrap">
-					<img src="./mei.png" />
-					<i class="fas fa-crosshairs"></i>
-					<i class="fas fa-crosshairs"></i>
+					<img src="./roger.png" />
+					<i class="fas fa-plus-circle" style="color:#61ff61"></i>
+					<i class="fas fa-plus-circle" style="color:#61ff61"></i>
 				</div>
 			</div>
     </div>

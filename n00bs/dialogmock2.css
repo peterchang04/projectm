@@ -2,6 +2,7 @@ iframe#video {
   position: absolute;
   top: 60px;
   transform:scaleX(1.6) scaleY(1.6);
+  filter: blur(4px);
 }
 body {
   overflow: hidden;
@@ -11,12 +12,11 @@ body {
   position:absolute;
   z-index: 900;
   transform: skewY(2deg);
-  top:55%;
+  top:54%;
   left:2%;
-  height:31%;
+  height:35%;
   width:39%;
-  background-color:#000;
-  opacity:.8;
+  background-color:rgba(0, 0, 0, .8);
   border-radius: 12px;
   box-shadow:0 0 6px rgba(0, 0, 0, 1);
 }
@@ -25,25 +25,36 @@ body {
   top:1%;
   left:1.5%;
   height:100%;
-  width: 100%;
+  width: calc(100% - 28px);
   overflow: hidden;
   font-family: 'Noto Sans', sans-serif;
 }
 .textboxText {
   color: #ddd;
-  font-family: 'Noto Sans', sans-serif;
+  font-family: 'Roboto Condensed', sans-serif;
   padding: 2px 5px 0px 5px;
-  font-size: 2vh;
-  line-height: 3.1vh;
+  font-size: 2.6vh;
+  line-height: 3.2vh;
   white-space: nowrap;
   position: relative;
+  border-radius: 36px;
+}
+.textboxText.killFeed {
+  text-align: center;
+  margin-top: 4px;
+}
+.textboxText.red {
+  background-color: #5216168f;
+}
+.textboxText.blue {
+  background-color: #0b8df730;
 }
 .textboxText .hexagon {
-  transform: scale(.5);
+  transform: scale(.55);
   position: relative;
   display: inline-block;
   height: 10px;
-  margin-left: 16px;
+  margin-left: 13px;
   margin-right: -68px;
   margin-top: 16px;
   vertical-align: top;
@@ -57,34 +68,47 @@ body {
 .trophyChat span {
   position: absolute;
   z-index: 99;
-  left: 13px;
+  left: 12px;
   color: white;
-  font-size: 21px;
-  top: -5px;
-  font-family: 'Russo One';
+  font-size: 26px;
+  font-weight: bold;
+  top: -8px;
+  font-family: 'Barlow Condensed';
 }
 .trophyChat i {
   color: gold;
-  font-size: 32px;
+  font-size: 38px;
+  margin-left: -5px;
 }
 .chatLowRank {
   background-color: #444;
-  width: 33px;
-  height: 33px;
+  width: 40px;
+  height: 40px;
   display: inline-block;
   border-radius: 40px;
   text-align: center;
-  font-size: 18px;
+  font-size: 25px;
   letter-spacing: 1px;
   line-height: 35px;
   margin-top: 4px;
+  margin-left:-5px;
+  margin-right: 5px;
   vertical-align: top;
-  font-family: 'Russo One';
+  font-family: 'Barlow Condensed';
 }
 .chatPlayer {
   color: white;
-  font-family: 'Russo One';
+  font-size: 42px;
+  font-weight: bold;
+  font-family: 'Barlow Condensed';
   margin-left: 4px;
+  font-weight: bold;
+}
+.chatPlayer.blue {
+  color: #71ebff;
+}
+.chatPlayer.red {
+  color: #ff6161;
 }
 .player {
   font-weight: bold;
@@ -114,6 +138,35 @@ body {
   top: 3px;
   left: 7px;
 }
+
+.textboxText.killFeed .chatPlayer {
+  font-size: 36px;
+  line-height: 37px;
+}
+.textboxText.killFeed > span {
+  font-size: 31px;
+  line-height: 34px;
+}
+.textboxText.killFeed .hexagon {
+  transform: scale(.45);
+  margin-left: 15px;
+  margin-top: 18px;
+  margin-right: -72px;
+}
+.textboxText.killFeed .chatLowRank {
+  transform: scale(.85);
+}
+.textboxText.action span {
+  text-align: center;
+  width: 100%;
+  display: inline-block;
+  font-family: 'Russo One';
+  color: white;
+  font-size: 35px;
+  text-shadow: 0 0 10px yellow;
+  text-transform: uppercase;
+}
+
 #textInput {
   width: 96%;
   position: absolute;
@@ -157,9 +210,9 @@ button {
 #healthbars {
   position: absolute;
   top:9%;
-  right: 3.5%;
-  width: 33%;
-  height: 7%;
+  right: 1.5%;
+  width: 36%;
+  height: 9%;
   background-color: rgba(0, 0, 0, .5);
   border-radius:12px;
   transform:skewY(-11.5deg) rotate(11.5deg);
@@ -168,7 +221,7 @@ button {
 
 #health {
   position: absolute;
-  width: 75%;
+  width: 72%;
   left: 1.5%;
   background-color: rgba(0, 0, 0, .7);
   height: 56.5%;
@@ -176,19 +229,21 @@ button {
   border-radius: 5px;
 }
 #healthText {
-  font-size: 45px;
+  font-size: 55px;
+  line-height: 68px;
   color: white;
+  font-weight: bold;
   position: absolute;
-  font-family: 'Russo One';
+  font-family: 'Barlow Condensed';
   width: 100%;
   text-align: center;
-  text-shadow: 0 0 10px rgba(255, 255, 255, .5);
+  text-shadow: 0 0 6px rgba(0, 0, 0, 1);
   z-index: 99;
   transition: color 1s;
 }
 #mana {
   position: absolute;
-  width: 75%;
+  width: 72%;
   left: 1.5%;
   background-color: rgba(0, 0, 0, .7);
   height: 13%;
@@ -196,15 +251,15 @@ button {
   border-radius: 5px;
 }
 #healthFill {
-  background-color: #3bc745;
-  box-shadow: 0 0 7px rgb(151, 208, 158);
+  background-color: #7eff87;
+  box-shadow: 0 0 7px rgb(172, 255, 183);
   height: 100%;
   width: 100%;
   transition: width 1s;
 }
 #healthChunks {
-  width:75%;
-  height: 60px;
+  width:73%;
+  height: 78px;
   list-style-type: none;
   position: absolute;
   left: 0;
@@ -221,8 +276,8 @@ button {
   border-right: none;
 }
 #manaFill {
-  background-color: #53c1e0;
-  box-shadow: 0 0 7px rgb(151, 208, 158);
+  background-color: #fff85e;
+  box-shadow: 0 0 7px rgb(255, 253, 186);
   height: 100%;
   width: 100%;
   transition: width 1.4s;
@@ -279,16 +334,18 @@ button {
   top: 13%;
 }
 #topGame {
+  transform: scale(1.1);
   position: absolute;
-  top: 0;
+  top: 13px;
   left: 50%;
   width: 20%;
   margin-left:-10%;
   background-color: rgba(0, 0, 0, .5);
   z-index: 1010;
   padding-top: .5%;
-  border-bottom-left-radius: 20%;
-  border-bottom-right-radius: 20%;
+  padding-bottom: 20px;
+  border-bottom-left-radius: 37%;
+  border-bottom-right-radius: 37%;
   text-align: center;
 }
 #gameMode {
@@ -296,25 +353,26 @@ button {
   color: white;
   width: 100%;
   text-align: center;
-  font-size: 4vh;
+  font-size: 4.5vh;
+  line-height: 4.2vh;
   display: block;
   text-shadow: 0 0 10px rgba(255, 255, 255, .5);
 }
 #blueScore, #redScore {
   color: white;
-  font-family: 'Russo One';
+  font-family: 'Barlow Condensed';
   font-size: 6vh;
   display: inline-block;
   padding: 0 1.3vh;
   margin-top: -1vh;
 }
 #blueScore {
-  color: #4e94ff;
-  text-shadow: 0 0 10px rgba(3, 29, 88, 0.5);
+  color: #63e9ff;
+  text-shadow: 0 0 10px rgba(166, 246, 255, 0.5)
 }
 #redScore {
-  color: #ff4343;
-  text-shadow: 0 0 10px rgba(70, 0, 0, 0.5)
+  color: #ff4e4e;
+  text-shadow: 0 0 10px rgba(255, 111, 111, 0.5);
 }
 #time {
   display:inline-block;
@@ -323,8 +381,8 @@ button {
   letter-spacing: .3vh;
   vertical-align: top;
   width: 133px;
-  line-height: 109px;
-  font-size: 3.5vh;
+  line-height: 126px;
+  font-size: 3.8vh;
   font-family: 'Russo One';
   text-shadow: 0 0 10px rgba(255, 255, 255, .5);
 }
@@ -353,19 +411,21 @@ button {
   height: 75px;
   width: 75px;
   border-radius: 100px;
-  line-height: 75px;
-  font-size: 50px;
+  line-height: 76px;
+  font-size: 58px;
   font-family: 'Russo One';
   color: white;
-  background-color: #585858;
+  background-color: #eaeaea21;
   margin: 0px 28px;
   transition: background-color 1s;
 }
 .capturePoint.blue {
-  background-color: #4e94ff;
+  background-color: #63e9ff;
+  box-shadow: 0 0 13px rgba(118, 252, 255, 0.5);
 }
 .capturePoint.red {
   background-color: #ff4343;
+  box-shadow: 0 0 13px rgba(255, 98, 98, 0.5);
 }
 
 #teamBars {
@@ -374,7 +434,7 @@ button {
   top: 7%;
   z-index: 999;
   width: 21%;
-  transform: skewY(2deg);
+  transform: skewY(2deg) scale(1.1);
 }
 
 .teamBar {
@@ -396,12 +456,13 @@ button {
 }
 
 .teamBar span.name {
-  font-family: 'Russo One';
-  font-size: 40px;
+  font-family: 'Barlow Condensed';
+  font-size: 51px;
+  font-weight: bold;
   color: white;
   position: absolute;
-  top: 4px;
-  left: 170px;
+  top: -7px;
+  left: 156px;
   padding: 2px 12px;
   text-shadow: 0 0 10px rgba(255, 255, 255, .5);
 }
@@ -448,20 +509,22 @@ button {
 }
 
 .teamHealthBar span {
-  font-family: 'Russo One';
-  font-size: 35px;
+  font-family: 'Barlow Condensed';
+  font-weight: bold;
+  font-size: 44px;
   color: white;
   position: absolute;
-  top: 12px;
+  top: 5px;
   left: 0;
   width: 100%;
   text-align: center;
+  text-shadow: 0 0 6px rgba(0, 0, 0, 1);
 }
 
 .teamHealthBarFill {
   height: 100%;
   width: 100%;
-  background-color: #3bc745;
+  background-color: #7eff87;
   box-shadow: 0 0 7px rgb(196, 237, 252);
   transition: width .8s;
 }
@@ -469,11 +532,11 @@ button {
 .teamManaBarFill {
   height: 100%;
   width: 100%;
-  background-color: #53c1e0;
-  box-shadow: 0 0 7px rgb(151, 208, 158);
+  background-color: #fff85e;
+  box-shadow: 0 0 7px rgb(254, 255, 201);
   transition: width 1.3s;
 }
-.teamBar i {
+.teamBar .imageWrap i {
   position: absolute;
   left: 99px;
   top: -12px;
@@ -481,21 +544,21 @@ button {
   z-index: 998;
   color: rgba(255, 255, 255, .3);
 }
-.teamBar i:last-child {
+.teamBar .imageWrap i:last-child {
   left: 5px;
   top: 90px;
 }
 
-#kevinImg {
-  background-image: linear-gradient(#8972a7, #251c30);
+#kevinImg i {
+  color: #cfbaff;
 }
 
-#rogerImg {
-  background-image: linear-gradient(#59944a, #232523);
+#rogerImg i {
+  color: #61ff61;
 }
 
-#therapistImg {
-  background-image: linear-gradient(#ca4242, #251a1a);
+#therapistImg i {
+  color: rgb(255, 67, 67);
 }
 
 #banner b {
@@ -504,7 +567,7 @@ button {
   width: 164px;
   height: 164px;
   display: inline-block;
-  line-height: 170px;
+  line-height: 152px;
 }
 
 .imageWrap {
@@ -514,8 +577,9 @@ button {
   border-radius: 8px;
   margin: 8px;
   box-sizing: content-box;
-  opacity: .7;
+  opacity: .95;
   transition: filter 1s;
+  background: linear-gradient(#00e7ff, #004d72);
 }
 
 .teamBar.death .imageWrap {
@@ -529,6 +593,7 @@ button {
   text-align: center;
   color:black;
   font-family: 'Russo One';
+  font-weight: bold;
   z-index: 1000;
   opacity: 0;
   top: 5px;
@@ -551,12 +616,13 @@ button {
   background-color: #0c0303;
   z-index: 120;
   font-size: 138px;
-  font-family: 'Russo One';
+  font-family: 'Barlow Condensed';
   color: white;
   mix-blend-mode: multiply;
   text-align: center;
   line-height: 265px;
   text-shadow: 0 0 11px white;
+  font-weight: bold;
   opacity: 0;
 }
 
@@ -573,7 +639,8 @@ button {
 
 #deathOverlay {
   position: fixed;
-  top: 0;
+  transform: scale(1.2);
+  top: 63px;
   left: 0;
   height: 100%;
   width: 100%;
@@ -602,8 +669,8 @@ button {
   width: 100%;
   background-color: #195ad2;
   z-index: 1001;
-  font-size: 115px;
-  font-family: 'Russo One';
+  font-size: 181px;
+  font-family: 'Barlow Condensed';
   color: white;
   mix-blend-mode: multiply;
   text-align: center;
@@ -616,7 +683,7 @@ button {
   position: absolute;
   left: 50%;
   transform: scale(.8);
-  top: 43%;
+  top: 45%;
   margin-left: -20%;
   height: 34%;
   width: 40%;
@@ -643,14 +710,14 @@ button {
 #microtransactions {
   position: absolute;
   left: 50%;
-  top: 56%;
+  top: 57%;
   transform: scale(.8);
   margin-left: -20%;
   height: 6%;
   width: 40%;
   z-index: 1001;
   font-size: 30px;
-  font-family: 'Russo One';
+  font-family: 'Barlow Condensed';
   color: white;
   text-align: center;
   line-height: 37px;
@@ -658,6 +725,7 @@ button {
   display: flex;
 }
 #microtransactions div {
+  font-family: 'Russo One';
   flex-grow: 1;
   text-align: center;
   margin: 0 24px;
@@ -698,7 +766,8 @@ button {
   width: 25%;
   margin-left:-12.5%;
   line-height: 120px;
-  font-size: 40px;
+  font-size: 53px;
+  font-family: 'Russo One';
 }
 #ggOverlay {
   display: none;
@@ -758,10 +827,11 @@ button {
   z-index: 998;
 }
 .hexagonText {
-  font-family: 'Russo One';
+  font-family: 'Barlow Condensed';
   z-index: 999;
-  font-size: 55px;
-  line-height: 97px;
+  font-weight: bold;
+  font-size: 64px;
+  line-height: 90px;
   position: absolute;
   width: 100%;
   color: white;
@@ -770,11 +840,11 @@ button {
   text-align: center;
 }
 .hexagon.silver .hexagonBG svg {
-  fill: #8d6939;
+  fill: #a9b5bc;
 }
 
 .hexagon.silver .hexagonText {
-  font-size: 45px;
+  font-size: 54px;
 }
 
 #therapistRank {
@@ -804,10 +874,11 @@ button {
   z-index: 999;
 }
 #therapistRankText {
-  font-family: 'Russo One';
+  font-family: 'Barlow Condensed';
   z-index: 999;
-  font-size: 42px;
-  line-height: 91px;
+  font-weight: bold;
+  font-size: 54px;
+  line-height: 82px;
   position: absolute;
   width: 100%;
   color: white;
@@ -817,25 +888,25 @@ button {
 }
 #meiPortrait {
   position: absolute;
-  right: 13px;
+  right: 52px;
   top: -77px;
   width: 170px;
 }
 #meiPortrait img {
-  width: 96%;
+  width: 97%;
   transform: skewX(8deg);
   position: absolute;
   z-index: 999;
-  height: 98%;
+  height: 99%;
   margin-top: 3px;
 }
 #meiImageWrap {
-  background-image:linear-gradient(#ca4242, #251a1a);
+  background-image: linear-gradient(#00e7ff, #004d72);
   overflow: hidden;
   position: absolute;
   z-index: 99;
-  height: 159px;
-  width:171px;
+  height: 197px;
+  width: 209px;
   z-index:999;
   border-radius: 8px;
   transform: filter 1s;
@@ -845,11 +916,11 @@ button {
 }
 #meiImageWrap i {
   position: absolute;
-  left: 106px;
+  left: 136px;
   top: -12px;
-  font-size: 68px;
+  font-size: 75px;
   z-index: 998;
-  color: rgba(255, 255, 255, .3);
+  color: rgb(255, 67, 67);
 }
 
 #meiImageWrap i:last-child {
@@ -860,15 +931,16 @@ button {
 #meiName {
   z-index: 90;
   position: absolute;
-  font-size:61px;
-  font-family: 'Russo One';
+  font-size:92px;
+  font-family: 'Barlow Condensed';
+  font-weight: bold;
   color: white;
   width: 400px;
-  right: -12px;
-  padding-left: 43px;
-  padding-right: 92px;
+  right: -52px;
+  padding-left: 24px;
+  padding-right: 134px;
   top:-9px;
-  line-height: 109px;
+  line-height: 91px;
   height: 86px;
   background-color: rgba(0, 0, 0, .5);
   border-top-left-radius: 10px;
@@ -878,7 +950,7 @@ button {
 #meiName.damaged, #healthText.damaged {
   color: #ff2828;
 }
-#meiPortrait i.fg {
+.meiTrophy i.fg {
   position: absolute;
   color: #dab800;
   top: -19px;
@@ -896,7 +968,7 @@ button {
   z-index: 1000;
   overflow: hidden;
 }
-#meiPortrait i.bg {
+.trophyBG i.bg {
   position: absolute;
   color: rgba(0, 0, 0, .5);
   top: 0;
@@ -904,6 +976,13 @@ button {
   font-size: 98px;
   z-index: 1000;
   transform: skewX(8deg) scaleX(.9);
+}
+.meiTrophy {
+  position: absolute;
+  right: -29px;
+  top: 0;
+  z-index: 9999;
+  transform: scale(1.2);
 }
 .trophyBG2 {
   position: absolute;
@@ -919,10 +998,11 @@ button {
 .trophyRank {
   position: absolute;
   z-index: 1002;
-  right: -2px;
-  top: -24px;
-  font-family: 'Russo One';
-  font-size: 52px;
+  right: 1px;
+  top: -27px;
+  font-family: 'Barlow Condensed';
+  font-weight: bold;
+  font-size: 50px;
   color: white;
   transform: skewX(8deg);
 }
@@ -932,6 +1012,7 @@ button {
   left: 50%;
   top: 28.5%;
   font-family: 'Russo One';
+  font-weight: bold;
   font-size: 130px;
   color: black;
   width: 137px;
@@ -941,4 +1022,32 @@ button {
   text-align: center;
   filter: blur(1px);
   text-shadow: 2px 2px 8px rgba(0, 0, 0, .5);
+}
+/* SCRIPT 2 */
+#meiPortrait .hexagon {
+  right: -61px;
+  left: auto;
+  z-index: 999999;
+  transform: scale(1.2);
+}
+.meiTrophy .fas.fg {
+  transform: skewX(0deg);
+}
+.meiTrophy .fas.bg {
+  transform: skewX(0deg) scaleX(.9);
+}
+.meiTrophy .trophyRank {
+  transform: skewX(0deg);
+}
+.trophyBG2 {
+  right: -26px;
+}
+.meiTrophy {
+  right: auto;
+  left: 5px;
+  transform: scale(1);
+}
+/* SCRIPT 3 */
+#rogerImg i {
+  color: rgb(207,186,255);
 }
