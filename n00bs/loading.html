@@ -11,390 +11,335 @@
 			integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
 			crossorigin="anonymous">
 		</script>
+		<script
+			src="https://code.jquery.com/color/jquery.color-2.1.2.min.js"
+			crossorigin="anonymous">
+		</script>
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Contrail+One|Racing+Sans+One" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/css?family=Anton|Passion+One|Russo+One" rel="stylesheet">
-    <style>
-      body {
-        overflow: hidden;
-      }
-
-      #video{
-        margin-top:-250px;
-        margin-left: -250px;
-      }
-
-      #view {
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: auto;
-      }
-
-      #blastervilleLogo {
-        width: 331px;
-        position: absolute;
-        left: 24px;
-        top: 23px;
-      }
-
-      #title {
-        font-family: 'Racing Sans One';
-        font-size: 112px;
-        position: absolute;
-        top: 50px;
-        left: 0;
-        width: 100%;
-        text-align: center;
-        color: #90c6ff;
-        text-shadow: 0 0 10px rgba(116, 248, 255, 0.5);
-      }
-
-      .loadingSpinner {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 300px;
-        margin-left: -150px;
-        margin-top: -232px;
-        opacity: .9;
-        filter: blur(2px);
-      }
-
-      .loadingText {
-        font-family: 'Contrail One';
-        color: #b2f7ff;
-        text-transform: uppercase;
-        font-size: 37px;
-        text-shadow: 0px 0px 6px rgba(255, 255, 255, .5);
-        position: absolute;
-        top: 60%;
-        left: 0;
-        width: 100%;
-        text-align: center;
-        opacity: .9;
-        letter-spacing: 1px;
-      }
-
-      #players {
-        position: absolute;
-        width: 100%;
-        top: 250px;
-        box-sizing: border-box;
-        padding: 0px 148px;
-      }
-
-      .player {
-        height: 900px;
-        width: 475px;
-        background-color: rgba(0, 0, 0, .5);
-        display: inline-block;
-        border-radius: 15px;
-        margin-left: 70px;
-        vertical-align: top;
-        position: relative;
-        box-sizing: border-box;
-        padding: 22px;
-      }
-
-      .backPlate {
-        height: 100%;
-        width: 100%;
-        background-color: #00a4ff;
-        opacity: .5;
-        -webkit-mask-image: -webkit-gradient(linear, left top, left bottom,
-        from(rgba(0,0,0,.7)), to(rgba(0,0,0,.2)));
-        border-radius: 5px;
-      }
-
-      .avatar {
-        position: absolute;
-      }
-
-      #playerAvatar1 {
-        height: 742px;
-        top: 105px;
-        left: -125px;
-      }
-
-      #playerAvatar2 {
-        height: 742px;
-        top: 105px;
-        left: 24px;
-      }
-
-      #playerAvatar3 {
-        height: 742px;
-        top: 105px;
-        left: -125px;
-      }
-
-      #playerAvatar4 {
-        height: 742px;
-        top: 105px;
-        left: -125px;
-      }
-
-      .gamertag {
-        position: absolute;
-        bottom: 75px;
-        width: 431px;
-        left: 53px;
-        text-align: center;
-        font-family: 'Russo One';
-        color: white;
-        font-size: 64px;
-        text-shadow: 0 0 8px rgba(255, 255, 255, .6);
-        z-index: 999;
-      }
-
-      .gamertagBG {
-        position: absolute;
-        bottom: 68px;
-        left: 133px;
-        width: 320px;
-        background-color: rgba(0, 0, 0, .5);
-        height: 91px;
-      }
-
-      .gamerRank {
-        position: absolute;
-        bottom: 60px;
-        width: 431px;
-        left: -162px;
-        text-align: center;
-        font-family: 'Russo One';
-        color: white;
-        font-size: 85px;
-        text-shadow: 0 0 8px rgba(255, 255, 255, .6);
-        z-index: 999;
-      }
-
-      .hexagon {
-        transform: scale(.9);
-        position: absolute;
-        left: -32px;
-        bottom: 10px;
-      }
-      .hexagon svg {
-        fill: rgba(0, 0, 0, .5);
-      }
-
-      .hexagon2 {
-        transform: scale(.6);
-        position: absolute;
-        left: -32px;
-        bottom: 10px;
-      }
-      .hexagon2 svg {
-        fill: orange;
-      }
-
-      .hexagon2.hexagon4 {
-        left: auto;
-        top: -56px;
-        right: -31px;
-        bottom: auto;
-      }
-      .hexagon2.hexagon4 svg {
-        fill: grey;
-      }
-
-      .hexagon.hexagon3 {
-        bottom: auto;
-        left: auto;
-        top: -54px;
-        right: -32px;
-      }
-
-      .shadow {
-        filter: drop-shadow( 0px 0px 5px rgba(255, 255, 255, .5));
-      }
-
-      .icon {
-        width: 76px;
-        position: absolute;
-        top: 3px;
-        right: 12px;
-      }
-      .classText {
-        font-family: 'Russo One';
-        color: white;
-        position: absolute;
-        top: 28px;
-        right: 135px;
-        font-size: 43px;
-        z-index: 999;
-      }
-      .classTextBG {
-        position: absolute;
-        top: 22px;
-        right: 134px;
-        width: 321px;
-        height: 69px;
-        background-color: rgba(0, 0, 0, .5);
-      }
-
-      .player.dps .hexagon2.hexagon4 svg {
-        fill: red;
-      }
-      .player.dps .backPlate {
-        background-color: #7d2e2e;
-      }
-
-      .player.tank .hexagon2.hexagon4 svg {
-        fill: #3970bb;
-      }
-      .player.tank .backPlate {
-        background-color: #4787b3;
-      }
-
-    </style>
-
-    <script>
-      var tag = document.createElement('script');
-      tag.src = "https://www.youtube.com/iframe_api";
-      var firstScriptTag = document.getElementsByTagName('script')[0];
-      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-      // 3. This function creates an <iframe> (and YouTube player)
-      //    after the API code downloads.
-      var player;
-      function onYouTubeIframeAPIReady() {
-        player = new YT.Player('video', {
-          height: '1728',
-          width: '3072',
-          videoId: 'LBc6f9Y-je8',
-          events: {
-            'onReady': onPlayerReady,
-            'onStateChange': onPlayerStateChange
-          }
-        });
-        player.setPlaybackRate(.25);
-      }
-
-      function onPlayerReady(event) {
-        event.target.playVideo();
-      }
-
-      function onPlayerStateChange(event) {
-        if (event.data == YT.PlayerState.ENDED) {
-          player.seekTo(0);
-        }
-      }
-
-      const timings = {
-        500: function() {
-          $
-        }
-      };
-
-      let currentTime = 0;
-      setInterval(() => {
-        currentTime += 100;
-        if (timings[currentTime]) {
-          timings[currentTime]();
-        }
-      }, 100);
-    </script>
+		<link href="https://fonts.googleapis.com/css?family=Barlow+Condensed:500,700|Khand:700" rel="stylesheet">
+		<link rel="stylesheet" href="./loading.css" />
+		<script src="./loading/yt.js"></script>
+		<script src="./loading/effects.js"></script>
+		<script src="./loading/scripting.js"></script>
 	</head>
 	<body>
+		<div id="countdown">3</div>
 
     <!-- code for floating text scroll box -->
     <div id="video"></div>
 
+		<video id="composite" src="./loadingScreenComposite.mp4"></video>
+
+		<div id="overlay"></div>
+		<img id="blastervilleLogo" src="./bvlogo.png" />
+
     <div id="view">
-      <img id="blastervilleLogo" src="./blasterville.png" />
-      <span id="title">BLUE TEAM</span>
+			<div id="titleBG"></div>
+			<span id="title">BLUE TEAM</span>
+
 
       <div id="players">
         <!-- PLAYER 1 -->
-        <div class="player dps" style="transform:skewY(6deg)">
-          <div class="backPlate">
-          </div>
-          <img id="playerAvatar1" src="./dancer2.gif" class="avatar" />
-          <span class="gamertag">Minib0ss</span>
-          <div class="gamertagBG"></div>
-          <span class="gamerRank">1</span>
+        <div class="player in player1" style="transform:skewY(6deg)">
+					<div class="backPlate">
+						<img src="./skullz.png" class="skullz" />
+					</div>
 
-          <div class="hexagon" style="">
-            <svg width="175" height="200">
-              <polyline id="hexagon" points="87,0 174,50 174,150 87,200 0,150 0,50 87,0" onclick="changeFill()"/>
-            </svg>
-          </div>
-          <div class="hexagon2" style="">
-            <svg width="175" height="200">
-              <polyline id="hexagon" points="87,0 174,50 174,150 87,200 0,150 0,50 87,0" onclick="changeFill()"/>
-            </svg>
-          </div>
+					<div class="ready">
+						<div><i class="fas fa-check"></i></div>
+						<div class="readyCircle"></div>
+						<div class="readyOutline"></div>
+						<b>READY</b>
+					</div>
 
-          <div class="hexagon hexagon3" style="">
-            <svg width="175" height="200">
-              <polyline id="hexagon" points="87,0 174,50 174,150 87,200 0,150 0,50 87,0" onclick="changeFill()"/>
-            </svg>
-          </div>
-          <div class="hexagon2 hexagon4" style="">
-            <svg width="175" height="200">
-              <polyline id="hexagon" points="87,0 174,50 174,150 87,200 0,150 0,50 87,0" onclick="changeFill()"/>
-            </svg>
-          </div>
+					<div class="playerDiv">
+						<img id="playerAvatar1" src="./kevin_stub.png" class="avatar" />
 
-          <img src="./dps.svg" class="icon shadow"  />
-          <span class="classText">DAMAGE</span>
-          <div class="classTextBG"></div>
-          <span class="killRatio">KILLS : 69,134       DEATHS : 6,135</span>
+						<div class="hex">
+							<svg width="175" height="200">
+								<polyline id="hexagon" points="87,0 174,50 174,150 87,200 0,150 0,50 87,0" onclick="changeFill()"/>
+							</svg>
+							<span>4</span>
+							<svg width="175" height="200">
+								<polyline id="hexagon" points="87,0 174,50 174,150 87,200 0,150 0,50 87,0" onclick="changeFill()"/>
+							</svg>
+						</div>
+
+						<div class="class tank">
+							<span>TANK</span>
+							<i class="fas fa-shield-alt odd" style="left: 0%; top:0%"></i>
+							<i class="fas fa-shield-alt even" style="left: 20%; top:50%"></i>
+							<i class="fas fa-shield-alt odd" style="left: 40%; top:0%"></i>
+							<i class="fas fa-shield-alt even" style="left: 60%; top:50%"></i>
+							<i class="fas fa-shield-alt odd" style="left: 80%; top:50%"></i>
+						</div>
+
+						<span class="tagName" style="font-size:61px;left:20px;top:21px;">KevAndJane637</span>
+						<div class="tagNameBG"></div>
+
+						<div class="kills">
+							<div class="pointerLeft"></div>
+							<div>
+								<i class="fas fa-skull"></i>
+								KILLS
+							</div>
+							<div class="count">0</div>
+						</div>
+						<div class="ratio">
+							<div class="pointerLeft center"></div>
+							<div>
+								<i class="fas fa-bullseye"></i>
+								RATIO
+							</div>
+							<div class="count">0</div>
+						</div>
+						<div class="wins">
+							<div class="pointerLeft bottom"></div>
+							<div>
+								<i class="fas fa-award"></i>
+								WINS
+							</div>
+							<div class="count">0</div>
+						</div>
+	        </div>
         </div>
 
+				<!-- MEI -->
+        <div class="player player2" style="transform:skewY(2deg); margin-top: 35px;">
+					<div class="loadingDiv" style="">
+						<span class="loadingText">LOADING</span>
+						<div class="loading">
+							<div class="rotate" style="transform:rotate(0deg);opacity:.9"><div class="loadingBlock"></div></div>
+							<div class="rotate" style="transform:rotate(36deg);opacity:.8"><div class="loadingBlock"></div></div>
+							<div class="rotate" style="transform:rotate(72deg);opacity:.7"><div class="loadingBlock"></div></div>
+							<div class="rotate" style="transform:rotate(108deg);opacity:.6"><div class="loadingBlock"></div></div>
+							<div class="rotate" style="transform:rotate(144deg);opacity:.5"><div class="loadingBlock"></div></div>
+							<div class="rotate" style="transform:rotate(180deg);opacity:.4"><div class="loadingBlock"></div></div>
+							<div class="rotate" style="transform:rotate(216deg);opacity:.3"><div class="loadingBlock"></div></div>
+							<div class="rotate" style="transform:rotate(252deg);opacity:.2"><div class="loadingBlock"></div></div>
+							<div class="rotate" style="transform:rotate(288deg);opacity:.1"><div class="loadingBlock"></div></div>
+							<div class="rotate" style="transform:rotate(324deg);opacity:.1"><div class="loadingBlock"></div></div>
+						</div>
+					</div>
 
-        <div class="player tank" style="transform:skewY(2deg); margin-top: 35px;">
-          <div class="backPlate">
-          </div>
-          <img id="playerAvatar2" src="./dancer3.gif" class="avatar" />
-          <span class="gamertag" style="font-size:54px;line-height:76px;">KevAndJane</span>
-          <div class="gamertagBG"></div>
-          <span class="gamerRank" style="font-size:65px;bottom:71px;">12</span>
+					<div class="ready">
+						<div><i class="fas fa-check"></i></div>
+						<div class="readyCircle"></div>
+						<div class="readyOutline"></div>
+						<b>READY</b>
+					</div>
 
-          <div class="hexagon" style="">
-            <svg width="175" height="200">
-              <polyline id="hexagon" points="87,0 174,50 174,150 87,200 0,150 0,50 87,0" onclick="changeFill()"/>
-            </svg>
-          </div>
-          <div class="hexagon2 kevin" style="">
-            <svg width="175" height="200" style="fill: #9cadaf;">
-              <polyline id="hexagon" points="87,0 174,50 174,150 87,200 0,150 0,50 87,0" onclick="changeFill()"/>
-            </svg>
-          </div>
+					<div class="backPlate">
+						<img src="./skullz.png" class="skullz" />
+					</div>
+					<div class="playerDiv">
+	          <img id="playerAvatar2" src="./mei_stub.png" class="avatar" />
 
-          <div class="hexagon hexagon3" style="">
-            <svg width="175" height="200">
-              <polyline id="hexagon" points="87,0 174,50 174,150 87,200 0,150 0,50 87,0" onclick="changeFill()"/>
-            </svg>
-          </div>
-          <div class="hexagon2 hexagon4" style="">
-            <svg width="175" height="200">
-              <polyline id="hexagon" points="87,0 174,50 174,150 87,200 0,150 0,50 87,0" onclick="changeFill()"/>
-            </svg>
-          </div>
+						<div class="meiTrophy">
+							<i class="fas fa-trophy fg"></i>
+							<div class="trophyBG"><i class="fas fa-trophy bg"></i></div>
+							<div class="trophyBG2"></div>
+							<div class="trophyRank">1</div>
+						</div>
 
-          <img src="./tank.svg" class="icon shadow" style="right:21px;"  />
-          <span class="classText" style="">TANK</span>
-          <div class="classTextBG"></div>
+						<div class="class dps">
+							<span>DPS</span>
+							<i class="fas fa-crosshairs odd" style="left: 0%; top:0%"></i>
+							<i class="fas fa-crosshairs even" style="left: 20%; top:50%"></i>
+							<i class="fas fa-crosshairs odd" style="left: 40%; top:0%"></i>
+							<i class="fas fa-crosshairs even" style="left: 60%; top:50%"></i>
+							<i class="fas fa-crosshairs odd" style="left: 80%; top:50%"></i>
+						</div>
 
+	          <span class="tagName" style="">MiniBoss</span>
+	          <div class="tagNameBG"></div>
+
+						<div class="kills">
+							<div class="pointerLeft"></div>
+							<div>
+								<i class="fas fa-skull"></i>
+								KILLS
+							</div>
+							<div class="count">0</div>
+						</div>
+						<div class="ratio">
+							<div class="pointerLeft center"></div>
+							<div>
+								<i class="fas fa-bullseye"></i>
+								RATIO
+							</div>
+							<div class="count">0</div>
+						</div>
+						<div class="wins">
+							<div class="pointerLeft bottom"></div>
+							<div>
+								<i class="fas fa-award"></i>
+								WINS
+							</div>
+							<div class="count">0</div>
+						</div>
+					</div>
         </div>
 
-        <div class="player" style="transform:skewY(-2deg); margin-top: 35px;">
-          <img class="loadingSpinner" src="./spinner.svg" />
-          <span class="loadingText">Waiting for player</span>
+				<!-- PLAYER 3 -->
+				<div class="player player3" style="transform:skewY(-2deg); margin-top: 35px;">
+					<div class="loadingDiv" style="">
+						<span class="loadingText">LOADING</span>
+						<div class="loading">
+							<div class="rotate" style="transform:rotate(0deg);opacity:.9"><div class="loadingBlock"></div></div>
+							<div class="rotate" style="transform:rotate(36deg);opacity:.8"><div class="loadingBlock"></div></div>
+							<div class="rotate" style="transform:rotate(72deg);opacity:.7"><div class="loadingBlock"></div></div>
+							<div class="rotate" style="transform:rotate(108deg);opacity:.6"><div class="loadingBlock"></div></div>
+							<div class="rotate" style="transform:rotate(144deg);opacity:.5"><div class="loadingBlock"></div></div>
+							<div class="rotate" style="transform:rotate(180deg);opacity:.4"><div class="loadingBlock"></div></div>
+							<div class="rotate" style="transform:rotate(216deg);opacity:.3"><div class="loadingBlock"></div></div>
+							<div class="rotate" style="transform:rotate(252deg);opacity:.2"><div class="loadingBlock"></div></div>
+							<div class="rotate" style="transform:rotate(288deg);opacity:.1"><div class="loadingBlock"></div></div>
+							<div class="rotate" style="transform:rotate(324deg);opacity:.1"><div class="loadingBlock"></div></div>
+						</div>
+					</div>
+
+					<div class="ready">
+						<div><i class="fas fa-check"></i></div>
+						<div class="readyCircle"></div>
+						<div class="readyOutline"></div>
+						<b>READY</b>
+					</div>
+
+					<div class="backPlate">
+						<img src="./skullz.png" class="skullz" />
+					</div>
+					<div class="playerDiv">
+	          <img id="playerAvatar2" src="./roger_stub.png" class="avatar" />
+
+						<div class="hex silver">
+							<svg width="175" height="200">
+								<polyline id="hexagon" points="87,0 174,50 174,150 87,200 0,150 0,50 87,0" onclick="changeFill()"/>
+							</svg>
+							<span style="font-size:97px;">12</span>
+							<svg width="175" height="200">
+								<polyline id="hexagon" points="87,0 174,50 174,150 87,200 0,150 0,50 87,0" onclick="changeFill()"/>
+							</svg>
+						</div>
+
+						<div class="class heals">
+							<span>HEALER</span>
+							<i class="fas fa-plus-circle odd" style="left: 0%; top:0%"></i>
+							<i class="fas fa-plus-circle even" style="left: 20%; top:50%"></i>
+							<i class="fas fa-plus-circle odd" style="left: 40%; top:0%"></i>
+							<i class="fas fa-plus-circle even" style="left: 60%; top:50%"></i>
+							<i class="fas fa-plus-circle odd" style="left: 80%; top:50%"></i>
+						</div>
+
+	          <span class="tagName" style="font-size:68px;left:23px;top:18px;">ItsPuddinTime</span>
+	          <div class="tagNameBG"></div>
+
+						<div class="kills">
+							<div class="pointerLeft"></div>
+							<div>
+								<i class="fas fa-skull"></i>
+								KILLS
+							</div>
+							<div class="count">0</div>
+						</div>
+						<div class="ratio">
+							<div class="pointerLeft center"></div>
+							<div>
+								<i class="fas fa-bullseye"></i>
+								RATIO
+							</div>
+							<div class="count">0</div>
+						</div>
+						<div class="wins">
+							<div class="pointerLeft bottom"></div>
+							<div>
+								<i class="fas fa-award"></i>
+								WINS
+							</div>
+							<div class="count">0</div>
+						</div>
+					</div>
         </div>
 
-        <div class="player" style="transform:skewY(-6deg)">
-          <img class="loadingSpinner" src="./spinner.svg" />
-          <span class="loadingText">Waiting for player</span>
+				<!-- PLAYER 4 -->
+        <div class="player player4" style="transform:skewY(-6deg)">
+					<div class="loadingDiv" style="">
+						<span class="loadingText">LOADING</span>
+						<div class="loading">
+							<div class="rotate" style="transform:rotate(0deg);opacity:.9"><div class="loadingBlock"></div></div>
+							<div class="rotate" style="transform:rotate(36deg);opacity:.8"><div class="loadingBlock"></div></div>
+							<div class="rotate" style="transform:rotate(72deg);opacity:.7"><div class="loadingBlock"></div></div>
+							<div class="rotate" style="transform:rotate(108deg);opacity:.6"><div class="loadingBlock"></div></div>
+							<div class="rotate" style="transform:rotate(144deg);opacity:.5"><div class="loadingBlock"></div></div>
+							<div class="rotate" style="transform:rotate(180deg);opacity:.4"><div class="loadingBlock"></div></div>
+							<div class="rotate" style="transform:rotate(216deg);opacity:.3"><div class="loadingBlock"></div></div>
+							<div class="rotate" style="transform:rotate(252deg);opacity:.2"><div class="loadingBlock"></div></div>
+							<div class="rotate" style="transform:rotate(288deg);opacity:.1"><div class="loadingBlock"></div></div>
+							<div class="rotate" style="transform:rotate(324deg);opacity:.1"><div class="loadingBlock"></div></div>
+						</div>
+					</div>
+
+					<div class="ready">
+						<div><i class="fas fa-check"></i></div>
+						<div class="readyCircle"></div>
+						<div class="readyOutline"></div>
+						<b>READY</b>
+					</div>
+
+					<div class="backPlate">
+          </div>
+					<div class="playerDiv">
+	          <img id="playerAvatar2" src="./erik_stub.png" class="avatar" />
+
+						<div class="hex">
+							<div class="circleFG"></div>
+							<div class="circleBG"></div>
+							<span style="font-size:79px;line-height:191px;margin-left:5px;">60</span>
+						</div>
+
+						<div class="class dps">
+							<span>DPS</span>
+							<i class="fas fa-crosshairs odd" style="left: 0%; top:0%"></i>
+							<i class="fas fa-crosshairs even" style="left: 20%; top:50%"></i>
+							<i class="fas fa-crosshairs odd" style="left: 40%; top:0%"></i>
+							<i class="fas fa-crosshairs even" style="left: 60%; top:50%"></i>
+							<i class="fas fa-crosshairs odd" style="left: 80%; top:50%"></i>
+						</div>
+
+	          <span class="tagName" style="font-size:68px;left:23px;top:18px;">
+							TheTherapist
+						</span>
+	          <div class="tagNameBG"></div>
+
+						<div class="kills">
+							<div class="pointerLeft"></div>
+							<div>
+								<i class="fas fa-skull"></i>
+								KILLS
+							</div>
+							<div class="count">0</div>
+						</div>
+						<div class="ratio">
+							<div class="pointerLeft center"></div>
+							<div>
+								<i class="fas fa-bullseye"></i>
+								RATIO
+							</div>
+							<div class="count">0 : 0</div>
+						</div>
+						<div class="wins">
+							<div class="pointerLeft bottom"></div>
+							<div>
+								<i class="fas fa-award"></i>
+								WINS
+							</div>
+							<div class="count">0</div>
+						</div>
+					</div>
         </div>
       </div>
-
     </div>
 	</body>
 </html>

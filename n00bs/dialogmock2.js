@@ -56,9 +56,9 @@ let players = {
 scripts[1] = {
   // starting condition
   0: () => {
-    setTimer(9);
-    setBlueScore(90);
-    setRedScore(94);
+    setTimer(69);
+    setBlueScore(45);
+    setRedScore(47);
     setWaypoint('a', 2, true);
     setWaypoint('b', 2, true);
     setWaypoint('c', 1, true);
@@ -88,7 +88,6 @@ scripts[1] = {
   },
   4: () => {
     damageHealth(30);
-    killFeed('salty', 'roger', '$killer gives $victim a lobotomy');
   },
   4.5: () => {
     damageTeamHealth(2, 60);
@@ -102,6 +101,164 @@ scripts[1] = {
   },
   6: () => {
     killFeed('kevin', 'obama', `$killer just fucked $victim's left eye socket`);
+  },
+  7: () => {
+    setWaypoint('c', 0);
+  },
+  8: () => {
+    damageTeamHealth(2, 15);
+  },
+  10.5: () => {
+    killFeed('jebus', 'roger');
+  },
+  11: () => {
+    damageTeamHealth(1, 100);
+    chat('jebus', 'Peace be with you my son');
+  },
+  12: () => {
+
+  },
+  15: () => {
+    damageTeamHealth(0, 10);
+    damageTeamHealth(2, 15);
+  },
+  15.5: () => {
+    killFeed('mei', 'salty');
+  },
+  17: () => {
+    damageHealth(10);
+    chat('obama', 'Whoa is that MiniBoss from ShockerStyle?');
+  },
+  18: () => {
+    setWaypoint('c', 2);
+  },
+  19: () => {
+    damageTeamHealth(0, 10);
+  },
+  21: () => {
+    killFeed('kevin', 'obama');
+  },
+  24: () => {
+    killFeed('obama', 'mei');
+    damageHealth(30);
+  },
+  25: () => {
+    damageTeamHealth(1, 20);
+    chat('thugwife', 'Probably some smurf. Missing clan tags');
+  },
+  26: () => {
+    killFeed('obama', 'therapist');
+    damageTeamHealth(2, 15);
+  },
+  27.5: () => {
+    damageTeamHealth(1, 20);
+    setWaypoint('a', 0);
+    chat('therapist', 'I am in denial of my own death lol');
+  },
+  28: () => {
+  },
+  30: () => {
+
+  },
+  31: () => {
+    killFeed('thugwife', 'kevin');
+    damageTeamHealth(0, 20);
+  },
+  33: () => {
+    setWaypoint('a', 1);
+    damageTeamHealth(1, 50);
+    chat('jebus', 'I am risen');
+  },
+  35: () => {
+    damageTeamHealth(1, 20);
+    killFeed('salty', 'kevin');
+  },
+  35.5: () => {
+  },
+  41: () => {
+    killFeed('roger', 'salty');
+  },
+  43: () => {
+    damageTeamHealth(0, 10);
+    chat('salty', 'Lucky shot puddin. Or aimbots');
+  },
+  44: () => {
+
+  },
+  44.5: () => {
+    damageTeamHealth(0, 10);
+    chat('jebus', 'I love you!!');
+    chat('jebus', 'I love you!!');
+  },
+  45: () => {
+    damageTeamHealth(2, 15);
+  },
+  47: () => {
+    killFeed('mei', 'obama');
+    chat('obama', 'die birther');
+  },
+  48: () => {
+    damageTeamHealth(1, 15);
+    killFeed('mei', 'thugwife');
+  },
+  50: () => {
+    damageTeamHealth(1, 20);
+  },
+  51: () => {
+    damageHealth(15);
+  },
+  52: () => {
+    setWaypoint('a', 0);
+  },
+  53: () => {
+    damageHealth(10);
+  },
+  55: () => {
+
+  },
+  55.5: () => {
+    damageTeamHealth(0, 10);
+  },
+  56: () => {
+
+  },
+  58: () => {
+    damageTeamHealth(1, 20);
+  },
+  59: () => {
+    setWaypoint('a', 2);
+    killFeed('kevin', 'jebus');
+  },
+  60: () => {
+    damageTeamHealth(1, 40);
+  },
+  61: () => {
+    damageHealth(10);
+
+  },
+  61.5: () => {
+
+  },
+  63: () => {
+    damageTeamHealth(2, 15);
+    chat('therapist', 'GG');
+  },
+  64: () => {
+    damageHealth(10);
+    chat('obama', 'GG');
+    killFeed('kevin', 'obama');
+  },
+  66: () => {
+    killFeed('obama', 'roger');
+    damageTeamHealth(1, 10);
+  },
+  66.5: () => {
+    chat('obama', 'yall make me laugh');
+
+  },
+  68: () => {
+    damageHealth(10);
+    chat('jebus', 'As it is written. Amen.');
   },
   // 8: () => {
   //   damageTeamHealth(1, 30);
@@ -190,7 +347,7 @@ scripts[2] = {
     // kevin gets a kill
     damageTeamHealth(2, 30);
     damageHealth(15);
-    killFeed('kevin', 'donglover', `$killer made a mess of $victim's face'`);
+    killFeed('kevin', 'donglover', `$killer made a mess of $victim's face`);
   },
   4: () => {
     // mei gets a kill
