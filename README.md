@@ -6,6 +6,19 @@
   * all other default options
 * install docker for windows
   * create a login
+* install gcloud, using versioned archives
+  * extract google-cloud-sdk folder to c:/google-cloud-sdk (prevents PATH from being possibly too long)
+  * add C:\google-cloud-sdk\bin to System PATH variables
+  * windows 64 bit + python
+* install docker-credential-helper
+  -> gcloud components install docker-credential-gcr
+* configure gcloud auth for accessing Google Container Registry
+  -> docker-credential-gcr configure-docker
+  -> gcloud auth configure-docker
+* login to gcloud
+  -> gcloud auth login
+* work with Peter to add user to Google Cloud project(s)
+* launch project using /launchDocker.bat
 
 ### Other software
 * Install slack
@@ -17,7 +30,7 @@
   * Static IP (projectm-staticip-development) (35.241.63.177)
   * Health Check (projectm-lbhealthcheck-development)
   * Backend Service (projectm-backendservice-development)
-  
+
 * Instance Group (projectm-instancegroup-development)
   * Instance Template (prjm-it-dev:$revision_id)
     * gcr.io/projectmvue/development:$revision_id
