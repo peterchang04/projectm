@@ -2,20 +2,25 @@ steps:
 # pull the latest from repo branch: development
 - name: 'gcr.io/cloud-builders/git'
   args: ['clone', 'https://github.com/peterchang04/projectm.git']
+
 - name: 'gcr.io/cloud-builders/git'
   args: ['fetch']
+
 - name: 'gcr.io/cloud-builders/git'
   args: ['checkout', 'development']
+
 # install package.json
 - name: 'gcr.io/cloud-builders/yarn'
   args: ['install']
+
 # yarn globals
 - name: 'gcr.io/cloud-builders/yarn'
   args: ['global', 'add', '@vue/cli']
+
 # build Dockerfile_cloudbuild locally -- substitutions stored at cloud build trigger
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build',
-    '-t', 'gcr.io/projectmvue/development:$REVISION_ID',
+    '-t', 'gcr.io/projectm-238622/development:$REVISION_ID',
     '-f', 'Dockerfile_cloudbuild',
     '--build-arg', 'env=${_ENV}',
     '--build-arg', 'apiroot=${_APIROOT}',
@@ -24,13 +29,13 @@ steps:
   ]
 # push ready-to-deploy image to container registry
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/projectmvue/development:$REVISION_ID']
+  args: ['push', 'gcr.io/projectm-238622/development:$REVISION_ID']
 # create a new instance template, to update instance groups to.
 - name: 'gcr.io/cloud-builders/gcloud'
   args: [
     'beta', 'compute', 'instance-templates',
     'create-with-container', 'prjm-itmp-dev-$REVISION_ID',
-    '--container-image', 'gcr.io/projectmvue/development:$REVISION_ID',
+    '--container-image', 'gcr.io/projectm-238622/development:$REVISION_ID',
     '--boot-disk-device-name', 'prjm-itmp-dev-boot-$REVISION_ID',
     '--boot-disk-size', '10GB',
     '--boot-disk-type', 'pd-standard',
@@ -52,10 +57,10 @@ steps:
 # build Dockerfile_local, for local development -- substitutions stored at cloud build trigger
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build',
-    '-t', 'gcr.io/projectmvue/local',
+    '-t', 'gcr.io/projectm-238622/local',
     '-f', 'Dockerfile_local',
     '.'
   ]
 # push local development image to container Registry
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/projectmvue/local']
+  args: ['push', 'gcr.io/projectm-238622/local']
