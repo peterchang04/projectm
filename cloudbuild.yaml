@@ -35,7 +35,8 @@ steps:
 - name: 'gcr.io/cloud-builders/gcloud'
   args: [
     'compute', 'instance-templates',
-    'delete', 'prjm-itmp-dev-$REVISION_ID'
+    'delete', 'prjm-itmp-dev-$REVISION_ID',
+    '--quiet'
   ]
 
 # create a new instance template, to update instance groups to.
