@@ -17,10 +17,11 @@
   * Static IP (projectm-staticip-development) (35.241.63.177)
   * Health Check (projectm-lbhealthcheck-development)
   * Backend Service (projectm-backendservice-development)
-    * Instance Group (projectm-instancegroup-development)
-      * Instance Template (prjm-it-dev:$revision_id)
-        * gcr.io/projectmvue/development:$revision_id
-      * Health Check (projectm-ighealthcheck-development)
+  
+* Instance Group (projectm-instancegroup-development)
+  * Instance Template (prjm-it-dev:$revision_id)
+    * gcr.io/projectmvue/development:$revision_id
+  * Health Check (projectm-ighealthcheck-development)
 
 ### Docker build
 docker pull gcr.io/projectmvue/local:latest

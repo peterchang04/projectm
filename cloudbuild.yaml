@@ -17,7 +17,7 @@ steps:
 - name: 'gcr.io/cloud-builders/yarn'
   args: ['global', 'add', '@vue/cli']
 
-# build Dockerfile_cloudbuild locally -- substitutions stored at cloud build trigger
+# build Dockerfile_cloudbuild in gcb -- substitutions stored at cloud build trigger
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build',
     '-t', 'gcr.io/projectm-238622/development:$REVISION_ID',
@@ -30,6 +30,14 @@ steps:
 # push ready-to-deploy image to container registry
 - name: 'gcr.io/cloud-builders/docker'
   args: ['push', 'gcr.io/projectm-238622/development:$REVISION_ID']
+
+# attempt to delete instance template
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: [
+    'compute', 'instance-templates',
+    'delete', 'prjm-itmp-dev-$REVISION_ID'
+  ]
+
 # create a new instance template, to update instance groups to.
 - name: 'gcr.io/cloud-builders/gcloud'
   args: [
