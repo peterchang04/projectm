@@ -31,14 +31,6 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: ['push', 'gcr.io/projectm-238622/development:$REVISION_ID']
 
-# attempt to delete instance template
-- name: 'gcr.io/cloud-builders/gcloud'
-  args: [
-    'compute', 'instance-templates',
-    'delete', 'prjm-itmp-dev-$REVISION_ID',
-    '--quiet'
-  ]
-
 # create a new instance template, to update instance groups to.
 - name: 'gcr.io/cloud-builders/gcloud'
   args: [
