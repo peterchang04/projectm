@@ -4,8 +4,14 @@
   * use Atom as default editor
   * Git from the command line and also from 3rd party software
   * all other default options
+* clone projectm from repo
+  -> git clone https://github.com/peterchang04/projectm
+* install nodejs
+* install yarn for windows
+  https://yarnpkg.com
 * install docker for windows
   * create a login
+
 * install gcloud, using versioned archives
   * extract google-cloud-sdk folder to c:/google-cloud-sdk (prevents PATH from being possibly too long)
   * add C:\google-cloud-sdk\bin to System PATH variables
@@ -27,7 +33,7 @@
 
 ### Google Cloud Infrastructure
 * Load Balancer (projectm-loadbalancer-development)
-  * Static IP (projectm-staticip-development) (35.241.63.177)
+  * Static IP (projectm-staticip-development) (130.211.23.89)
   * Health Check (projectm-lbhealthcheck-development)
   * Backend Service (projectm-backendservice-development)
 
@@ -36,11 +42,21 @@
     * gcr.io/projectmvue/development:$revision_id
   * Health Check (projectm-ighealthcheck-development)
 
+* IAM
+  * 734495218776@cloudbuild.gserviceaccount.com
+    * Roles
+      - Cloud Build Service Account
+      - Compute Admin
+      - Service Account User
+
 ### Docker build
 docker pull gcr.io/projectmvue/local:latest
 docker run -it -v %cd%:/app -p 80:80 gcr.io/projectmvue/local:latest
 docker build -t gcr.io/projectmvue/local -f Dockerfile_local
 docker push gcr.io/projectmvue/local
+
+### to connect to docker container
+docker exec -it <container_name> /bin/sh
 
 
 # projectm (projectmvue)

@@ -43,7 +43,7 @@ steps:
     '--machine-type', 'f1-micro',
     '--maintenance-policy', 'MIGRATE',
     '--region', 'us-west1',
-    '--tags', 'http-server,https-server'
+    '--tags', 'http-server,https-server,http,https'
   ]
 
 # update cloud instance group with latest image
