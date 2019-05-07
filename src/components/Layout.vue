@@ -14,17 +14,27 @@
     <!-- assets are here to be loaded first -->
     <Assets />
 
+    <button id="fullscreenButton" v-on:click="toggleFullscreen">Fullscreen</button>
+
   </div>
 </template>
 
 <script>
   import Assets from './Assets.vue';
+  import fullscreen from '../utils/fullscreen.js';
 
   export default {
     name: 'app',
     components: { Assets },
-    afterCreate: function () {
+    created: function () {
+      fullscreen.init();
     },
+    methods: {
+      toggleFullscreen: function() {
+        console.log('toggle');
+        fullscreen.toggle();
+      }
+    }
   };
 </script>
 
@@ -34,6 +44,7 @@
     box-sizing: border-box;
   }
   body {
+    overflow: hidden; /* prevent ios/chrome drag down to refresh and other screen drag motions */
     margin: 0;
     padding: 0;
   }
@@ -60,5 +71,11 @@
     background-color: #0c171f;
     /* max-width: 480px;
     max-height: 853px; */
+  }
+  #fullscreenButton {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    z-index: 9999; /* needs updating. see zindex.txt */
   }
 </style>

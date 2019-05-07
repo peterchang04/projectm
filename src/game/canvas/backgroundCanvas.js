@@ -90,12 +90,10 @@ function drawStars(scale = .5) {
   v.temp.sqX = ((v.temp.mXPixels - v.temp.remainderXPixels) * scale) / v.hypotPixels;
   if ($g.game.myShip.mX < 0) v.temp.sqX -= 1; // 1st quadrant below 0 should be -1
 
-
   // now Y axis
   v.temp.mYPixels = $g.game.myShip.mY * $g.viewport.pixelsPerMeter;
   v.temp.remainderYPixels = (v.temp.mYPixels) % (v.hypotPixels * scale);
   v.temp.sqY = ((v.temp.mYPixels - v.temp.remainderYPixels) * scale) / v.hypotPixels;
-  console.log(v.temp.sqX, v.temp.sqY);
   if ($g.game.myShip.mY < 0) v.temp.sqY -= 1; // 1st quadrant below 0 should be -1
 
   // position in quadrant - will determine whith other quadrants to draw

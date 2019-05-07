@@ -1,5 +1,6 @@
 ### Dev Environment setup
 * install atom.io (64bit)
+  * install package "language-vue"
 * install git for windows (64bit)
   * use Atom as default editor
   * Git from the command line and also from 3rd party software
@@ -33,14 +34,42 @@
 
 ### Google Cloud Infrastructure
 * Load Balancer (projectm-loadbalancer-development)
-  * Static IP (projectm-staticip-development) (130.211.23.89)
-  * Health Check (projectm-lbhealthcheck-development)
   * Backend Service (projectm-backendservice-development)
+    - protocol: HTTP
+    - backend type: Instance groups
+    - region: us-west1
+    - instance group: projectm-instancegroup-development
+    - cloud CDN: NO
+    - health check: projectm-lbhealthcheck-development
+  * Frontend service: projectm-frontendservice-development
+    - protocol: HTTP
+    - network service tier: standard
+    - IP address: static (35.212.226.50) - projectm-staticip-development
+    - 35.212.226.50 pointed to http://projectm.peterchang.rocks @ godaddy.com
+    - port: 80
+  * Health Check (projectm-lbhealthcheck-development)
+    - protocol: tcp
+    - port: 80
+    - proxy protocol: none
+    - request: <blank>
+    - response: <blank>
+    - health criteria: default
 
 * Instance Group (projectm-instancegroup-development)
-  * Instance Template (prjm-it-dev:$revision_id)
-    * gcr.io/projectmvue/development:$revision_id
-  * Health Check (projectm-ighealthcheck-development)
+  - port name: http (probably from Load Balancer)
+  - port numbers: 80
+  - instance template: prjm-itmp-dev-.... (from cloudbuild)
+    - container: gcr.io/projectm-238622/development:$revision_id
+  - target cpu usage: 75
+  - minimum number of instances: 1
+  - maximum number of instances: 2
+  - cooldown period: 60
+  - initial delay: 300
+  - healthcheck: (projectm-ighealthcheck-development)
+    - port: 80
+    - timeout: 5s
+    - check interval: 10s
+    - unhealthy threshold: 3 attempts
 
 * IAM
   * 734495218776@cloudbuild.gserviceaccount.com
@@ -48,6 +77,20 @@
       - Cloud Build Service Account
       - Compute Admin
       - Service Account User
+
+* VPC Network
+  * Firewall Rule: projectm-firewall-in-development
+    - direction: ingress
+    - targets: specified target tags
+    - target tags: http
+    - source ip ranges: 0.0.0.0/0
+    - protocols and ports: tcp:80
+  <!-- * Firewall Rule: projectm-firewall-healthcheck-development
+    - direction: ingress
+    - targets: specified target tags
+    - target tags: http
+    - source ip ranges: 130.211.0.0/22, 35.191.0.0/16
+    - protocols and ports: tcp:80 -->
 
 ### Docker build
 docker pull gcr.io/projectmvue/local:latest
