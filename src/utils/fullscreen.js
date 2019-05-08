@@ -1,9 +1,9 @@
 let isFullScreen = null;
-let docmentElement = null;
+let documentElement = null;
 
 function init() {
   isFullScreen = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
-  docmentElement = document.documentElement;
+  documentElement = document.documentElement;
 }
 
 function toggle() {
@@ -16,14 +16,16 @@ function toggle() {
 }
 
 function enterFullScreen() {
-  if (docmentElement.requestFullscreen) {
-    docmentElement.requestFullscreen().then(() => { isFullScreen = true });
-  } else if (docmentElement.mozRequestFullScreen) { /* Firefox */
-    docmentElement.mozRequestFullScreen().then(() => { isFullScreen = true });
-  } else if (docmentElement.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
-    docmentElement.webkitRequestFullscreen().then(() => { isFullScreen = true });
-  } else if (docmentElement.msRequestFullscreen) { /* IE/Edge */
-    docmentElement.msRequestFullscreen().then(() => { isFullScreen = true });
+  if (documentElement.requestFullscreen) {
+    documentElement.requestFullscreen().then(() => { isFullScreen = true });
+  } else if (documentElement.mozRequestFullScreen) { /* Firefox */
+    documentElement.mozRequestFullScreen().then(() => { isFullScreen = true });
+  } else if (documentElement.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+    const promise = documentElement.webkitRequestFullscreen();
+    console.log(documentElement.webkitRequestFullscreen);
+    if (promise) promise.then(() => { isFullScreen = true });
+  } else if (documentElement.msRequestFullscreen) { /* IE/Edge */
+    documentElement.msRequestFullscreen().then(() => { isFullScreen = true });
   }
 }
 

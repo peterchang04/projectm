@@ -21,18 +21,22 @@
 
 <script>
   import Assets from './Assets.vue';
+  import eventManager from '../utils/eventManager.js';
   import fullscreen from '../utils/fullscreen.js';
+  import forceScroll from '../utils/forceScroll.js';
 
   export default {
     name: 'app',
     components: { Assets },
     created: function () {
+      forceScroll.init();
       fullscreen.init();
+      document.eventManager = eventManager;
     },
     methods: {
       toggleFullscreen: function() {
         console.log('toggle');
-        fullscreen.toggle();
+        forceScroll.scrollTo();
       }
     }
   };
@@ -44,7 +48,6 @@
     box-sizing: border-box;
   }
   body {
-    overflow: hidden; /* prevent ios/chrome drag down to refresh and other screen drag motions */
     margin: 0;
     padding: 0;
   }
@@ -52,12 +55,15 @@
     font-family: 'Fira Sans Extra Condensed', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    position: absolute;
     text-align: center;
     color: #2c3e50;
     background-color: #001000;
     height: 100%;
     width: 100%;
+    /* MOCK-FULLSCREEN */
+    position: fixed; /* this allows the body to scroll, hiding url bar and bottom bar on some mobile devices */
+    z-index: -1; /* overridden by javascript after user initiated scroll event */
+    overscroll-behavior: none;
   }
   #pilotLink {
     position: fixed;

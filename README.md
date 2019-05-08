@@ -1,6 +1,7 @@
 ### Dev Environment setup
 * install atom.io (64bit)
   * install package "language-vue"
+* install blisk (developer browser)
 * install git for windows (64bit)
   * use Atom as default editor
   * Git from the command line and also from 3rd party software
