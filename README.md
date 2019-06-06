@@ -1,37 +1,53 @@
 ### Dev Environment setup
+## NOTE: -> indicates to type the line (minus ->)  into the command line
 * install atom.io (64bit)
   * install package "language-vue"
-* install blisk (developer browser)
 * install git for windows (64bit)
   * use Atom as default editor
   * Git from the command line and also from 3rd party software
   * all other default options
-* clone projectm from repo
+* clone projectm from repo into c:/projectm (*optional*)
+  -> cd c:/
   -> git clone https://github.com/peterchang04/projectm
+* checkout the development branch
+  -> cd c:/projectm
+  -> git checkout development
+* ask peter to add to github as collaborator
+* build out projectm using yarn
+  -> cd c:/projectm
+  -> yarn
+* in atom, add project folder (File > Add Project Folder) c:/projectm
 * install nodejs
 * install yarn for windows
   https://yarnpkg.com
 * install docker for windows
   * create a login
-
-* install gcloud, using versioned archives
+* install gcloud, using versioned archives (windows 64 bit + python)
   * extract google-cloud-sdk folder to c:/google-cloud-sdk (prevents PATH from being possibly too long)
   * add C:\google-cloud-sdk\bin to System PATH variables
-  * windows 64 bit + python
 * install docker-credential-helper
   -> gcloud components install docker-credential-gcr
 * configure gcloud auth for accessing Google Container Registry
-  -> docker-credential-gcr configure-docker
   -> gcloud auth configure-docker
+  (if gcloud doesn't work) -> docker-credential-gcr configure-docker
 * login to gcloud
   -> gcloud auth login
-* work with Peter to add user to Google Cloud project(s)
+* add project to gcloud
+  -> gcloud config set project projectm-238622
+* add auth to gcloud (your gmail)
+  -> gcloud auth login myaccount@gmail.com
+* work with Peter to add your gmail account to GCP storage permissions
+  * ?? not sure if necessary
+    * CGP > Storage > Browser > artifacts.projectmvue.appspot.com
+    * add member (your gmail)
+    * assign role: Storage Object Viewer
 * launch project using /launchDocker.bat
+  * docker may ask for permission to access c:/
 
 ### Other software
-* Install slack
-  * pakchang.slack.com
-
+* Install Discord
+  * create an account first, or the join channel flow can be tricky
+  * https://discord.gg/GK6Dzjk
 
 ### Google Cloud Infrastructure
 * Load Balancer (projectm-loadbalancer-development)
