@@ -51,7 +51,7 @@
   /* START This allows even height / width ratios across viewports */
   .proportionateHeightWrapper { position: relative; width: 100%; }
   .proportionateHeightWrapper:before{ content: ""; display: block;
-  	padding-top: 80%; /* HEIGHT PROPORTION */
+  	padding-top: 74%; /* HEIGHT PROPORTION TO WIDTH */
   }
   .content {
     z-index: 1000; position:  absolute;

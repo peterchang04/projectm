@@ -6,7 +6,6 @@ function add(el, name, fn) { // i.e. click.me, click.hello
   initEl(el);
   const nameArray = name.toLowerCase().split('.');
   // if base event doesn't exist, add it
-  console.log(el.eventManagerTypes);
   if (!(nameArray[0] in el.eventManagerTypes)) {
     el.addEventListener(nameArray[0], function(e) {
       // call all namespaced functions of for this event

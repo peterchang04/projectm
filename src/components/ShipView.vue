@@ -54,17 +54,18 @@
     right: 35%;
     top: auto;
     bottom: 17%;
+    transform: scale(.3);
   }
   #canvas_steering { /* same as PilotSteering #steering */
    position: absolute;
    left: 50%;
-   bottom: 13%;
+   bottom: 8%;
    overflow: hidden;
    background-color: transparent;
-   width: 50vw;
-   height: 50vw;
-   margin-left: -25vw;
-   border-radius: 50vw;
+   width: 56vw;
+   height: 56vw;
+   margin-left: -28vw;
+   border-radius: 56vw;
    pointer-events: none;
    top: auto;
  }

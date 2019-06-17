@@ -13,31 +13,20 @@
 
     <!-- assets are here to be loaded first -->
     <Assets />
-
-    <button id="fullscreenButton" v-on:click="toggleFullscreen">Fullscreen</button>
-
   </div>
 </template>
 
 <script>
   import Assets from './Assets.vue';
   import eventManager from '../utils/eventManager.js';
-  import fullscreen from '../utils/fullscreen.js';
-  import forceScroll from '../utils/forceScroll.js';
 
   export default {
     name: 'app',
     components: { Assets },
     created: function () {
-      forceScroll.init();
-      fullscreen.init();
       document.eventManager = eventManager;
     },
     methods: {
-      toggleFullscreen: function() {
-        console.log('toggle');
-        forceScroll.scrollTo();
-      }
     }
   };
 </script>
@@ -50,6 +39,7 @@
   body {
     margin: 0;
     padding: 0;
+    touch-action: none;
   }
   #app {
     font-family: 'Fira Sans Extra Condensed', Helvetica, Arial, sans-serif;
@@ -62,8 +52,9 @@
     width: 100%;
     /* MOCK-FULLSCREEN */
     position: fixed; /* this allows the body to scroll, hiding url bar and bottom bar on some mobile devices */
-    z-index: -1; /* overridden by javascript after user initiated scroll event */
+    z-index: 1; /* overridden by javascript after user initiated scroll event */
     overscroll-behavior: none;
+    touch-action: pan-down;
   }
   #pilotLink {
     position: fixed;

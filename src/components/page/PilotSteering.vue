@@ -100,12 +100,12 @@
   #steering {
     position: absolute;
     left: 50%;
-    bottom: 13%;
+    bottom: 8%;
     background-color: transparent;
-    width: 50vw;
-    height: 50vw;
-    margin-left: -25vw;
-    border-radius: 50vw;
+    width: 56vw;
+    height: 56vw;
+    margin-left: -28vw;
+    border-radius: 56vw;
     pointer-events: none;
   }
   #rotateDragger {
@@ -115,12 +115,12 @@
   }
   #dragger {
     position: absolute;
-    width: 14vw;
-    height: 14vw;
+    width: 16vw;
+    height: 16vw;
     border-radius: 14vw;
     top: 0;
     left: 50%;
-    margin-left: -7vw;
+    margin-left: -8vw;
     border: .5vw dashed rgba(0, 255, 0, .2);
     font-weight: bold;
     font-size: 3.7vw;
