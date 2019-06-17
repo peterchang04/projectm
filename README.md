@@ -110,10 +110,10 @@
     - protocols and ports: tcp:80 -->
 
 ### Docker build
-docker pull gcr.io/projectmvue/local:latest
-docker run -it -v %cd%:/app -p 80:80 gcr.io/projectmvue/local:latest
-docker build -t gcr.io/projectmvue/local -f Dockerfile_local
-docker push gcr.io/projectmvue/local
+docker pull gcr.io/projectm-238622/local:latest
+docker run -it -v %cd%:/app -p 80:80 gcr.io/projectm-238622/local:latest
+docker build -t gcr.io/projectm-238622/local -f Dockerfile_local
+docker push gcr.io/projectm-238622/local
 
 ### to connect to docker container
 docker exec -it <container_name> /bin/sh
