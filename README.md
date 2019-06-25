@@ -112,7 +112,7 @@
 ### Docker build
 docker pull gcr.io/projectm-238622/local:latest
 docker run -it -v %cd%:/app -p 80:80 gcr.io/projectm-238622/local:latest
-docker build -t gcr.io/projectm-238622/local -f Dockerfile_local
+docker build -t gcr.io/projectm-238622/local -f Dockerfile_local .
 docker push gcr.io/projectm-238622/local
 
 ### to connect to docker container
