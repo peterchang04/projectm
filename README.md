@@ -118,6 +118,9 @@ docker push gcr.io/projectm-238622/local
 ### to connect to docker container
 docker exec -it <container_name> /bin/sh
 
+### ISSUES
+- after trying to launch Docker, Yarn says package.json is not found (suggesting -v is not working)
+  - Windows Firewall has somehow broken Docker filesharing
 
 # projectm (projectmvue)
 
