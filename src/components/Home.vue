@@ -1,21 +1,31 @@
 <template>
-  <div id="testOutput">
-    <div id="socketStatus" v-bind:class="socketStatusClass"></div>
+  <div>
+    <div id="identifierDiv">
+      <div class="smaller">hosting as</div>
+      <div class="identifierText">24 Kicking Ants</div>
+    </div>
+    <div id="players">
 
-    <div id="identifier">
-      <span v-if="identifier">{{ identifier }}</span>
-      <span v-else>loading...</span>
+    </div>
+    <div id="players">
+
+    </div>
+    <div id="players">
+
+    </div>
+    <div id="players">
+
     </div>
 
-    <input v-if="identifier && socketStatus == 1" name="message" v-model="message" v-on:keydown="inputSubmit" placeholder="Join" />
-
-    <hr />
-    <div id="hr-or">or</div>
-
-    <div id="hostOrNot" v-if="isHost == null">
-      <button>HOST</button>
+    <div id="invite">
+      <input placeholder="enter invite code">
+      <button>INVITE</button>
     </div>
-
+    <div id="links">
+      <button>join</button>
+      <button>start</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -74,6 +84,58 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  #players {
+    display: inline-block;
+    width: 38vw;
+    height: 38vw;
+    border: 0.5vw solid rgba(255, 255, 255, .5);
+    margin: 3.5vw;
+  }
+  #invite input, #invite button {
+    display: inline-block;
+    width: 83vw;
+    background-color: transparent;
+    border: 0.5vw solid rgba(255, 255, 255, .5);
+    color: white;
+    font-size: 5vw;
+    padding: 5vw;
+    margin-bottom: 2vw;
+  }
+  #invite input {
+    margin: 3.5vw;
+    height: 14vw;
+  }
+  #invite button {
+    border-radius: 2vw;
+    margin: 3.5vw;
+    height: 21vw;
+    text-shadow: 0 0 2vw rgba(255, 255, 255, .5);
+  }
+  #identifierDiv .identifierText {
+    font-size: 8vw;
+    color: white;
+    letter-spacing: .2vw;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-shadow: 0 0 2vw rgba(255, 255, 255, .5);
+    margin-bottom: 8vw;
+  }
+  #identifierDiv .smaller {
+    display: inline-block;
+    font-size: 5vw;
+    opacity: .4;
+    color: white;
+    text-shadow: 0 0 2vw rgba(255, 255, 255, .5);
+    margin-top: 20vw;
+  }
+  #links {
+    font-size: 5.5vw;
+  }
+  #links button {
+    margin: 3.5vw;
+    height: 1vw;
+    color: white;
+  }
   hr {
     border: 1px solid #ddd;
   }
@@ -101,6 +163,7 @@
     background-color: red;
   }
   #identifier {
+    position: relative;
     padding: 15px;
     color: green;
     font-size: 18px;
