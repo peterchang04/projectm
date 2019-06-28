@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import PageA from './components/PageA.vue';
-import PageB from './components/PageB.vue';
 import Home from './components/Home.vue';
 import Pilot from './components/page/Pilot.vue';
+import Host from './components/Host.vue';
+import Join from './components/Join.vue';
 
 Vue.use(Router);
 
@@ -19,14 +19,12 @@ export default new Router({
       component: Pilot,
     },
     {
-      path: '/a',
-      name: 'pageA',
-      component: PageA,
+      path: '/join',
+      component: Join,
     },
     {
-      path: '/b',
-      name: 'pageB',
-      component: PageB,
+      path: '/host',
+      component: Host,
     },
   ],
 });
