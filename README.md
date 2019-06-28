@@ -50,6 +50,14 @@
   * https://discord.gg/GK6Dzjk
 
 ### Google Cloud Infrastructure
+* Cloud Build trigger
+  - trigger type: branch
+  - branch: development
+  - build configuration: cloud build configuration file
+  - cloud build configuration file location: / cloudbuild.yaml
+  - substitution variables
+    - \_APIROOT: http:/35.190.55.1
+    - \_ENV: development
 * Load Balancer (projectm-loadbalancer-development)
   * Backend Service (projectm-backendservice-development)
     - protocol: HTTP
@@ -81,12 +89,12 @@
   - minimum number of instances: 1
   - maximum number of instances: 2
   - cooldown period: 60
-  - initial delay: 300
   - healthcheck: (projectm-ighealthcheck-development)
     - port: 80
     - timeout: 5s
     - check interval: 10s
     - unhealthy threshold: 3 attempts
+  - initial delay: 300
 
 * IAM
   * 734495218776@cloudbuild.gserviceaccount.com
@@ -121,8 +129,6 @@ docker exec -it <container_name> /bin/sh
 ### ISSUES
 - after trying to launch Docker, Yarn says package.json is not found (suggesting -v is not working)
   - Windows Firewall has somehow broken Docker filesharing
-
-# projectm (projectmvue)
 
 ## Project setup
 ```
