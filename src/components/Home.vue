@@ -91,9 +91,6 @@
     top: 50%;
     margin-top: -80%;
   }
-  #players {
-
-  }
   .player {
     display: inline-block;
     width: 38vw;
