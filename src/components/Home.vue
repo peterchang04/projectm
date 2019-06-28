@@ -1,20 +1,22 @@
 <template>
-  <div>
+  <div id="home">
     <div id="identifierDiv">
       <div class="smaller">hosting as</div>
       <div class="identifierText">24 Kicking Ants</div>
     </div>
     <div id="players">
+      <div class="player">
 
-    </div>
-    <div id="players">
+      </div>
+      <div class="player">
 
-    </div>
-    <div id="players">
+      </div>
+      <div class="player">
 
-    </div>
-    <div id="players">
+      </div>
+      <div class="player">
 
+      </div>
     </div>
 
     <div id="invite">
@@ -22,9 +24,8 @@
       <button>INVITE</button>
     </div>
     <div id="links">
-      <button>join</button>
-      <button>start</button>
-      </div>
+      <button id="left">join</button>
+      <button id="right">start</button>
     </div>
   </div>
 </template>
@@ -84,12 +85,21 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  #home {
+    position: absolute;
+    height: 160vw;
+    top: 50%;
+    margin-top: -80%;
+  }
   #players {
+
+  }
+  .player {
     display: inline-block;
     width: 38vw;
     height: 38vw;
     border: 0.5vw solid rgba(255, 255, 255, .5);
-    margin: 3.5vw;
+    margin: 3vw;
   }
   #invite input, #invite button {
     display: inline-block;
@@ -103,13 +113,16 @@
   }
   #invite input {
     margin: 3.5vw;
-    height: 14vw;
+    height: 12vw;
   }
   #invite button {
     border-radius: 2vw;
     margin: 3.5vw;
-    height: 21vw;
+    height: 18vw;
     text-shadow: 0 0 2vw rgba(255, 255, 255, .5);
+  }
+  #identifierDiv {
+    padding: 3vw 2.5vw;
   }
   #identifierDiv .identifierText {
     font-size: 8vw;
@@ -118,7 +131,6 @@
     font-weight: bold;
     text-transform: uppercase;
     text-shadow: 0 0 2vw rgba(255, 255, 255, .5);
-    margin-bottom: 8vw;
   }
   #identifierDiv .smaller {
     display: inline-block;
@@ -126,15 +138,25 @@
     opacity: .4;
     color: white;
     text-shadow: 0 0 2vw rgba(255, 255, 255, .5);
-    margin-top: 20vw;
   }
   #links {
     font-size: 5.5vw;
+    bottom: 0;
   }
   #links button {
     margin: 3.5vw;
     height: 1vw;
     color: white;
+  }
+  #left {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+  }
+  #right {
+    position: fixed;
+    bottom: 0;
+    right: 0;
   }
   hr {
     border: 1px solid #ddd;
