@@ -19,7 +19,7 @@
 
 <script>
   import Main from '../game/main.js';
-  import PilotSteering from './page/PilotSteering.vue';
+  import PilotSteering from './controls/PilotSteering.vue';
 
   export default {
     components: { PilotSteering },

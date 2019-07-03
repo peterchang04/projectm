@@ -31,7 +31,7 @@
 </template>
 
 <script>
-  import state from '../state';
+  import state from '../utils/state';
   import peers from '../utils/peers';
 
   export default {

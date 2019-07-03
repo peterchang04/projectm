@@ -29,6 +29,7 @@ function init() {
   $g.game.myShip = new Ship({ mX: 0, mY: 0, angle: 90, d: 0 }); // 35 55
 
   // init dependencies
+  canvasText.init();
   shipCanvas.init();
   backgroundCanvas.init();
   backgroundGridCanvas.init();

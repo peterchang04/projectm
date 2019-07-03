@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './components/Home.vue';
-import Pilot from './components/page/Pilot.vue';
+import Pilot from './components/views/Pilot.vue';
 import Host from './components/Host.vue';
 import Join from './components/Join.vue';
 
