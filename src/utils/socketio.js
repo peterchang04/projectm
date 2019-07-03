@@ -3,7 +3,7 @@ const enabled = false;
 // socketio connection is used by webRTC to coordinate peer connections
 import io from 'socket.io-client';
 import { cookie } from 'cookie_js';
-import state from '../state';
+import state from './state';
 cookie.expiresMultiplier = 60 * 60 * 24; // default expiration is by day. set to hour
 let serverUrl = process.env.VUE_APP_APIROOT || process.env.VUE_APP_APIROOT_DEFAULT;
 

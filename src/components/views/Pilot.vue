@@ -1,7 +1,7 @@
 <template>
   <div id="pilot">
     <TargetsBar />
-    <ShipView />
+    <GameView />
     <CrewBar />
     <Controls></Controls>
   </div>
@@ -10,12 +10,12 @@
 <script>
   import TargetsBar from '../targetBar/TargetsBar.vue';
   import CrewBar from '../crewBar/CrewBar.vue';
-  import Controls from './PilotControls.vue';
-  import ShipView from '../ShipView.vue';
+  import Controls from '../controls/PilotControls.vue';
+  import GameView from '../GameView.vue';
 
   export default {
     name: 'pilot',
-    components: { TargetsBar, CrewBar, Controls, ShipView },
+    components: { TargetsBar, CrewBar, Controls, GameView },
     props: {
       msg: String
     }

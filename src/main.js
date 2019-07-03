@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Layout from './components/Layout.vue';
 import router from './router';
-import state from './state';
+import state from './utils/state';
 import socket from './utils/socketio';
 import peers from './utils/peers';
 
