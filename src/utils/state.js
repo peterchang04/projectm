@@ -13,7 +13,6 @@ function init() {
 
 function get(key) {
   return (typeof state[key] === 'function') ? state[key](state) : state[key];
-  return state[key];
 }
 
 function set(key, value) {

@@ -5,6 +5,8 @@
       <div id="dragger" :class="{ draggerActive: active }" :style="draggerStyle">
       </div>
     </div>
+
+    <canvas id="canvas_steering" />
   </div>
 </template>
 
@@ -143,4 +145,16 @@
     padding-right: 1vw;
     font-size: 4vw;
   }
+  #canvas_steering { /* same as PilotSteering #steering */
+    position: absolute;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+    border-radius: 56vw;
+    pointer-events: none;
+    top: auto;
+ }
 </style>

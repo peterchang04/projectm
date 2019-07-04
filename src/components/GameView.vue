@@ -13,7 +13,6 @@
     <canvas id="canvas_listener"></canvas>
     <!-- TOP LAYER -->
     <PilotSteering v-if="$route.path == '/pilot'"/>
-    <canvas id="canvas_steering" v-if="$route.path == '/pilot'" />
   </div>
 </template>
 
@@ -56,17 +55,4 @@
     bottom: 17%;
     transform: scale(.3);
   }
-  #canvas_steering { /* same as PilotSteering #steering */
-   position: absolute;
-   left: 50%;
-   bottom: 8%;
-   overflow: hidden;
-   background-color: transparent;
-   width: 56vw;
-   height: 56vw;
-   margin-left: -28vw;
-   border-radius: 56vw;
-   pointer-events: none;
-   top: auto;
- }
 </style>

@@ -1,20 +1,20 @@
 <template>
-  <div id="crewBar" class="proportionateHeightWrapper">
+  <div id="roleBar" class="proportionateHeightWrapper">
     <div class="content">
-      <CrewMember role="engineer" :index="0" />
-      <CrewMember role="captain" :index="1" />
-      <CrewMember role="pilot" :index="2" />
-      <CrewMember role="intel" :index="3" />
+      <Role role="engineer" :index="0" />
+      <Role role="captain" :index="1" />
+      <Role role="pilot" :index="2" />
+      <Role role="intel" :index="3" />
     </div>
   </div>
 </template>
 
 <script>
-  import CrewMember from './CrewMember.vue';
+  import Role from './Role.vue';
 
   export default {
-    name: 'crewBar',
-    components: { CrewMember },
+    name: 'roleBar',
+    components: { Role },
     props: {
       msg: String
     }
@@ -37,14 +37,11 @@
     position: relative;
   }
 
-  .content .crewMember {
+  .content .role {
     display: inline-block;
     vertical-align: top;
     width: 25%;
     height: 100%;
-  }
-  .member:nth-child(even) {
-    background-color: #444;
   }
 
 </style>
