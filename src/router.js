@@ -4,11 +4,7 @@ import Router from 'vue-router';
 import Home from './components/Home.vue';
 import Host from './components/Host.vue';
 import Join from './components/Join.vue';
-// role pages
-import Pilot from './components/views/Pilot.vue';
-import Captain from './components/views/Captain.vue';
-import Intel from './components/views/Intel.vue';
-import Engineer from './components/views/Engineer.vue';
+import Game from './components/views/Game.vue';
 
 Vue.use(Router);
 
@@ -28,20 +24,8 @@ export default new Router({
       component: Host,
     },
     {
-      path: '/pilot',
-      component: Pilot,
-    },
-    {
-      path: '/engineer',
-      component: Engineer,
-    },
-    {
-      path: '/intel',
-      component: Intel,
-    },
-    {
-      path: '/captain',
-      component: Captain,
+      path: '/game',
+      component: Game,
     },
   ],
 });

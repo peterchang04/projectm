@@ -1,27 +1,27 @@
 <template>
   <div class="role" v-bind:class="{ odd: index % 2 }">
-    <div v-if="role === 'captain'" class="captain">
-      <IconCaptain class="roleIcon" />
-      <Portrait1 class="portrait" />
-    </div>
 
-    <div v-if="role === 'intel'" class="intel">
-      <IconIntel class="roleIcon" />
-      <portrait2 class="portrait" />
-    </div>
-
-    <div v-if="role === 'engineer'" class="engineer">
-      <IconEngineer class="roleIcon" />
+    <div v-if="index === 0" :class="roleName">
+      <IconEngineer class="roleIcon" v-on:click="setRole(index)" />
       <Portrait3 class="portrait" />
     </div>
 
-    <div v-if="role === 'pilot'" class="pilot">
-      <IconPilot class="roleIcon" />
+    <div v-if="index === 1" :class="roleName">
+      <IconCaptain class="roleIcon" v-on:click="setRole(index)" />
+      <Portrait1 class="portrait" />
+    </div>
+
+    <div v-if="index === 2" :class="roleName">
+      <IconPilot class="roleIcon" v-on:click="setRole(index)" />
       <Portrait4 class="portrait" />
     </div>
 
-    <router-link v-if="$route.path !== `/${role}`" class="roleLink" :to="`/${role}`"></router-link>
-    <span class="roleText">{{ role }}</span>
+    <div v-if="index === 3" :class="roleName">
+      <IconIntel class="roleIcon" v-on:click="setRole(index)" />
+      <portrait2 class="portrait" />
+    </div>
+
+    <span v-bind:class="{ current: index === currentRole, roleText: true }">{{ roleName }}</span>
   </div>
 </template>
 
@@ -42,8 +42,14 @@
       Portrait1, Portrait2, Portrait3, Portrait4
     },
     props: {
-      role: String,
+      roleName: String,
       index: Number,
+      currentRole: Number,
+    },
+    methods: {
+      setRole: function (role) {
+        this.$store.dispatch('setCurrentRole', role);
+      },
     }
   };
 </script>
@@ -70,6 +76,10 @@
     top: .5vw;
     right: .8vw;
     width: 12vw
+  }
+
+  .role .roleText.current {
+    text-shadow: 0 0 1vw rgba(255, 255, 255, 1);
   }
 
   .role .portrait {

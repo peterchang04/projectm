@@ -12,7 +12,7 @@
     <!-- <canvas id="canvas_foreground"></canvas> -->
     <canvas id="canvas_listener"></canvas>
     <!-- TOP LAYER -->
-    <PilotSteering v-if="$route.path == '/pilot'"/>
+    <PilotSteering v-if="$route.path == '/game'"/>
   </div>
 </template>
 

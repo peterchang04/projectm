@@ -1,15 +1,32 @@
 <template>
   <div id="roleBar" class="proportionateHeightWrapper">
     <div class="content">
-      <Role role="engineer" :index="0" />
-      <Role role="captain" :index="1" />
-      <Role role="pilot" :index="2" />
-      <Role role="intel" :index="3" />
+      <Role
+        roleName="engineer"
+        :index="0"
+        :currentRole="currentRole"
+      />
+      <Role
+        roleName="captain"
+        :index="1"
+        :currentRole="currentRole"
+      />
+      <Role
+        roleName="pilot"
+        :index="2"
+        :currentRole="currentRole"
+      />
+      <Role
+        roleName="intel"
+        :index="3"
+        :currentRole="currentRole"
+      />
     </div>
   </div>
 </template>
 
 <script>
+  import state from '../../utils/state';
   import Role from './Role.vue';
 
   export default {
@@ -17,7 +34,16 @@
     components: { Role },
     props: {
       msg: String
-    }
+    },
+    data: function() {
+      return {
+      };
+    },
+    computed: {
+      currentRole() {
+        return this.$store.state.currentRole;
+      }
+    },
   };
 </script>
 
