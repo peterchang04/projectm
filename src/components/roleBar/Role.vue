@@ -1,31 +1,24 @@
 <template>
-  <div class="role" v-bind:class="{ odd: index % 2 }">
+  <div :class="classObj" :style="styleObj">
+    <IconEngineer v-if="index === 0" class="roleIcon" :style="iconStyleObj" />
+    <Portrait3 v-if="index === 0" class="portrait" />
 
-    <div v-if="index === 0" :class="roleName">
-      <IconEngineer class="roleIcon" v-on:click="setRole(index)" />
-      <Portrait3 class="portrait" />
-    </div>
+    <IconCaptain v-if="index === 1" class="roleIcon" :style="iconStyleObj"/>
+    <Portrait1 v-if="index === 1" class="portrait" />
 
-    <div v-if="index === 1" :class="roleName">
-      <IconCaptain class="roleIcon" v-on:click="setRole(index)" />
-      <Portrait1 class="portrait" />
-    </div>
+    <IconPilot v-if="index === 2" class="roleIcon" :style="iconStyleObj" />
+    <Portrait4 v-if="index === 2" class="portrait" />
 
-    <div v-if="index === 2" :class="roleName">
-      <IconPilot class="roleIcon" v-on:click="setRole(index)" />
-      <Portrait4 class="portrait" />
-    </div>
-
-    <div v-if="index === 3" :class="roleName">
-      <IconIntel class="roleIcon" v-on:click="setRole(index)" />
-      <portrait2 class="portrait" />
-    </div>
+    <IconIntel v-if="index === 3" class="roleIcon"  :style="iconStyleObj" />
+    <portrait2 v-if="index === 3" class="portrait" />
 
     <span v-bind:class="{ current: index === currentRole, roleText: true }">{{ roleName }}</span>
+    <button class="roleLink" v-on:click="setRole(index)"></button>
   </div>
 </template>
 
 <script>
+  import def from '../../definitions';
   import IconCaptain from '../../../public/assets/svg/roleIcons/medal.svg';
   import IconPilot from '../../../public/assets/svg/roleIcons/pilot.svg';
   import IconEngineer from '../../../public/assets/svg/roleIcons/wrench.svg';
@@ -42,15 +35,36 @@
       Portrait1, Portrait2, Portrait3, Portrait4
     },
     props: {
-      roleName: String,
       index: Number,
-      currentRole: Number,
     },
     methods: {
       setRole: function (role) {
         this.$store.dispatch('setCurrentRole', role);
       },
-    }
+    },
+    computed: {
+      currentRole() {
+        return this.$store.state.currentRole;
+      },
+      roleName() {
+        return def.roles[this.index].name;
+      },
+      classObj() {
+        const c = { role: true };
+        c[`${def.roles[this.index].name}`] = true; // add 'roleName' as a class
+        return c;
+      },
+      styleObj() {
+        return {
+          'background-color': `${def.roles[this.index].bgColor}`
+        };
+      },
+      iconStyleObj() {
+        return {
+          fill: `${def.roles[this.index].iconColor}`
+        };
+      }
+    },
   };
 </script>
 
@@ -61,12 +75,8 @@
     font-size: 3vw;
     color: #ddd;
     text-transform: uppercase;
-    background-color: #313131;
     position: relative;
     overflow: hidden;
-  }
-  .role.odd {
-    background-color: #151515;
   }
 
   .role .roleText {
@@ -103,41 +113,36 @@
     height: 100%;
   }
 
-  .role .engineer {
-    background-color: #253822;
+  .role.engineer {
   }
 
-  .role .captain {
-    background-color: #414225;
+  .role.captain {
   }
 
-  .role .pilot {
-    background-color:#3e2323;
+  .role.pilot {
   }
 
-  .role .intel {
-    background-color: #2e2e40;
+  .role.intel {
   }
 
-  .role .engineer .roleIcon {
-    fill: #5ea726;
+  .role.engineer .roleIcon {
   }
-  .role .captain .roleIcon {
-    fill: #d6b752;
+  .role.captain .roleIcon {
     bottom: 1.3vw;
   }
-  .role .pilot .roleIcon {
-    fill: #e54646;
+  .role.pilot .roleIcon {
   }
-  .role .intel .roleIcon {
-    fill: #3c87cf;
+  .role.intel .roleIcon {
   }
 
   .roleLink {
     position: absolute;
-    top: 25%;
+    top: 10%;
     left: 50%;
     width: 50%;
-    height: 75%;
+    height: 90%;
+    background-color: transparent;
+    border: none;
+    outline: none;
   }
 </style>
