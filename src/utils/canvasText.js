@@ -1,3 +1,4 @@
+// Copies images of prerendered text from one canvas to another. More performant than actually trying to render text on the fly
 import $g from '../utils/globals.js';
 let elShipView = null;
 const dictionary = {

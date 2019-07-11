@@ -4,7 +4,7 @@
     <!-- <TestOutput msg="Welcome. This is the Layout "/> -->
     <nav>
       <!-- <router-link to="/">Home</router-link> -->
-      <router-link v-if="$route.path !== '/pilot'" id="pilotLink" to="/pilot">TO PILOT</router-link>
+      <router-link v-if="$route.path !== '/game'" id="pilotLink" to="/game">TO GAME</router-link>
     </nav>
 
     <div id="viewport">

@@ -1,8 +1,10 @@
+// DEPRECATED - DO NOT USE 07/10/2019
 // these are the expected state values. Not absolutely necessary to predefine here, but it's instructive to.
 const state = {
   identifier: null,
   socketStatus: null, // -2:error, -1:unconnected, 0:connecting, 1:connected
   isHost: null, // null: hasn't picked, 0: no, 1: yes
+  currentRole: null, // null: hasn't picked, 0: engi, 1: captain, 2: pilot, 3: intel
 };
 // functions to trigger when state changes. fn(value, oldValue, key, state)
 const stateTriggers = {};
@@ -13,7 +15,6 @@ function init() {
 
 function get(key) {
   return (typeof state[key] === 'function') ? state[key](state) : state[key];
-  return state[key];
 }
 
 function set(key, value) {
