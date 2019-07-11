@@ -1,32 +1,19 @@
 <template>
   <div id="roleBar" class="proportionateHeightWrapper">
     <div class="content">
-      <Role
-        roleName="engineer"
-        :index="0"
-        :currentRole="currentRole"
-      />
-      <Role
-        roleName="captain"
-        :index="1"
-        :currentRole="currentRole"
-      />
-      <Role
-        roleName="pilot"
-        :index="2"
-        :currentRole="currentRole"
-      />
-      <Role
-        roleName="intel"
-        :index="3"
-        :currentRole="currentRole"
-      />
+      <Role :index="0" />
+      <Role :index="1" />
+      <Role :index="2" />
+      <Role :index="3" />
     </div>
+
+    <div class="roleBarOutline left" :style="roleBarOutlineStyleLeftObj"></div>
+    <div class="roleBarOutline right" :style="roleBarOutlineStyleRightObj"></div>
   </div>
 </template>
 
 <script>
-  import state from '../../utils/state';
+  import def from '../../definitions';
   import Role from './Role.vue';
 
   export default {
@@ -35,14 +22,26 @@
     props: {
       msg: String
     },
-    data: function() {
-      return {
-      };
-    },
     computed: {
       currentRole() {
         return this.$store.state.currentRole;
-      }
+      },
+      roleBarOutlineStyleLeftObj() {
+        if (this.$store.state.currentRole === null) return {};
+        return {
+          left: 0,
+          width: `${this.$store.state.currentRole * 25}%`,
+          'background-color': def.roles[this.$store.state.currentRole].bgColor,
+        };
+      },
+      roleBarOutlineStyleRightObj() {
+        if (this.$store.state.currentRole === null) return {};
+        return {
+          left: `${(this.$store.state.currentRole * 25) + 25}%`,
+          width: `${75 - (this.$store.state.currentRole * 25)}%`,
+          'background-color': def.roles[this.$store.state.currentRole].bgColor,
+        };
+      },
     },
   };
 </script>
@@ -69,5 +68,16 @@
     width: 25%;
     height: 100%;
   }
+
+  .roleBarOutline {
+    position: absolute;
+    width: 0;
+    bottom: 0;
+    left: 0;
+    background-color: red;
+    height: .6vw;
+    z-index: 1100;
+  }
+
 
 </style>
