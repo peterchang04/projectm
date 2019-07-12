@@ -3,22 +3,22 @@
     <TargetsBar />
     <GameView />
     <RoleBar />
-    <NoControls v-if="currentRole === null"></NoControls>
-    <EngineerControls v-if="currentRole === 0"></EngineerControls>
-    <CaptainControls v-if="currentRole === 1"></CaptainControls>
-    <PilotControls v-if="currentRole === 2"></PilotControls>
-    <IntelControls v-if="currentRole === 3"></IntelControls>
+    <NoPanel v-if="currentRole === null"></NoPanel>
+    <EngineerPanel v-if="currentRole === 0"></EngineerPanel>
+    <CaptainPanel v-if="currentRole === 1"></CaptainPanel>
+    <PilotPanel v-if="currentRole === 2"></PilotPanel>
+    <IntelPanel v-if="currentRole === 3"></IntelPanel>
   </div>
 </template>
 
 <script>
   import TargetsBar from '../targetBar/TargetsBar.vue';
   import RoleBar from '../roleBar/RoleBar.vue';
-  import NoControls from '../controls/NoControls.vue';
-  import EngineerControls from '../controls/EngineerControls.vue';
-  import CaptainControls from '../controls/CaptainControls.vue';
-  import PilotControls from '../controls/PilotControls.vue';
-  import IntelControls from '../controls/IntelControls.vue';
+  import NoPanel from '../controls/NoPanel.vue';
+  import EngineerPanel from '../controls/EngineerPanel.vue';
+  import CaptainPanel from '../controls/CaptainPanel.vue';
+  import PilotPanel from '../controls/PilotPanel.vue';
+  import IntelPanel from '../controls/IntelPanel.vue';
   import GameView from '../GameView.vue';
 
   export default {
@@ -26,11 +26,11 @@
     components: {
       TargetsBar,
       RoleBar,
-      NoControls,
-      EngineerControls,
-      CaptainControls,
-      PilotControls,
-      IntelControls,
+      NoPanel,
+      EngineerPanel,
+      CaptainPanel,
+      PilotPanel,
+      IntelPanel,
       GameView
     },
     props: {

@@ -12,7 +12,7 @@
     <!-- <canvas id="canvas_foreground"></canvas> -->
     <canvas id="canvas_listener"></canvas>
     <!-- TOP LAYER -->
-    <PilotSteering v-if="$route.path == '/game'"/>
+    <PilotSteering :class="{ hide: currentRole !== 2 }" />
   </div>
 </template>
 
@@ -22,8 +22,10 @@
 
   export default {
     components: { PilotSteering },
-    props: {
-      msg: String
+    computed: {
+      currentRole() {
+        return this.$store.state.currentRole;
+      },
     },
     mounted: function () {
       Main.init();
@@ -33,6 +35,10 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .hide{
+    z-index: -1;
+    opacity: 0;
+  }
   #shipView {
     position: relative;
     z-index: 1000;
