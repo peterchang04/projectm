@@ -1,31 +1,18 @@
 <template>
-  <div id="home">
+  <div id="host">
     <div id="identifierDiv">
       <div class="smaller">hosting as</div>
       <div class="identifierText">24 Kicking Ants</div>
     </div>
-    <div id="players">
-      <div class="player">
-
-      </div>
-      <div class="player">
-
-      </div>
-      <div class="player">
-
-      </div>
-      <div class="player">
-
-      </div>
-    </div>
-
+    <Players />
     <div id="invite">
       <input placeholder="enter invite code">
-      <button>INVITE</button>
+      <Button text="INVITE" />
+      <!-- <button>INVITE</button> -->
     </div>
     <div id="links">
-      <button id="left">join</button>
-      <button id="right">start</button>
+      <button onclick="window.location.href='#/join'" id="left">join</button>
+      <button onclick="window.location.href='#/pilot'" id="right">start</button>
     </div>
   </div>
 </template>
@@ -33,9 +20,12 @@
 <script>
   import state from '../state';
   import peers from '../utils/peers';
+  import Players from './Players.vue';
+  import Button from './Button.vue';
 
   export default {
-    name: 'home',
+    name: 'host',
+    components: { Players, Button },
     props: {
       msg: String,
     },
@@ -85,20 +75,13 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  #home {
+  #host {
     position: absolute;
     height: 160vw;
     top: 50%;
     margin-top: -80%;
   }
-  .player {
-    display: inline-block;
-    width: 38vw;
-    height: 38vw;
-    border: 0.5vw solid rgba(255, 255, 255, .5);
-    margin: 3vw;
-  }
-  #invite input, #invite button {
+  #invite input{
     display: inline-block;
     width: 83vw;
     background-color: transparent;
@@ -111,12 +94,6 @@
   #invite input {
     margin: 3.5vw;
     height: 12vw;
-  }
-  #invite button {
-    border-radius: 2vw;
-    margin: 3.5vw;
-    height: 18vw;
-    text-shadow: 0 0 2vw rgba(255, 255, 255, .5);
   }
   #identifierDiv {
     padding: 3vw 2.5vw;
@@ -142,8 +119,9 @@
   }
   #links button {
     margin: 3.5vw;
-    height: 1vw;
     color: white;
+    background-color: transparent;
+    border: none;
   }
   #left {
     position: fixed;

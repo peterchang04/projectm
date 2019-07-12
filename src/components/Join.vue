@@ -1,0 +1,169 @@
+<template>
+  <div id="join">
+    <div id="identifierDiv">
+      <div class="smaller">your code</div>
+      <div class="identifierText">24 Kicking Ants</div>
+    </div>
+    <div id="invite">
+      <input placeholder="enter invite code">
+      <Button text="INVITE" />
+      <!-- <button>INVITE</button> -->
+    </div>
+    <div id="links">
+      <button onclick="window.location.href='#/host'" id="left">host</button>
+    </div>
+  </div>
+</template>
+
+<script>
+  import state from '../state';
+  import peers from '../utils/peers';
+  import Players from './Players.vue';
+  import Button from './Button.vue';
+
+  export default {
+    name: 'join',
+    components: { Players, Button },
+    props: {
+      msg: String,
+    },
+    beforeCreate: function() {
+      state.onChange('identifier', (value) => { // set identifier when it gets loaded
+        this.identifier = value;
+      });
+      state.onChange('socketStatus', (value) => {
+        this.socketStatus = value;
+      });
+      state.onChange('isHost', (value) => {
+        this.isHost = value;
+      });
+    },
+    methods: {
+      inputSubmit: function (event) {
+        if (event.keyCode === 13 && this.message) {
+          peers.tryAdd(this.message);
+          // state.get('socket').checkPeer(this.message); // kicks off the connection process
+          this.message = ''; // reset the input to blank
+        }
+      }
+    },
+    data: () => { // this is how you set default values
+      return {
+        message: '',
+        identifier: '',
+        socketStatus: null,
+        isHost: null,
+      };
+    },
+    computed: {
+      socketStatusClass: function() {
+        return {
+          connected: this.socketStatus === 1,
+          reconnecting: this.socketStatus === -1,
+          failed: this.socketStatus === -2
+        };
+      },
+      socketStatusTitle: function() {
+        if (this.socketStatus === 1) return 'Socket.io connected';
+        if (this.socketStatus === -1) return 'Socket.io not connn'
+      }
+    }
+  };
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+  #join {
+    position: absolute;
+    height: 160vw;
+    top: 50%;
+    margin-top: -80%;
+  }
+  #invite input{
+    display: inline-block;
+    width: 83vw;
+    background-color: transparent;
+    border: 0.5vw solid rgba(255, 255, 255, .5);
+    color: white;
+    font-size: 5vw;
+    padding: 5vw;
+    margin-bottom: 2vw;
+  }
+  #invite input {
+    margin: 3.5vw;
+    height: 12vw;
+  }
+  #identifierDiv {
+    padding: 3vw 2.5vw;
+    margin: 16vw;
+  }
+  #identifierDiv .identifierText {
+    font-size: 8vw;
+    color: white;
+    letter-spacing: .2vw;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-shadow: 0 0 2vw rgba(255, 255, 255, .5);
+  }
+  #identifierDiv .smaller {
+    display: inline-block;
+    font-size: 5vw;
+    opacity: .4;
+    color: white;
+    text-shadow: 0 0 2vw rgba(255, 255, 255, .5);
+  }
+  #links {
+    font-size: 5.5vw;
+    bottom: 0;
+  }
+  #links button {
+    margin: 3.5vw;
+    color: white;
+    background-color: transparent;
+    border: none;
+  }
+  #left {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+  }
+  hr {
+    border: 1px solid #ddd;
+  }
+  #hr-or {
+    height: 20px;
+    margin: -18px auto 20px auto;
+    width: 41px;
+    background-color: #fff;
+  }
+  #socketStatus {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    border-radius: 10px;
+    height: 10px;
+    width: 10px;
+  }
+  #socketStatus.connected {
+    background-color: green;
+  }
+  #socketStatus.reconnecting {
+    background-color: orange;
+  }
+  #socketStatus.failed {
+    background-color: red;
+  }
+  #identifier {
+    position: relative;
+    padding: 15px;
+    color: green;
+    font-size: 18px;
+    font-weight: 500;
+  }
+  input[name=message] {
+    display: block;
+    width: 100px;
+    margin: auto;
+    padding: 5px 10px;
+  }
+</style>
