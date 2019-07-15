@@ -4,7 +4,7 @@
     <!-- <TestOutput msg="Welcome. This is the Layout "/> -->
     <nav>
       <!-- <router-link to="/">Home</router-link> -->
-      <router-link v-if="$route.path !== '/pilot'" id="pilotLink" to="/pilot">TO PILOT</router-link>
+      <!-- <router-link v-if="$route.path !== '/pilot'" id="pilotLink" to="/pilot">&lt;&nbsp;&nbsp;TO PILOT</router-link> -->
     </nav>
 
     <div id="viewport">
@@ -60,6 +60,12 @@
     position: fixed;
     top: 10px;
     left: 10px;
+    font-size: 4.5vw;
+    text-decoration: none;
+  }
+  #pilotLink:visited {
+    color: white;
+    text-decoration: none;
   }
   #viewport {
     margin: auto;

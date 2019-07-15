@@ -1,10 +1,10 @@
 <template>
-    <button>{{ text }}</button>
+  <button>{{ text }}</button>
 </template>
 
 <script>
   export default {
-    name: 'Button',
+    name: 'button',
     props: {
       text: String
     }
@@ -15,18 +15,15 @@
 <style scoped>
   button {
     display: inline-block;
+    height: 18vw;
     width: 83vw;
     background-color: transparent;
     border: 0.5vw solid rgba(255, 255, 255, .5);
     color: white;
     font-size: 5vw;
-    padding: 5vw;
-    margin-bottom: 2vw;
-  }
-  button {
+    /* padding: 5vw;
+    margin-bottom: 2vw; */
     border-radius: 2vw;
-    margin: 3.5vw;
-    height: 18vw;
     text-shadow: 0 0 2vw rgba(255, 255, 255, .5);
   }
 </style>

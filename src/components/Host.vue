@@ -4,15 +4,17 @@
       <div class="smaller">hosting as</div>
       <div class="identifierText">24 Kicking Ants</div>
     </div>
+
     <Players />
+
     <div id="invite">
       <input placeholder="enter invite code">
       <Button text="INVITE" />
-      <!-- <button>INVITE</button> -->
     </div>
+
     <div id="links">
-      <button onclick="window.location.href='#/join'" id="left">join</button>
-      <button onclick="window.location.href='#/pilot'" id="right">start</button>
+      <router-link id="left" to="/join">&lt;&nbsp;&nbsp;join</router-link>
+      <router-link id="right" to="/pilot">start&nbsp;&nbsp;&gt;</router-link>
     </div>
   </div>
 </template>
@@ -81,19 +83,17 @@
     top: 50%;
     margin-top: -80%;
   }
-  #invite input{
+  #invite input {
     display: inline-block;
+    height: 12vw;
     width: 83vw;
     background-color: transparent;
     border: 0.5vw solid rgba(255, 255, 255, .5);
     color: white;
     font-size: 5vw;
+    margin: 3.5vw;
     padding: 5vw;
     margin-bottom: 2vw;
-  }
-  #invite input {
-    margin: 3.5vw;
-    height: 12vw;
   }
   #identifierDiv {
     padding: 3vw 2.5vw;
@@ -114,24 +114,34 @@
     text-shadow: 0 0 2vw rgba(255, 255, 255, .5);
   }
   #links {
-    font-size: 5.5vw;
+    font-size: 4.5vw;
     bottom: 0;
   }
-  #links button {
+  /* #links button {
     margin: 3.5vw;
     color: white;
     background-color: transparent;
     border: none;
-  }
+  } */
   #left {
     position: fixed;
-    bottom: 0;
-    left: 0;
+    bottom: 4vw;
+    left: 4vw;
+    text-decoration: none;
   }
   #right {
     position: fixed;
-    bottom: 0;
-    right: 0;
+    bottom: 4vw;
+    right: 4vw;
+    text-decoration: none;
+  }
+  #left:visited {
+    color: white;
+  }
+  #right:visited {
+    opacity: .4;
+    color: white;
+    text-shadow: 0 0 2vw rgba(255, 255, 255, .5);
   }
   hr {
     border: 1px solid #ddd;

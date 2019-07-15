@@ -17,10 +17,7 @@
 
 <script>
   export default {
-    name: 'testOutput',
-    props: {
-      msg: String
-    }
+    name: 'players',
   };
 </script>
 

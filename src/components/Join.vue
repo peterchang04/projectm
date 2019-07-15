@@ -4,13 +4,14 @@
       <div class="smaller">your code</div>
       <div class="identifierText">24 Kicking Ants</div>
     </div>
+
     <div id="invite">
       <input placeholder="enter invite code">
       <Button text="INVITE" />
-      <!-- <button>INVITE</button> -->
     </div>
+
     <div id="links">
-      <button onclick="window.location.href='#/host'" id="left">host</button>
+      <router-link id="left" to="/host">&lt;&nbsp;&nbsp;host</router-link>
     </div>
   </div>
 </template>
@@ -113,19 +114,17 @@
     text-shadow: 0 0 2vw rgba(255, 255, 255, .5);
   }
   #links {
-    font-size: 5.5vw;
+    font-size: 4.5vw;
     bottom: 0;
-  }
-  #links button {
-    margin: 3.5vw;
-    color: white;
-    background-color: transparent;
-    border: none;
   }
   #left {
     position: fixed;
-    bottom: 0;
-    left: 0;
+    bottom: 4vw;
+    left: 4vw;
+    text-decoration: none;
+  }
+  #left:visited {
+    color: white;
   }
   hr {
     border: 1px solid #ddd;

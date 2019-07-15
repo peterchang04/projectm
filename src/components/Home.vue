@@ -1,15 +1,19 @@
 <template>
   <div id="home">
-    <div id="buttonsdiv">
-      <div id="host">
+    <div id="buttonsDiv">
+      <router-link to="/host">
         <Button text="HOST"/>
+      </router-link>
+
+      <hr>
+
+      <div id="or">
+        or
       </div>
-      <div>
-        ---------------- or ----------------
-      </div>
-      <div>
-        <Button text="JOIN" />
-      </div>
+
+      <router-link id="join" to="/join">
+        <Button text="JOIN"/>
+      </router-link>
     </div>
   </div>
 </template>
@@ -20,30 +24,38 @@
   export default {
     name: 'home',
     components: { Button },
-    props: {
-      msg: String,
-    },
   };
-
   </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  #home {
+  #buttonsDiv{
     position: absolute;
-    height: 160vw;
+    height: 60vw;
+    width: 100%;
     top: 50%;
-    margin-top: -80%;
-  }
-  #buttonsdiv{
-    position: absolute;
-    top: 25%;
-    padding: 3vw 2.5vw;
+    margin-top: -30vw;
   }
   #or {
-    padding: 3vw 2.5vw;
+    position: absolute;
+    width: 10%;
+    left: 45%;
+    background-color: #0c171f;
+    top: 50%;
+    margin-top: -3%;
   }
   #join {
-    padding: 3vw 2.5vw;
+    position: absolute;
+    top: 70%;
+    left: 8.5%;
+  }
+  hr {
+    position: absolute;
+    width: 60%;
+    border-width: .2vw;
+    opacity: .3;
+    left: 20%;
+    top: 50%;
+    margin-top: -2px;
   }
 </style>
