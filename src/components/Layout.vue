@@ -3,8 +3,6 @@
   <div id="app">
     <!-- <TestOutput msg="Welcome. This is the Layout "/> -->
     <nav>
-      <!-- <router-link to="/">Home</router-link> -->
-      <!-- <router-link v-if="$route.path !== '/pilot'" id="pilotLink" to="/pilot">&lt;&nbsp;&nbsp;TO PILOT</router-link> -->
     </nav>
 
     <div id="viewport">
@@ -55,17 +53,6 @@
     z-index: 1; /* overridden by javascript after user initiated scroll event */
     overscroll-behavior: none;
     touch-action: pan-down;
-  }
-  #pilotLink {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    font-size: 4.5vw;
-    text-decoration: none;
-  }
-  #pilotLink:visited {
-    color: white;
-    text-decoration: none;
   }
   #viewport {
     margin: auto;
