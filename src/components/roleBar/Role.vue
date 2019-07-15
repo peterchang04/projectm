@@ -83,7 +83,7 @@
     z-index: 1150;
     text-align: center;
     position: absolute;
-    top: .5vw;
+    top: .3vw;
     right: .8vw;
     width: 12vw
   }
@@ -103,7 +103,7 @@
 
   .role .roleIcon {
     position: absolute;
-    bottom: 1.1vw;
+    bottom: 1.4vw;
     height: 6vw;
     width: auto;
     right: 3.7vw;
