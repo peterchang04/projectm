@@ -21,8 +21,6 @@
     border: 0.5vw solid rgba(255, 255, 255, .5);
     color: white;
     font-size: 5vw;
-    /* padding: 5vw;
-    margin-bottom: 2vw; */
     border-radius: 2vw;
     text-shadow: 0 0 2vw rgba(255, 255, 255, .5);
   }

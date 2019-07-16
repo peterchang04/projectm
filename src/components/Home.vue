@@ -2,17 +2,15 @@
   <div id="home">
     <div id="buttonsDiv">
       <router-link to="/host">
-        <Button text="HOST"/>
+        <Button text="HOST" />
       </router-link>
 
-      <hr>
+      <hr />
 
-      <div id="or">
-        or
-      </div>
+      <div id="or">or</div>
 
       <router-link id="join" to="/join">
-        <Button text="JOIN"/>
+        <Button text="JOIN" />
       </router-link>
     </div>
   </div>
