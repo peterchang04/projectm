@@ -1,0 +1,68 @@
+steps:
+# pull the latest from repo branch: development
+- name: 'gcr.io/cloud-builders/git'
+  args: ['clone', 'https://github.com/peterchang04/projectm.git']
+
+- name: 'gcr.io/cloud-builders/git'
+  args: ['fetch']
+
+- name: 'gcr.io/cloud-builders/git'
+  args: ['checkout', 'development']
+
+# install package.json
+- name: 'gcr.io/cloud-builders/yarn'
+  args: ['install']
+
+# yarn globals
+- name: 'gcr.io/cloud-builders/yarn'
+  args: ['global', 'add', '@vue/cli']
+
+# build Dockerfile_cloudbuild in gcb -- substitutions stored at cloud build trigger
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build',
+    '-t', 'gcr.io/projectm-238622/development:$REVISION_ID',
+    '-f', 'Dockerfile_cloudbuild',
+    '--build-arg', 'env=${_ENV}',
+    '--build-arg', 'apiroot=${_APIROOT}',
+    '--build-arg', 'revision_id=$REVISION_ID',
+    '.'
+  ]
+# push ready-to-deploy image to container registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/projectm-238622/development:$REVISION_ID']
+
+# create a new instance template, to update instance groups to.
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: [
+    'beta', 'compute', 'instance-templates',
+    'create-with-container', 'prjm-itmp-dev-$REVISION_ID',
+    '--container-image', 'gcr.io/projectm-238622/development:$REVISION_ID',
+    '--boot-disk-device-name', 'prjm-itmp-dev-boot-$REVISION_ID',
+    '--boot-disk-size', '10GB',
+    '--boot-disk-type', 'pd-standard',
+    '--machine-type', 'f1-micro',
+    '--maintenance-policy', 'MIGRATE',
+    '--region', 'us-west1',
+    '--tags', 'http-server,https-server,http,https'
+  ]
+
+# update cloud instance group with latest image
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: [
+    'beta', 'compute', 'instance-groups', 'managed', 'rolling-action',
+    'start-update', 'projectm-instancegroup-development',
+    '--version', 'template=prjm-itmp-dev-$REVISION_ID',
+    '--max-surge', '1',
+    '--max-unavailable', '1',
+    '--zone', 'us-west1-b'
+  ]
+# build Dockerfile_local, for local development -- substitutions stored at cloud build trigger
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build',
+    '-t', 'gcr.io/projectm-238622/local',
+    '-f', 'Dockerfile_local',
+    '.'
+  ]
+# push local development image to container Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/projectm-238622/local']

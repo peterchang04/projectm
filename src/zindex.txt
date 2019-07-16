@@ -1,0 +1,4 @@
+ShipView: 1000
+TargetsBar: 1100
+CrewBar - 1100
+Controls - 1000

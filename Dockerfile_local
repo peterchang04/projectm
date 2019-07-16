@@ -1,0 +1,28 @@
+# used for local development - built by cloudbuild
+FROM node:8.11-alpine
+MAINTAINER peter
+
+# Ports
+ENV PORT 80
+EXPOSE 80
+
+# Directories
+ENV APP_DIR /app
+WORKDIR $APP_DIR
+
+# Copy package manager files
+COPY package*.json ./
+COPY yarn.lock ./
+
+# Get Dependencies
+RUN yarn install \
+  && yarn global add @vue/cli
+
+# Healthcheck
+HEALTHCHECK --interval=20s --timeout=12s --start-period=30s --retries=3 CMD node healthcheck.js
+
+# enable hot loading within container
+ENV CHOKIDAR_USEPOLLING=true
+
+# Launch
+CMD yarn run serve
