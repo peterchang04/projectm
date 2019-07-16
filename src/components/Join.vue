@@ -17,7 +17,6 @@
 </template>
 
 <script>
-  import state from '../state';
   import peers from '../utils/peers';
   import Players from './Players.vue';
   import Button from './Button.vue';
@@ -28,22 +27,10 @@
     props: {
       msg: String,
     },
-    beforeCreate: function() {
-      state.onChange('identifier', (value) => { // set identifier when it gets loaded
-        this.identifier = value;
-      });
-      state.onChange('socketStatus', (value) => {
-        this.socketStatus = value;
-      });
-      state.onChange('isHost', (value) => {
-        this.isHost = value;
-      });
-    },
     methods: {
       inputSubmit: function (event) {
         if (event.keyCode === 13 && this.message) {
           peers.tryAdd(this.message);
-          // state.get('socket').checkPeer(this.message); // kicks off the connection process
           this.message = ''; // reset the input to blank
         }
       }
