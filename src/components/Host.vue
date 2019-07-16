@@ -20,7 +20,7 @@
 </template>
 
 <script>
-  import state from '../state';
+  import state from '../utils/state';
   import peers from '../utils/peers';
   import Players from './Players.vue';
   import Button from './Button.vue';

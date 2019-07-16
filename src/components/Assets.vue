@@ -1,24 +1,13 @@
+<!-- preload all SVG into vue components here using svg-to-vue-component for rendering on canvas -->
 <template>
-  <div id="assets">
+  <div id="assets" :class="{ showAssets }">
     <MyShipSVG id="MyShipSVG" />
-    <MyShipSVG id="MyShipSVG2" />
-    <MyShipSVG id="MyShipSVG3" />
-    <MyShipSVG id="MyShipSVG4" />
-    <MyShipSVG id="MyShipSVG5" />
-    <MyShipSVG id="MyShipSVG6" />
-    <MyShipSVG id="MyShipSVG7" />
-    <MyShipSVG id="MyShipSVG8" />
-    <MyShipSVG id="MyShipSVG9" />
-    <MyShipSVG id="MyShipSVG10" />
-    <MyShipSVG id="MyShipSVG11" />
-    <MyShipSVG id="MyShipSVG12" />
   </div>
 </template>
 
 <script>
   import canvasSvg from '../utils/canvasSvg.js';
-  import canvasText from '../utils/canvasText.js';
-  import MyShipSVG from '../assets/svg/myShip.svg';
+  import MyShipSVG from '../../public/assets/svg/ships/myShip.svg';
   import $g from '../utils/globals.js';
 
   export default {
@@ -26,13 +15,14 @@
       MyShipSVG
     },
     props: {
-      // msg: String
+      showAssets: {
+        type: Boolean,
+        default: false, // set to true to debug, should be committed as false
+      },
     },
     mounted: function (){
       // processes all the assets
       canvasSvg.init();
-      // creates an in-memory canvas to prerender letters and numbers for performance
-      canvasText.init();
     }
   };
 </script>
@@ -47,6 +37,10 @@
     left: -1000px;
     z-index: 9999;
     text-align: left;
+  }
+  #assets.showAssets {
+    top: 0;
+    left: 0;
   }
   #assets svg {
     height:50px;

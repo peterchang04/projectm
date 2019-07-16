@@ -1,5 +1,5 @@
 import socket from './socketio';
-import state from '../state';
+import state from './state';
 
 let peers = null;
 
