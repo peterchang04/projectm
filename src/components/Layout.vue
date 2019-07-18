@@ -75,4 +75,21 @@
     left: 10px;
     z-index: 9999; /* needs updating. see zindex.txt */
   }
+  /* global styles for all panels and controls */
+  .panelGrid {
+    display: grid;
+    height: 100%;
+    grid-template-columns: repeat(8, 12.5%);
+    grid-template-rows: repeat(12, 8.3%);
+  }
+  .panelGrid > div {
+    height: 100%;
+    width: 100%;
+  }
+
+  /* standard animation effects */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
 </style>

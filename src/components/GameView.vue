@@ -11,17 +11,14 @@
     <!-- parallax stuff -->
     <!-- <canvas id="canvas_foreground"></canvas> -->
     <canvas id="canvas_listener"></canvas>
-    <!-- TOP LAYER -->
-    <PilotSteering :class="{ hide: currentRole !== 2 }" />
   </div>
 </template>
 
 <script>
   import Main from '../game/main.js';
-  import PilotSteering from './controls/PilotSteering.vue';
 
   export default {
-    components: { PilotSteering },
+    components: {},
     computed: {
       currentRole() {
         return this.$store.state.currentRole;
@@ -35,10 +32,6 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .hide{
-    z-index: -1;
-    opacity: 0;
-  }
   #shipView {
     position: relative;
     z-index: 1000;

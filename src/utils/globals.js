@@ -37,7 +37,7 @@ const viewport = {
   shipPixelY: 0,
 };
 
-// give javascript global references to these values
+// set global javascript  references to these values
 global.$g = { viewport, game, constants };
 
 export default { constants, viewport, game };

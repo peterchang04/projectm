@@ -1,6 +1,10 @@
 <template>
-  <div id="controls" class="proportionateHeightWrapper">
-    <div class="content">
+  <div class="proportionateHeightWrapper">
+    <div id="pilotPanel" class="content panelGrid" :style="borderStyle">
+      <Heading text="Left Tube" :gridColumnStart="2" :gridColumns="5" />
+      <Heading text="Right Tube" :gridColumnStart="6" :gridColumns="3" :gridRows="1" />
+      <SliderVertical title="thrust" status="51  %" :gridColumnStart="8" :gridColumns="1" :gridRowStart="1" :gridRows="11" />
+
       <div class="forwardThrustDiv">
         <Slider
           title="Forward Thrust"
@@ -21,15 +25,22 @@
 
 <script>
   import Slider from '../controls/Slider.vue';
+  import SliderVertical from './SliderVertical.vue';
+  import Heading from './Heading.vue';
   import $g from '../../utils/globals.js';
+  import def from '../../definitions';
 
   export default {
-    name: 'pilotControls',
-    components: { Slider },
+    name: 'pilotPanel',
+    components: { SliderVertical, Slider, Heading },
     props: {
       msg: String
     },
-
+    computed: {
+      borderStyle() {
+        return `border-color:${def.roles[2].bgColor}`;
+      }
+    },
     mounted: function() {
     },
     methods: {
@@ -48,21 +59,27 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   /* START This allows even height / width ratios across viewports */
-  .proportionateHeightWrapper { position: relative; width: 100%; }
+  .proportionateHeightWrapper {
+    position: relative;
+    width: 100%;
+    height: 74vw;
+  }
   .proportionateHeightWrapper:before{
     content: "";
     display: block;
-    padding-top: 74%; /* HEIGHT PROPORTION TO WIDTH */
+    /* padding-top: 74%; */ /* HEIGHT PROPORTION TO WIDTH - note: it apperas height 74vw is working */
   }
-  .content {
+  #pilotPanel {
     z-index: 1000;
     position: absolute;
     top: 0;
     left: 0;
     bottom: 0;
     right: 0;
-    padding: 2vw;
     text-align: left;
+    border-right: 1vw solid transparent;
+    border-bottom: 1vw solid transparent;
+    border-left: 1vw solid transparent;
   }
   /* END This allows for proportionate height / width ratio across viewports */
 
@@ -71,6 +88,7 @@
     left: 0px;
     top: 0px;
     padding: 2vw;
+    display: none;
   }
 
   .angularThrustDiv {
@@ -78,5 +96,6 @@
     top: 0px;
     right: 0px;
     padding: 2vw;
+    display: none;
   }
 </style>

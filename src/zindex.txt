@@ -1,4 +1,5 @@
-ShipView: 1000
+GameView: 1000
 TargetsBar: 1100
-CrewBar - 1100
-Controls - 1000
+RoleBar - 1100
+Panels - 1000
+PilotSteering - 1200
