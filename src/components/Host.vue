@@ -1,60 +1,40 @@
 <template>
-  <div id="home">
+  <div id="host">
     <div id="identifierDiv">
       <div class="smaller">hosting as</div>
       <div class="identifierText">24 Kicking Ants</div>
     </div>
-    <div id="players">
-      <div class="player">
 
-      </div>
-      <div class="player">
-
-      </div>
-      <div class="player">
-
-      </div>
-      <div class="player">
-
-      </div>
-    </div>
+    <Players />
 
     <div id="invite">
       <input placeholder="enter invite code">
-      <button>INVITE</button>
+      <Button text="INVITE" />
     </div>
+
     <div id="links">
-      <button id="left">join</button>
-      <button id="right">start</button>
+      <router-link id="left" to="/join">&lt;&nbsp;&nbsp;join</router-link>
+      <router-link id="right" to="/game">start&nbsp;&nbsp;&gt;</router-link>
     </div>
   </div>
 </template>
 
 <script>
-  import state from '../utils/state';
   import peers from '../utils/peers';
+  import Players from './Players.vue';
+  import Button from './Button.vue';
 
   export default {
-    name: 'home',
+    name: 'host',
+    components: { Players, Button },
     props: {
       msg: String,
     },
-    beforeCreate: function() {
-      state.onChange('identifier', (value) => { // set identifier when it gets loaded
-        this.identifier = value;
-      });
-      state.onChange('socketStatus', (value) => {
-        this.socketStatus = value;
-      });
-      state.onChange('isHost', (value) => {
-        this.isHost = value;
-      });
-    },
+
     methods: {
       inputSubmit: function (event) {
         if (event.keyCode === 13 && this.message) {
           peers.tryAdd(this.message);
-          // state.get('socket').checkPeer(this.message); // kicks off the connection process
           this.message = ''; // reset the input to blank
         }
       }
@@ -85,38 +65,23 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  #home {
+  #host {
     position: absolute;
     height: 160vw;
     top: 50%;
     margin-top: -80%;
   }
-  .player {
+  #invite input {
     display: inline-block;
-    width: 38vw;
-    height: 38vw;
-    border: 0.5vw solid rgba(255, 255, 255, .5);
-    margin: 3vw;
-  }
-  #invite input, #invite button {
-    display: inline-block;
+    height: 12vw;
     width: 83vw;
     background-color: transparent;
     border: 0.5vw solid rgba(255, 255, 255, .5);
     color: white;
     font-size: 5vw;
+    margin: 3.5vw;
     padding: 5vw;
     margin-bottom: 2vw;
-  }
-  #invite input {
-    margin: 3.5vw;
-    height: 12vw;
-  }
-  #invite button {
-    border-radius: 2vw;
-    margin: 3.5vw;
-    height: 18vw;
-    text-shadow: 0 0 2vw rgba(255, 255, 255, .5);
   }
   #identifierDiv {
     padding: 3vw 2.5vw;
@@ -137,23 +102,34 @@
     text-shadow: 0 0 2vw rgba(255, 255, 255, .5);
   }
   #links {
-    font-size: 5.5vw;
+    font-size: 4.5vw;
     bottom: 0;
   }
-  #links button {
+  /* #links button {
     margin: 3.5vw;
-    height: 1vw;
     color: white;
-  }
+    background-color: transparent;
+    border: none;
+  } */
   #left {
     position: fixed;
-    bottom: 0;
-    left: 0;
+    bottom: 4vw;
+    left: 4vw;
+    text-decoration: none;
   }
   #right {
     position: fixed;
-    bottom: 0;
-    right: 0;
+    bottom: 4vw;
+    right: 4vw;
+    text-decoration: none;
+  }
+  #left:visited {
+    color: white;
+  }
+  #right:visited {
+    opacity: .4;
+    color: white;
+    text-shadow: 0 0 2vw rgba(255, 255, 255, .5);
   }
   hr {
     border: 1px solid #ddd;
