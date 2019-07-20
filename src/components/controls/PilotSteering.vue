@@ -1,5 +1,5 @@
 <template>
-  <div id="steering">
+  <div id="steering" :class="{ show: showSteering }" :style="steeringTop">
     <div id="rotateDragger" :style="rotateDraggerStyle">
       <span id="draggerText" v-if="screenDegree != 0 || active">{{ dTarget.toFixed(1) }}°</span>
       <div id="dragger" :class="{ draggerActive: active }" :style="draggerStyle">
@@ -24,15 +24,26 @@
         screenDegree: 0,
         active: false,
         dTarget: 0,
+        showSteering: false,
+        steeringTop: '-500px',
+        centerX: -1, // set later
+        centerY: -1, // set later
       };
     },
     mounted: function() {
+      // set the vertical position of steering via javascript.
+      let top = $g.viewport.shipY;
+      // shift up by half of the height of steering div to center
+      let halfHeight = $g.viewport.vwPixels * (56 / 2); // 56 is height of steering div
+      // apply pixel ratio to halfHeight
+      halfHeight = halfHeight / $g.viewport.pixelRatio
+      top -= halfHeight;
+      this.steeringTop = `top:${top}px`;
+      // now fade in the steering controls
+      this.showSteering = true;
+
       const rotateDragger = this.$el.querySelector('#rotateDragger');
       const dragger = this.$el.querySelector('#dragger');
-      // get boundaries for computations
-      const bounds = rotateDragger.getBoundingClientRect();
-      const centerX = bounds.left + (bounds.width / 2);
-      const centerY = bounds.top + (bounds.height / 2);
 
       multiDrag.activate({
         el: dragger,
@@ -52,8 +63,16 @@
           });
         },
         onMove: (e) => {
+          // solve for center once
+          if (this.centerX === -1) {
+            // get boundaries for computations
+            const bounds = rotateDragger.getBoundingClientRect();
+            this.centerX = bounds.left + (bounds.width / 2);
+            this.centerY = bounds.top + (bounds.height / 2);
+          }
+
           this.screenDegree = maths.getDegree2P(
-            { x: centerX, y: $g.viewport.viewportHeight - centerY },
+            { x: this.centerX, y: $g.viewport.viewportHeight - this.centerY },
             { x: e.touches[0].clientX, y: $g.viewport.viewportHeight - e.touches[0].clientY },
           );
           this.screenDegree = maths.roundHalf(this.screenDegree);
@@ -109,6 +128,13 @@
     margin-left: -28vw;
     border-radius: 56vw;
     pointer-events: none;
+    z-index: 1200;
+    opacity: 0;
+  }
+  #steering.show {
+    opacity: 1;
+    animation-name: fadeIn;
+    animation-duration: 1.5s;
   }
   #rotateDragger {
     position: absolute;
