@@ -19,11 +19,6 @@
 
   export default {
     components: {},
-    computed: {
-      currentRole() {
-        return this.$store.state.currentRole;
-      },
-    },
     mounted: function () {
       Main.init();
     }

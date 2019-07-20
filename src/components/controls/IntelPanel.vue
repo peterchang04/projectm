@@ -1,17 +1,23 @@
 <template>
-  <div id="controls" class="proportionateHeightWrapper">
-    <div class="content">
+  <div class="proportionateHeightWrapper">
+    <div id="intelPanel" class="panelGrid" :style="borderStyle">
+      <Heading text="Ntel Panel" :gridColumnStart="1" :gridColumns="3" />
     </div>
   </div>
 </template>
 
 <script>
   import $g from '../../utils/globals.js';
+  import def from '../../definitions';
+  import Heading from './Heading.vue';
 
   export default {
     name: 'intelControls',
-    components: { },
-    mounted: function() {
+    components: { Heading },
+    computed: {
+      borderStyle() {
+        return `border-color:${def.roles[3].bgColor}`;
+      }
     },
   };
 </script>
@@ -19,13 +25,17 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   /* START This allows even height / width ratios across viewports */
-  .proportionateHeightWrapper { position: relative; width: 100%; }
+  .proportionateHeightWrapper {
+    position: relative;
+    width: 100%;
+    height: 74vw; /* HEIGHT PROPORTION TO WIDTH */
+  }
   .proportionateHeightWrapper:before{
     content: "";
     display: block;
-    padding-top: 74%; /* HEIGHT PROPORTION TO WIDTH */
+    /* padding-top: 74%; */ /* HEIGHT PROPORTION TO WIDTH - note: it apperas height 74vw is working */
   }
-  .content {
+  #intelPanel {
     z-index: 1000;
     position: absolute;
     top: 0;
@@ -34,6 +44,9 @@
     right: 0;
     padding: 2vw;
     text-align: left;
+    border-right: 1vw solid transparent;
+    border-bottom: 1vw solid transparent;
+    border-left: 1vw solid transparent;
   }
   /* END This allows for proportionate height / width ratio across viewports */
 </style>

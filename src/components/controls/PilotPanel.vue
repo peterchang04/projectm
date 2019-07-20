@@ -1,6 +1,6 @@
 <template>
   <div class="proportionateHeightWrapper">
-    <div id="pilotPanel" class="content panelGrid" :style="borderStyle">
+    <div id="pilotPanel" class="panelGrid" :style="borderStyle">
       <Heading text="Left Tube" :gridColumnStart="2" :gridColumns="5" />
       <Heading text="Right Tube" :gridColumnStart="6" :gridColumns="3" :gridRows="1" />
       <SliderVertical title="thrust" status="51  %" :gridColumnStart="8" :gridColumns="1" :gridRowStart="1" :gridRows="11" />
@@ -41,8 +41,6 @@
         return `border-color:${def.roles[2].bgColor}`;
       }
     },
-    mounted: function() {
-    },
     methods: {
       updateThrust(value) {
         $g.game.myShip.a = 3 * (value / 100);
@@ -62,7 +60,7 @@
   .proportionateHeightWrapper {
     position: relative;
     width: 100%;
-    height: 74vw;
+    height: 74vw; /* HEIGHT PROPORTION TO WIDTH */
   }
   .proportionateHeightWrapper:before{
     content: "";
@@ -85,17 +83,19 @@
 
   .forwardThrustDiv {
     position: absolute;
-    left: 0px;
     top: 0px;
-    padding: 2vw;
-    display: none;
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 2;
+    grid-row-end: 3;
   }
 
   .angularThrustDiv {
     position: absolute;
     top: 0px;
-    right: 0px;
-    padding: 2vw;
-    display: none;
+    grid-column-start: 5;
+    grid-column-end: 8;
+    grid-row-start: 2;
+    grid-row-end: 3;
   }
 </style>
