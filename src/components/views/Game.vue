@@ -3,11 +3,11 @@
     <TargetsBar />
     <GameView />
     <RoleBar />
-    <NoPanel v-if="currentRole === null"></NoPanel>
-    <EngineerPanel v-if="currentRole === 0"></EngineerPanel>
-    <CaptainPanel v-if="currentRole === 1"></CaptainPanel>
-    <PilotPanel v-if="currentRole === 2"></PilotPanel>
-    <IntelPanel v-if="currentRole === 3"></IntelPanel>
+    <NoPanel v-show="currentRole === null"></NoPanel>
+    <EngineerPanel v-show="currentRole === 0"></EngineerPanel>
+    <CaptainPanel v-show="currentRole === 1"></CaptainPanel>
+    <PilotPanel v-show="currentRole === 2"></PilotPanel>
+    <IntelPanel v-show="currentRole === 3"></IntelPanel>
   </div>
 </template>
 
@@ -20,6 +20,7 @@
   import PilotPanel from '../controls/PilotPanel.vue';
   import IntelPanel from '../controls/IntelPanel.vue';
   import GameView from '../GameView.vue';
+  import { mapState } from 'vuex'
 
   export default {
     name: 'intel',
@@ -36,11 +37,7 @@
     props: {
       msg: String
     },
-    computed: {
-      currentRole() {
-        return this.$store.state.currentRole;
-      }
-    },
+    computed: mapState (['currentRole']),
   };
 </script>
 
