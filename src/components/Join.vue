@@ -108,9 +108,11 @@
     position: fixed;
     bottom: 4vw;
     left: 4vw;
+    opacity: .4;
     text-decoration: none;
   }
   #left:visited {
+    opacity: .4;
     color: white;
   }
   hr {
