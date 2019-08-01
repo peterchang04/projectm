@@ -14,6 +14,7 @@
 
 <script>
   import def from '../../definitions';
+  import { mapState } from 'vuex';
   import Role from './Role.vue';
 
   export default {
@@ -23,23 +24,21 @@
       msg: String
     },
     computed: {
-      currentRole() {
-        return this.$store.state.currentRole;
-      },
+      ...mapState(['currentRole']),
       roleBarOutlineStyleLeftObj() {
-        if (this.$store.state.currentRole === null) return {};
+        if (this.currentRole === null) return {};
         return {
           left: 0,
-          width: `${this.$store.state.currentRole * 25}%`,
-          'background-color': def.roles[this.$store.state.currentRole].bgColor,
+          width: `${this.currentRole * 25}%`,
+          'background-color': def.roles[this.currentRole].bgColor,
         };
       },
       roleBarOutlineStyleRightObj() {
-        if (this.$store.state.currentRole === null) return {};
+        if (this.currentRole === null) return {};
         return {
-          left: `${(this.$store.state.currentRole * 25) + 25}%`,
-          width: `${75 - (this.$store.state.currentRole * 25)}%`,
-          'background-color': def.roles[this.$store.state.currentRole].bgColor,
+          left: `${(this.currentRole * 25) + 25}%`,
+          width: `${75 - (this.currentRole * 25)}%`,
+          'background-color': def.roles[this.currentRole].bgColor,
         };
       },
     },

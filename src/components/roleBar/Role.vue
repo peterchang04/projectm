@@ -18,6 +18,7 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex';
   import def from '../../definitions';
   import IconCaptain from '../../../public/assets/svg/roleIcons/medal.svg';
   import IconPilot from '../../../public/assets/svg/roleIcons/pilot.svg';
@@ -43,9 +44,7 @@
       },
     },
     computed: {
-      currentRole() {
-        return this.$store.state.currentRole;
-      },
+      ...mapState(['currentRole']),
       roleName() {
         return def.roles[this.index].name;
       },

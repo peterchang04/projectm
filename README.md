@@ -129,3 +129,5 @@ docker exec -it <container_name> /bin/sh
 ### ISSUES
 - after trying to launch Docker, Yarn says package.json is not found (suggesting -v is not working)
   - Windows Firewall has somehow broken Docker filesharing
+- trying to start vue cli (through launchDocker.bat for example) but missing dependency.
+  - could be new packages added to project that didn't install locally. In cmd run> yarn

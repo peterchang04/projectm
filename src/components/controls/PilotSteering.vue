@@ -1,7 +1,7 @@
 <template>
   <div id="steering" :class="{ show: showSteering }" :style="steeringTop">
     <div id="rotateDragger" :style="rotateDraggerStyle">
-      <span id="draggerText" v-if="screenDegree != 0 || active">{{ dTarget.toFixed(1) }}°</span>
+      <span id="draggerText" v-show="screenDegree != 0 || active">{{ dTarget.toFixed(1) }}°</span>
       <div id="dragger" :class="{ draggerActive: active }" :style="draggerStyle">
       </div>
     </div>

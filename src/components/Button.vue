@@ -4,7 +4,7 @@
 
 <script>
   export default {
-    name: 'button',
+    name: 'buttonComponent', // cant name as 'button' reserved word
     props: {
       text: String
     }
