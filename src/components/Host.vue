@@ -105,31 +105,27 @@
     font-size: 4.5vw;
     bottom: 0;
   }
-  /* #links button {
-    margin: 3.5vw;
-    color: white;
-    background-color: transparent;
-    border: none;
-  } */
   #left {
     position: fixed;
     bottom: 4vw;
     left: 4vw;
+    opacity: .4;
     text-decoration: none;
   }
   #right {
     position: fixed;
     bottom: 4vw;
     right: 4vw;
+    opacity: .4;
     text-decoration: none;
   }
   #left:visited {
+    opacity: .4;
     color: white;
   }
   #right:visited {
     opacity: .4;
     color: white;
-    text-shadow: 0 0 2vw rgba(255, 255, 255, .5);
   }
   hr {
     border: 1px solid #ddd;
