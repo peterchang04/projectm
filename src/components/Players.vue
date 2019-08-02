@@ -17,7 +17,7 @@
     </div>
     <div class="player">
       <portrait4 class="portrait" />
-      <div id="playerName">player 4</div>
+      <div id="playerName">player 4sdfassadfasd</div>
       <button id="cornerButton">x</button>
     </div>
   </div>
@@ -45,7 +45,6 @@
     width: 38.5vw;
     height: 38.5vw;
     margin: 3vw;
-    text-align: center;
     color: white;
     background-color: #295191;
   }
@@ -59,10 +58,10 @@
   }
   #playerName {
     position: absolute;
-    width: 88%;
-    margin-left: 6%;
+    width: 100%;
+    padding: 6%;
     font-size: 120%;
-    bottom: 8%;
+    bottom: 0%;
   }
   #cornerButton {
     position: absolute;
@@ -75,6 +74,5 @@
     color: white;
     background-color: inherit;
     border-color: white;
-    text-align: center;
   }
 </style>
