@@ -2,23 +2,23 @@
   <div id="players">
     <div class="player">
       <portrait1 class="portrait" />
-      <div id="playerName">player 1</div>
-      <button id="editButton">x</button>
+      <div id="playerName">X^X</div>
+      <button id="cornerButton">x</button>
     </div>
     <div class="player">
       <portrait2 class="portrait" />
       <div id="playerName">player 2</div>
-      <button id="editButton">x</button>
+      <button id="cornerButton">x</button>
     </div>
     <div class="player">
       <portrait3 class="portrait" />
       <div id="playerName">player 3</div>
-      <button id="editButton">x</button>
+      <button id="cornerButton">x</button>
     </div>
     <div class="player">
       <portrait4 class="portrait" />
       <div id="playerName">player 4</div>
-      <button id="editButton">x</button>
+      <button id="cornerButton">x</button>
     </div>
   </div>
 </template>
@@ -41,6 +41,7 @@
 <style scoped>
   .player {
     display: inline-block;
+    position: relative;
     width: 38.5vw;
     height: 38.5vw;
     margin: 3vw;
@@ -49,26 +50,31 @@
     background-color: #295191;
   }
   .portrait {
-    width: 34vw;
-    height: 34vw;
-    margin-top: 2.25vw;
+    position: absolute;
+    top: 6%;
+    left: 6%;
+    width: 88%;
+    height: 88%;
     background-color: #295191;
   }
   #playerName {
-    position: relative;
-    font-size: 5.5vw;
-    bottom: 7vw;
+    position: absolute;
+    width: 88%;
+    margin-left: 6%;
+    font-size: 120%;
+    bottom: 8%;
   }
-  #editButton {
-    position: relative;
-    width: 6vw;
-    height: 6vw;
-    bottom: 41vw;
-    left: 14vw;
+  #cornerButton {
+    position: absolute;
+    width: 15%;
+    height: 15%;
+    top: 6%;
+    right: 6%;
     border: 2px solid white;
     border-radius: 3px;
     color: white;
     background-color: inherit;
     border-color: white;
+    text-align: center;
   }
 </style>

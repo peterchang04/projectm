@@ -13,13 +13,13 @@
   -> cd c:/projectm
   -> git checkout development
 * ask peter to add to github as collaborator
+* install nodejs
+* install yarn for windows
+  https://yarnpkg.com
 * build out projectm using yarn
   -> cd c:/projectm
   -> yarn
 * in atom, add project folder (File > Add Project Folder) c:/projectm
-* install nodejs
-* install yarn for windows
-  https://yarnpkg.com
 * install docker for windows
   * create a login
 * install gcloud, using versioned archives (windows 64 bit + python)
