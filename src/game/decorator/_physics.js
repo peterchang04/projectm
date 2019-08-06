@@ -5,17 +5,23 @@ import globals from '../../utils/globals.js';
 import perf from '../../utils/perf.js';
 
 function add(obj) { let p = perf.start('_physics.add');
-
+  // DIRECTION
   if (obj.x === undefined) obj.x = 150; // coordinate
   if (obj.y === undefined) obj.y = 150; // coordinate
   if (obj.d === undefined) obj.d = 0; // in degrees. cardinal 0 is up, 359.9 is almost up
+
+  // SPEED
   if (obj.s === undefined) obj.s = 0; // meters / second
   if (obj.sMax === undefined) obj.sMax = 100;
   if (obj.a === undefined) obj.a = 0; // acceleration m/s^2
+  if (obj.aMax === undefined) obj.aMax = 6; // m/s^2
+
+  // angular acceleration
   if (obj.aS === undefined) obj.aS = 0; // angle / second
   if (obj.aSMax === undefined) obj.aSMax = 45; // angle / second
   if (obj.aA === undefined) obj.aA = 0; // acceleration angle / second^2
   obj.dTurn = 0; // where the ship *wants* to go +/- from current
+
   // computed values
   obj.temp.lastPositionUpdate = Date.now();
   obj.temp.lastMomentumUpdate = Date.now();
@@ -35,7 +41,6 @@ function add(obj) { let p = perf.start('_physics.add');
     perf.stop('_physics.obj.addOnUpdate', p);
   }
   obj.set = function(key, value) { let p = perf.start('_physics.obj.set');
-
     if (this[key] === value) return;
     if (this.callbacks[key]) {
       for (this.temp.name in this.callbacks[key]) {
@@ -68,18 +73,9 @@ function add(obj) { let p = perf.start('_physics.add');
     this.temp.now = Date.now();
     this.temp.elapsed = (this.temp.now - this.temp.lastMomentumUpdate) / 1000;
 
-    this.temp.decel = resistanceDeceleration(this.s);
-    // console.log(this.a, this.temp.decel, this.s, this.temp.elapsed);
+    // apply acc to speed
+    this.s += (this.a * this.temp.elapsed);
 
-    this.temp.aTotal = this.a + this.temp.decel;
-
-    // apply acceleration
-    this.s += (this.temp.aTotal * this.temp.elapsed);
-
-    // limit speed.
-    if (this.s > this.sMax) {
-      this.s = this.sMax;
-    }
     this.temp.lastMomentumUpdate = this.temp.now;
     perf.stop('_physics.obj.updateMomentum', p);
   };
@@ -159,26 +155,6 @@ function add(obj) { let p = perf.start('_physics.add');
   obj.updates.push('updateDirection');
 
   perf.stop('_physics.add', p);
-}
-
-
-let deceleration = 0;
-let absSpeed = 0;
-function resistanceDeceleration(speed) { let p = perf.start('_physics.obj.resistanceDeceleration');
-  if (speed === 0) {
-    perf.stop('_physics.obj.resistanceDeceleration', p);
-    return 0;
-  }
-  absSpeed = Math.abs(speed);
-  if (speed > 3) {
-    deceleration = absSpeed * .12;
-  } else {
-    deceleration = absSpeed * .25;
-  }
-  // minimum rate of deceleration.
-  if (deceleration < .3) deceleration = .3;
-  perf.stop('_physics.obj.resistanceDeceleration', p);
-  return (speed > 0) ? deceleration : deceleration;
 }
 
 export default { add };

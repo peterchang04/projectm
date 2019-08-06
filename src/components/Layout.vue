@@ -74,6 +74,7 @@
     height: 100%;
     grid-template-columns: repeat(8, 12.5%);
     grid-template-rows: repeat(12, 8.3%);
+    background-color: #21292f;
   }
   .panelGrid > div {
     height: 100%;

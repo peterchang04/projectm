@@ -17,7 +17,7 @@
     </div>
     <div class="player">
       <portrait4 class="portrait" />
-      <div id="playerName">player 4sdfassadfasd</div>
+      <div id="playerName">player 4</div>
       <button id="cornerButton">x</button>
     </div>
   </div>

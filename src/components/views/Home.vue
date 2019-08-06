@@ -17,7 +17,7 @@
 </template>
 
 <script>
-  import Button from './Button.vue';
+  import Button from '../controls/Button.vue';
 
   export default {
     name: 'home',

@@ -19,20 +19,12 @@ function init() { let p = perf.start('shipCanvas.init');
   canvas.width = $g.viewport.pixelWidth * .3;
   canvas.height = $g.viewport.pixelWidth * .3; // width again because square
 
-  // calculate the position of the ship on viewport
-  $g.game.setMyShipPixelLength(canvas.height / 1.42);
   const canvasPos = canvas.getBoundingClientRect();
   $g.viewport.shipX = canvasPos.x + (canvasPos.width / 2);
   $g.viewport.shipY = canvasPos.y + (canvasPos.height / 2);
   $g.viewport.shipPixelX = $g.viewport.shipX * $g.viewport.pixelRatio;
   $g.viewport.shipPixelY = $g.viewport.shipY * $g.viewport.pixelRatio;
   perf.stop('shipCanvas.init', p);
-}
-
-function update(parentUpdateCount) { let p = perf.start('shipCanvas.update');
-  stats.updateCount++;
-  $g.game.myShip.update(parentUpdateCount);
-  perf.stop('shipCanvas.update', p);
 }
 
 function draw() { let p = perf.start('shipCanvas.draw');
@@ -45,4 +37,4 @@ function draw() { let p = perf.start('shipCanvas.draw');
   perf.stop('shipCanvas.draw', p);
 }
 
-export default { init, update, draw };
+export default { init, draw };

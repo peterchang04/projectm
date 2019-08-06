@@ -5,6 +5,8 @@ const initialState = {
   socketStatus: null, // -2:error, -1:unconnected, 0:connecting, 1:connected
   isHost: null, // null: hasn't picked, 0: no, 1: yes
   currentRole: null, // null: hasn't picked, 0: engi, 1: captain, 2: pilot, 3: intel
+  // pilot controls
+  thrustValue: 0, // the position of the thruster control
 };
 
 export default {
@@ -12,6 +14,9 @@ export default {
   mutations: { // all state changes must also update state.js to keep it in sync
     setCurrentRole(state, payload) {
       state.currentRole = payload.role;
+    },
+    setThrustValue(state, payload) {
+      state.thrustValue = payload.thrustValue;
     },
     _syncState(state, payload) { // called by state.js, which allows non vue javascript to update vuex state
       if (payload.value === null) {
