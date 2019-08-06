@@ -3,7 +3,15 @@
     <div id="pilotPanel" class="panelGrid" :style="borderStyle">
       <Heading text="Left Tube" :gridColumnStart="2" :gridColumns="5" />
       <Heading text="Right Tube" :gridColumnStart="6" :gridColumns="3" :gridRows="1" />
-      <SliderVertical title="thrust" status="51  %" :gridColumnStart="8" :gridColumns="1" :gridRowStart="1" :gridRows="11" />
+      <SliderVertical
+        title="thrust"
+        :statusFunction="statusFunction"
+        :gridColumnStart="8"
+        :gridColumns="1"
+        :gridRowStart="1"
+        :gridRows="11"
+        v-on:update="updateThrust"
+      />
 
       <div class="forwardThrustDiv">
         <Slider
@@ -36,6 +44,11 @@
     props: {
       msg: String
     },
+    data() {
+      return {
+        statusFunction: (value) => { return `${value} %` },
+      };
+    },
     computed: {
       borderStyle() {
         return `border-color:${def.roles[2].bgColor}`;
@@ -43,8 +56,7 @@
     },
     methods: {
       updateThrust(value) {
-        $g.game.myShip.a = 3 * (value / 100);
-        $g.game.myShip.sMax = 20 * (value / 100);
+        $g.game.myShip.thrustValue = value;
       },
       updateAngular(value) {
         $g.game.myShip.aSMax = 20 * (value / 100);

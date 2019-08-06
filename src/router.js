@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 // pages
-import Home from './components/Home.vue';
-import Host from './components/Host.vue';
-import Join from './components/Join.vue';
+import Home from './components/views/Home.vue';
+import Host from './components/views/Host.vue';
+import Join from './components/views/Join.vue';
 import Game from './components/views/Game.vue';
 
 Vue.use(Router);

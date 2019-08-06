@@ -13,20 +13,16 @@ const stats = {
   renderCount: 0,
 };
 
-const actors = {};
-const bullets = {};
-const canvas = {};
+$g.game.actors = {};
+$g.game.bullets = {};
 
 function init() {
   // get the shipView's dimensions
   $g.viewport.update(document.getElementById('shipView').offsetWidth, document.getElementById('shipView').offsetHeight);
 
-  // identify canvases
-  canvas.ships = document.getElementById('canvas_ships').getContext('2d');
-  canvas.bullets = document.getElementById('canvas_bullets').getContext('2d');
-
   // register myShip with constants
-  $g.game.myShip = new Ship({ mX: 0, mY: 0, angle: 90, d: 0 }); // 35 55
+  $g.game.actors[0] = new Ship({ mX: 0, mY: 0, angle: 90, d: 0 });
+  $g.game.myShip = $g.game.actors[0]; // set pointer to myShip here
 
   // init dependencies
   canvasText.init();
@@ -45,10 +41,12 @@ function init() {
   draw();
 }
 
+let actorKey = null; // pointer to avoid memory allocation in loop
 function update() { let p = perf.start('main.update');
   stats.updateCount++;
-  backgroundCanvas.update(stats.updateCount);
-  shipCanvas.update(stats.updateCount);
+  for (actorKey in $g.game.actors) {
+    $g.game.actors[actorKey].update(stats.updateCount);
+  }
   perf.stop('main.update', p);
 }
 

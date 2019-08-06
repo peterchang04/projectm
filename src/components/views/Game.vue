@@ -11,6 +11,8 @@
 
     <!-- TOP LAYER -->
     <PilotSteering :class="{ hide: currentRole !== 2 }" />
+
+    <span id="test">{{ thrusterValue }}</span>
   </div>
 </template>
 
@@ -44,6 +46,9 @@
     computed: {
       currentRole() {
         return this.$store.state.currentRole;
+      },
+      thrusterValue() {
+        return this.$store.state.thrusterValue;
       }
     },
   };
@@ -51,6 +56,13 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  #test {
+    position: absolute;
+    left: 15vw;
+    top: 15vw;
+    z-index:3000;
+    color: white;
+  }
   #intel {
     display: flex;
     flex-direction: column;

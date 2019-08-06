@@ -4,18 +4,12 @@ const constants = {
   RADIAN: Math.PI / 180,
 };
 
-// game related values
+// game related values NOTE: maybe these belong somewhere in /game instead
 const game = {
-  myShip: null, // mX, mY
+  actors: { 0: null }, // all actors here. myShip = [0]
   id: 0,
-  myShipPixelLength: 0,
   newId: function() {
     return this.id++;
-  },
-  setMyShipPixelLength: function(length) {
-    this.myShipPixelLength = length;
-    // calculate pixel per meter for navigation
-    viewport.pixelsPerMeter = this.myShipPixelLength / this.myShip.length;
   },
 };
 
@@ -30,6 +24,13 @@ const viewport = {
     this.pixelWidth = viewportWidth * window.devicePixelRatio;
     this.pixelHeight = viewportHeight * window.devicePixelRatio;
     this.vwPixels = this.pixelWidth / 100;
+    /*
+      IMPORTANT pixelsPerMeter IS FOR ACTOR SCALE ON SCREEN
+      we want to show ship scale commensurate with having 7 ships worth of forward visibility initially.
+      half as much (3.5 ships) behind
+      ship is 30 meters so 210 meters forward, 105 behind for a total screen height of 315m
+    */
+    this.pixelsPerMeter = this.pixelHeight / 315;
   },
   shipX: 0,
   shipY: 0,

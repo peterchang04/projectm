@@ -20,9 +20,9 @@
 </template>
 
 <script>
-  import peers from '../utils/peers';
-  import Players from './Players.vue';
-  import Button from './Button.vue';
+  import peers from '../../utils/peers';
+  import Players from '../Players.vue';
+  import Button from '../controls/Button.vue';
 
   export default {
     name: 'host',

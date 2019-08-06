@@ -1,30 +1,53 @@
 <template>
-  <div id="sliderVertical" :style="styleObj">
+  <div id="sliderVertical" :style="mainStyle">
     <div class="margin">
       <div class="meter">
         <span class="title">{{ title }}</span>
-        <span class="status">{{ status }}</span>
+        <span class="status">{{ status || statusFunction(value) }}</span>
 
-        <div class="meterFill"></div>
-        <div class="handle"></div>
+        <div class="meterFill" :style="meterFillStyle"></div>
+        <div class="meterDeadZone" :style="meterDeadZoneStyle"><div class="redLine"></div></div>
+        <div class="meterFillNegative" :style="meterFillNegativeStyle"></div>
+
+        <div class="handle" :style="handleStyle"></div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+  import multiDrag from '../../utils/multiDrag.js';
+
   export default {
     name: 'sliderVertical',
     props: {
       title: String,
       status: String,
+      statusFunction: { type: Function, default: (value) => {} }, // displays status text based on
+      maxValue: { type: Number, default: 100 },
+      minValue: { type: Number, default: -30 },
+      deadZone: { type: Number, default: 10 }, // units like value
       gridColumnStart: { type: Number, default: 1 },
       gridColumns: { type: Number, default: 4 },
       gridRowStart: { type: Number, default: 1 },
       gridRows: { type: Number, default: 1 },
     },
+    data() {
+      return {
+        active: false, // whether or not lever being manipulated
+        position: 0, // value from 0 - 100 for handle position
+        value: 15, // the actual output value to systems. Not handle position
+        // derived after mounted
+        minY: -1, // minimum Y position of meter on screen
+        maxY: -1, // maximum Y position of meter on screen
+        height: -1, // height of meter
+      }
+    },
     computed: {
-      styleObj() {
+      valueSpread() {
+        return this.maxValue + this.deadZone - this.minValue;
+      },
+      mainStyle() {
         return {
           'grid-column-start': this.gridColumnStart,
           'grid-column-end': this.gridColumnStart + this.gridColumns,
@@ -32,8 +55,77 @@
           'grid-row-end': this.gridRowStart + this.gridRows,
         };
       },
+      meterFillStyle() {
+        return {
+          height: `${(this.value * 100 / this.valueSpread) }%`,
+          bottom: `${((Math.abs(this.minValue) + this.deadZone) * 100 / this.valueSpread)}%`,
+          'border-bottom-left-radius': (this.minValue < 0) ? '0' : '2vw',
+          'border-bottom-right-radius': (this.minValue < 0) ? '0' : '2vw',
+        };
+      },
+      meterFillNegativeStyle() {
+        return {
+          height: (this.value >= 0) ? 0 : `${Math.abs(this.value) * 100 / this.valueSpread}%`,
+          top: `${100 - (Math.abs(this.minValue) * 100 / this.valueSpread)}%`,
+        };
+      },
+      meterDeadZoneStyle() {
+        return {
+          height: `${this.deadZone * 100 / this.valueSpread}%`,
+          top: `${100 - (Math.abs(this.minValue - this.deadZone) * 100 / this.valueSpread)}%`,
+        };
+      },
+      handleStyle() {
+        return {
+          bottom: `${this.position}%`,
+          opacity: (this.active) ? 0.7 : 1, // see through when being dragged
+        }
+      }
     },
-    mounted: function() {
+    methods: {
+      positionToValue() {
+        return true;
+      },
+    },
+    mounted() {
+      const $handle = this.$el.querySelector('.handle');
+      const $meter = this.$el.querySelector('.meter');
+      // calculate the min-max Y values
+      const rect = $meter.getBoundingClientRect();
+      this.minY = rect.y;
+      this.maxY = rect.y + rect.height;
+      this.height = rect.height;
+
+      multiDrag.activate({
+        el: this.$el.querySelector('.handle'),
+        onMove: (e) => {
+          const pixelDistance = e.touches[e.which].clientY - this.minY;
+          let percent = pixelDistance * 100 / this.height;
+          if (percent < 0) percent = 0;
+          if (percent > 100) percent = 100;
+          this.position = 100 - percent;
+          // trigger v-bind:update
+          if (this.position !== this.previousPosition) {
+            // calculate value from position based on minValue, maxValue, deadzone
+            this.value = Math.round((this.valueSpread * (this.position / 100)) + this.minValue);
+            if (this.value > 0 && this.value < this.deadZone) {
+              this.value = 0;
+              this.position = (Math.abs(this.minValue - (this.deadZone / 2)) * 100 / this.valueSpread);
+            }
+            if (this.value > 0) {
+              this.value -= this.deadZone;
+            }
+            this.$emit('update', this.value);
+          }
+          this.previousPosition = this.position;
+        },
+        onStart: (e) => {
+          this.active = true;
+        },
+        onEnd: (e) => {
+          this.active = false;
+        }
+      });
     },
   };
 </script>
@@ -49,7 +141,7 @@
     height: 100%;
     left: 0;
     top: 0;
-    padding: 3vw;
+    padding: 4.5vw 3vw;
   }
 
   .meter {
@@ -58,12 +150,12 @@
     height: 100%;
     width: 100%;
     border-radius: 2vw;
-    box-shadow: inset 0 0 2vw #555;
+    border-left: .8vw solid #1f1f1f;
+    box-sizing: content-box;
   }
 
-  .meterFill {
+  .meterFill, .meterFillNegative {
     position: absolute;
-    bottom: 0;
     left: 0;
     height: 50%;
     width: 100%;
@@ -72,12 +164,37 @@
     border-radius: 2vw;
   }
 
+  .meterFillNegative {
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+  }
+
+  .meterDeadZone {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    background-color: #444;
+  }
+
+  .meterDeadZone .redLine {
+    position: absolute;
+    width: 130%;
+    height: 1vw;
+    background-color: red;
+    top: 50%;
+    left: -15%;
+    margin-top: -0.5vw;
+  }
+
   .handle {
     position: absolute;
-    top: 50%;
+    opacity: 1;
+    bottom: 50%;
     left: -25%;
+    cursor: pointer;
+    z-index: 1050;
     height: 5vw;
-    margin-top: -2.5vw;
+    margin-bottom: -2.5vw;
     width: 150%;
     background-color: #ddd;
     border: 0.5vw solid #666;

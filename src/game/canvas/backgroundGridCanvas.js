@@ -52,14 +52,14 @@ function draw() { let p = perf.start('backgroundGridCanvas.draw');
     context,
     coordinates,
     $g.viewport.shipPixelX - (context.measureText(coordinates).width * $g.viewport.pixelRatio / 2),
-    $g.viewport.shipPixelY + ($g.game.myShipPixelLength / 1.5)
+    $g.viewport.shipPixelY + (($g.viewport.pixelsPerMeter * 30) / 1.5)
   );
-  speedText = `${$g.game.myShip.d.toFixed(1)}° ${$g.game.myShip.s.toFixed(1)} m/s ${$g.game.myShip.aS.toFixed(1)} a/s`;
+  speedText = `${$g.game.myShip.d.toFixed(1)}° ${$g.game.myShip.s.toFixed(1)} m/s ${$g.game.myShip.aS.toFixed(1)} deg/s ${$g.game.myShip.a.toFixed(1)} acc`;
   canvasText.draw(
     context,
     speedText,
     $g.viewport.shipPixelX - (context.measureText(speedText).width * $g.viewport.pixelRatio / 2),
-    $g.viewport.shipPixelY + ($g.game.myShipPixelLength / 1.5) + canvasText.getLetterHeight()
+    $g.viewport.shipPixelY + (($g.viewport.pixelsPerMeter * 30) / 1.5) + canvasText.getLetterHeight()
   );
 
   applyRotation(context);

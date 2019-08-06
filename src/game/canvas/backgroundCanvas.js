@@ -68,10 +68,6 @@ prepopulateStars();
   perf.stop('backgroundCanvas.init', p);
 }
 
-function update() { let p = perf.start('backgroundCanvas.update');
-  perf.stop('backgroundCanvas.update', p);
-}
-
 function draw() { let p = perf.start('backgroundCanvas.draw');
   v.drawCount++;
   v.lastDraw = Date.now();
@@ -215,5 +211,5 @@ function prepopulateStars() { let p = perf.start('backgroundCanvas.prepopulateSt
 }
 
 export default {
-  init, update, draw
+  init, draw
 };

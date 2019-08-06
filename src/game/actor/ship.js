@@ -1,6 +1,7 @@
 import physics from '../decorator/_physics.js';
 import drawable from '../decorator/_drawable.js';
 import mappable from '../decorator/_mappable.js';
+import shipSystems from '../decorator/_shipSystems.js';
 import canvasSvg from '../../utils/canvasSvg.js';
 import perf from '../../utils/perf.js';
 
@@ -11,6 +12,7 @@ export default class Ship {
     drawable.add(this);
     physics.add(this);
     mappable.add(this);
+    shipSystems.add(this);
 
     applyType(this);
 
@@ -31,7 +33,8 @@ function applyType(ship, type = 0) { let p = perf.start('Ship.applyType');
 
 const shipTypes = {
   0: { // 0
-    sMax: 30,
+    sMaxShip: 40, // this is the ship max speed value and fixed. sMax will vary depending on thrust
+    sMax: 40,
     aSMax: 1,
     length: 20,
     mass: 80000, // kg
