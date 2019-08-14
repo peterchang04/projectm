@@ -12,7 +12,7 @@ let elSteeringCenterX = null;
 let elSteeringCenterY = null;
 let lineWidth = null;
 
-function init(width, height) { let p = perf.start('steeringCanvas.init');
+function init(width, height) { perf.start('steeringCanvas.init');
   // solve for center of #steering
   elSteering = document.getElementById('steering');
   elDragger = document.getElementById('dragger');
@@ -31,12 +31,12 @@ function init(width, height) { let p = perf.start('steeringCanvas.init');
   // lineWidth = elDragger.getBoundingClientRect().height * $g.viewport.pixelRatio * 2;
   //context.lineWidth = lineWidth;
   context.lineWidth = 50 * $g.viewport.vwPixels;
-  perf.stop('steeringCanvas.init', p);
+  perf.stop('steeringCanvas.init');
 }
 
 let lastEndRadian = -1;
 let endRadian = -1;
-function draw() { let p = perf.start('steeringCanvas.draw');
+function draw() { perf.start('steeringCanvas.draw');
   // solve for dist between current degree and target degree
   endRadian = maths.angleToRadian($g.game.myShip.dTurn - 90);
   if (lastEndRadian === endRadian) return; // don't draw, don't clear
@@ -53,7 +53,7 @@ function draw() { let p = perf.start('steeringCanvas.draw');
     ($g.game.myShip.dTurn < 0)
   );
   context.stroke();
-  perf.stop('steeringCanvas.draw', p);
+  perf.stop('steeringCanvas.draw');
 }
 
 export default { init, draw };

@@ -6,7 +6,7 @@ import canvasSvg from '../../utils/canvasSvg.js';
 import perf from '../../utils/perf.js';
 
 export default class Ship {
-  constructor(initialObj = {}) { /* e.g. { x,y,w,h,d,s } */ let p = perf.start('Ship.constructor');
+  constructor(initialObj = {}) { /* e.g. { x,y,w,h,d,s } */ perf.start('Ship.constructor');
     Object.assign(this, initialObj);
 
     drawable.add(this);
@@ -22,13 +22,13 @@ export default class Ship {
       canvasSvg.draw(context, 'MyShipSVG', { direction: 0, x: context.canvas.width / 2, y: context.canvas.height / 2 });
     };
     this.draws.push('drawMyShip');
-    perf.stop('Ship.constructor', p);
+    perf.stop('Ship.constructor');
   }
 }
 
-function applyType(ship, type = 0) { let p = perf.start('Ship.applyType');
+function applyType(ship, type = 0) { perf.start('Ship.applyType');
   Object.assign(ship, shipTypes[type]);
-  perf.stop('Ship.applyType', p);
+  perf.stop('Ship.applyType');
 }
 
 const shipTypes = {

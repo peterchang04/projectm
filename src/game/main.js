@@ -41,24 +41,46 @@ function init() {
   draw();
 }
 
+// pointers to avoid memory allocation
 let actorKey = null; // pointer to avoid memory allocation in loop
-function update() { let p = perf.start('main.update');
+let lastUpdated = Date.now();
+let now = null;
+let elapsedSec = null;
+
+function update() { perf.start('main.update');;
   stats.updateCount++;
+  now = Date.now();
+  elapsedSec = (now - lastUpdated) / 1000;
   for (actorKey in $g.game.actors) {
-    $g.game.actors[actorKey].update(stats.updateCount);
+    $g.game.actors[actorKey].update(elapsedSec, stats.updateCount);
   }
-  perf.stop('main.update', p);
+  lastUpdated = now;
+  perf.stop('main.update');
 }
 
 // draws at the refresh rate of device monitor. Mostly 60, but could be 100+
-function draw() { let p = perf.start('main.draw');
+function draw() { perf.start('main.draw');
   stats.lastDraw = Date.now();
   backgroundCanvas.draw();
   backgroundGridCanvas.draw();
   shipCanvas.draw();
   steeringCanvas.draw();
-  perf.stop('main.draw', p);
+  perf.stop('main.draw');
   requestAnimationFrame(draw);
 }
+
+/* REFERENCE FOR UPDATES FREQUENCIES
+every X updates : results in X fps : frame ever Xms
+  1 : 60fps : 17ms
+  2 : 30fps : 32ms
+  3 : 20fps : 50ms
+  4 : 15fps : 67ms
+  5 : 12fps : 83ms
+  6 : 10fps : 100ms
+  10: 6fps : 167ms
+  12: 5fps : 200ms
+  15: 4fps : 250ms
+  30: 2fps : 500ms
+*/
 
 export default { init };

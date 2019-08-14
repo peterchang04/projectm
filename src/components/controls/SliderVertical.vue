@@ -18,11 +18,14 @@
 <script>
   import multiDrag from '../../utils/multiDrag.js';
 
+  const temp = {};
+
   export default {
     name: 'sliderVertical',
     props: {
       title: String,
       status: String,
+      initialValue: { type: Number, default: 0 },
       statusFunction: { type: Function, default: (value) => {} }, // displays status text based on
       maxValue: { type: Number, default: 100 },
       minValue: { type: Number, default: -30 },
@@ -36,7 +39,7 @@
       return {
         active: false, // whether or not lever being manipulated
         position: 0, // value from 0 - 100 for handle position
-        value: 15, // the actual output value to systems. Not handle position
+        value: 0, // the actual output value to systems. Not handle position
         // derived after mounted
         minY: -1, // minimum Y position of meter on screen
         maxY: -1, // maximum Y position of meter on screen
@@ -83,9 +86,40 @@
       }
     },
     methods: {
-      positionToValue() {
-        return true;
+      getValueByPosition(position, minValue, maxValue, deadZone) {
+        temp.valueSpread = maxValue + deadZone - minValue;
+        temp.value = Math.round(temp.valueSpread * (position / 100)) + minValue;
+        // from 0 -> deadZone is all Zero
+        if (temp.value > 0 && temp.value < deadZone) {
+          temp.value = 0;
+        }
+        if (temp.value > 0) {
+          temp.value -= deadZone;
+        }
+        return temp.value;
       },
+      snapToDeadzone(value, minValue, maxValue, deadZone) {
+        temp.valueSpread = maxValue + deadZone - minValue;
+        if (value === 0) {
+          this.setPosition(Math.abs(minValue - (deadZone / 2)) * 100 / temp.valueSpread);
+          return true;
+        }
+        return false;
+      },
+      setPositionByValue(value, minValue, maxValue, deadZone) {
+        temp.valueSpread = maxValue + deadZone - minValue;
+        if (value === 0) {
+          temp.position = ((value - minValue) * 100 / temp.valueSpread) + (deadZone * 100 / temp.valueSpread / 2);
+        } else if (value < 0) {
+          temp.position = (value - minValue) * 100 / temp.valueSpread;
+        } else {
+          temp.position = ((value - minValue) * 100 / temp.valueSpread) + (deadZone * 100 / temp.valueSpread);
+        }
+        this.setPosition(temp.position);
+      },
+      setPosition(position) {
+        this.position = position;
+      }
     },
     mounted() {
       const $handle = this.$el.querySelector('.handle');
@@ -95,6 +129,10 @@
       this.minY = rect.y;
       this.maxY = rect.y + rect.height;
       this.height = rect.height;
+
+      // set initial values
+      this.value = this.initialValue;
+      this.setPositionByValue(this.initialValue, this.minValue, this.maxValue, this.deadZone);
 
       multiDrag.activate({
         el: this.$el.querySelector('.handle'),
@@ -106,17 +144,11 @@
           this.position = 100 - percent;
           // trigger v-bind:update
           if (this.position !== this.previousPosition) {
-            // calculate value from position based on minValue, maxValue, deadzone
-            this.value = Math.round((this.valueSpread * (this.position / 100)) + this.minValue);
-            if (this.value > 0 && this.value < this.deadZone) {
-              this.value = 0;
-              this.position = (Math.abs(this.minValue - (this.deadZone / 2)) * 100 / this.valueSpread);
-            }
-            if (this.value > 0) {
-              this.value -= this.deadZone;
-            }
+            this.value = this.getValueByPosition(this.position, this.minValue, this.maxValue, this.deadZone);
+            this.snapToDeadzone(this.value, this.minValue, this.maxValue, this.deadZone);
             this.$emit('update', this.value);
           }
+          // use this compare to exit function early
           this.previousPosition = this.position;
         },
         onStart: (e) => {
@@ -160,7 +192,7 @@
     height: 50%;
     width: 100%;
     background-color: #00c4ff;
-    box-shadow: 0 0 2vw rgba(53, 227, 255, 0.5);
+    box-shadow: rgb(10, 204, 252) 0px 0px 3vh;
     border-radius: 2vw;
   }
 

@@ -1,63 +1,74 @@
 // translates ship settings (throttle, energy settings, into physics outputs)
 import perf from '../../utils/perf.js';
+import $g from '../../utils/globals.js';
 
 const temp = {}; // memory pointer to avoid allocation for new variables
 
-function add(obj) { let p = perf.start('_shipSystems.add');
+function add(obj) { perf.start('_shipSystems.add');
   obj.thrustValue = 0; // position of thruster slider. (-25 --> 100)
   obj.decelerationSystem = true; // decelerates in the absence of thrust
 
-  obj.updateAccelerationByThrustValue = function() { perf.start('_shipSystems.obj.updateAccelerationByThrustValue');
-    // translate thrust slider value to acceleration (considering energy allocation)
-    this.a = (obj.thrustValue / 100) * obj.aMax;
+  // more thrust eq more force (eq more speed)
+  obj.updateForceByThrustValue = function(elapsedSec, updateCount) { perf.start('_shipSystems.obj.updateForceByThrustValue');
+    // thrustValue is up to 100.
+    temp.metersPerSecondAcceleration = 8; // how fast to accelerate
+    this.thrustForce = (this.thrustValue / 100) * this.mass * temp.metersPerSecondAcceleration; // can be negative if reversing
+    // adjust for direction
+    this.forceY = this.dY * this.thrustForce;
+    this.forceX = this.dX * this.thrustForce;
 
-    // tone down acceleration as we approach max speed
-    temp.maxSpeedRatio = Math.abs(obj.s / obj.sMax);
-    // tweak the linear to avoid infinite hyperbolic curve
-    temp.maxSpeedRatio -= 0.2;
-    temp.maxSpeedRatio = (temp.maxSpeedRatio < 0) ? 0 : temp.maxSpeedRatio; // don't let it be less than zero
-    this.a = this.a * (1 - temp.maxSpeedRatio);
+    // shut off force if past sMax
+    if (this.sMaxX > 0 && this.sX > this.sMaxX) this.forceX = 0;
+    if (this.sMaxX < 0 && this.sX < this.sMaxX) this.forceX = 0;
+    if (this.sMaxY > 0 && this.sY > this.sMaxY) this.forceY = 0;
+    if (this.sMaxY < 0 && this.sY < this.sMaxY) this.forceY = 0;
 
-    // enforce sMax by stopping acc
-    if (this.thrustValue > 0 && this.s >= this.sMax) { // can't acc further if sMax attained
-      this.a = 0;
-    } else if (this.thrustValue < 0 && this.s < (this.sMax * -1)) {
-      this.a = 0;
-    }
-
-    perf.stop('_shipSystems.obj.updateAccelerationByThrustValue', p);
+    perf.stop('_shipSystems.obj.updateForceByThrustValue');
   };
 
+  // cap max speed by thrust value
   obj.updateMaxSpeedByThrustValue = function() { perf.start('_shipSystems.obj.updateMaxSpeedByThrustValue');
     // max speed is 20% - 100% depending on thrustValue 0-100
-    temp.thrustRatio = Math.abs(obj.thrustValue / 100) * 0.8; // max is .8
-    temp.thrustRatio += 0.2; // now its 20%-100%
-    this.sMax = this.sMaxShip * temp.thrustRatio;
+    temp.thrustMaxSpeedRatio = Math.abs(obj.thrustValue / 100) * 0.8; // max is .8
+    temp.thrustMaxSpeedRatio += 0.2; // now its 20%-100%
+    this.sMax = this.sMaxShip * temp.thrustMaxSpeedRatio;
 
-    perf.stop('_shipSystems.obj.updateMaxSpeedByThrustValue', p);
-  }
+    this.sMaxX = this.sMax * this.dX;
+    this.sMaxY = this.sMax * this.dY;
 
-  obj.updateDeceleration = function() { perf.start('_shipSystems.obj.updateDeceleration');
-    // automatically stop ship when thrustValue set to zero
-    if (this.thrustValue === 0 && this.s !== 0) {
-      // should take 10 seconds to slow to zero
-      this.a = this.s / -10;
-
-      // make it jump to zero so it doesn't 'overshoot'
-      if (Math.abs(this.s) < .2) {
-        this.a = 0;
-        this.s = 0;
-      }
+    // when in reverse...
+    if (this.thrustForce < 0) {
+      this.sMaxX = this.sMaxX * -1;
+      this.sMaxY = this.sMaxY * -1;
     }
-    perf.stop('_shipSystems.obj.updateDeceleration', p);
+
+    // otherwise, sMax stuck at 8 when no thrust.
+    if (this.thrustForce === 0) this.sMax = 0;
+
+    perf.stop('_shipSystems.obj.updateMaxSpeedByThrustValue');
   }
+
+  // a readout of speed. Based on direction
+  obj.calculateSpeed = function(elapsedSec, updateCount) { perf.start('_shipSystems.obj.calculateSpeed');
+    if (updateCount % 10 !== 0) { // only run updateSpeedByThrust every 4th update. Fewer calculations
+      perf.stop('_shipSystems.obj.calculateSpeed');
+      return;
+    }
+
+    temp.sXRatio = this.dX * this.sX;
+    temp.sYRatio = this.dY * this.sY;
+
+    this.s = temp.sXRatio + temp.sYRatio;
+
+    perf.stop('_shipSystems.obj.calculateSpeed');
+  };
 
   // register update functions
-  obj.updates.push('updateAccelerationByThrustValue');
+  obj.updates.push('updateForceByThrustValue');
   obj.updates.push('updateMaxSpeedByThrustValue');
-  obj.updates.push('updateDeceleration');
+  obj.updates.push('calculateSpeed');
 
-  perf.stop('_shipSystems.add', p);
+  perf.stop('_shipSystems.add');
 }
 
 export default { add };

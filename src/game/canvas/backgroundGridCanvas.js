@@ -18,11 +18,11 @@ let currentXPixel = 0;
 let currentYText = '';
 let currentXText = '';
 // calculations
-const gridDistance = 152.7236296296296 * 2; // meters
+const gridDistance = 100; // meters
 let gridPixels = 0; // how many pixels in between grids?
 let screenGridCount = 0; // how many grids can fit on screen?
 
-function init(width, height) { let p = perf.start('backgroundGridCanvas.init');
+function init(width, height) { perf.start('backgroundGridCanvas.init');
   canvas = document.getElementById('canvas_grid');
   context = canvas.getContext('2d');
   // set canvas resolution
@@ -37,12 +37,12 @@ function init(width, height) { let p = perf.start('backgroundGridCanvas.init');
   screenGridCount++; // if grid bigger than screen, the count would be zero.
   // double it to represent what's drawn above, and below the ship
   screenGridCount = screenGridCount * 4;
-  perf.stop('backgroundGridCanvas.init', p);
+  perf.stop('backgroundGridCanvas.init');
 }
 
 let coordinates = '';
 let speedText = '';
-function draw() { let p = perf.start('backgroundGridCanvas.draw');
+function draw() { perf.start('backgroundGridCanvas.draw');
   context.setTransform(1, 0, 0, 1, 0, 0); // restore context
   context.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -54,7 +54,7 @@ function draw() { let p = perf.start('backgroundGridCanvas.draw');
     $g.viewport.shipPixelX - (context.measureText(coordinates).width * $g.viewport.pixelRatio / 2),
     $g.viewport.shipPixelY + (($g.viewport.pixelsPerMeter * 30) / 1.5)
   );
-  speedText = `${$g.game.myShip.d.toFixed(1)}° ${$g.game.myShip.s.toFixed(1)} m/s ${$g.game.myShip.aS.toFixed(1)} deg/s ${$g.game.myShip.a.toFixed(1)} acc`;
+  speedText = `${$g.game.myShip.d.toFixed(1)}° ${$g.game.myShip.s.toFixed(1)} m/s ${$g.game.myShip.aS.toFixed(1)} deg/s`;
   canvasText.draw(
     context,
     speedText,
@@ -67,16 +67,16 @@ function draw() { let p = perf.start('backgroundGridCanvas.draw');
   drawLongitudes();
 
   context.setTransform(1, 0, 0, 1, 0, 0); // restore context
-  perf.stop('backgroundGridCanvas.draw', p);
+  perf.stop('backgroundGridCanvas.draw');
 }
 
-function applyRotation(context) { let p = perf.start('backgroundGridCanvas.applyRotation');
+function applyRotation(context) { perf.start('backgroundGridCanvas.applyRotation');
   context.translate($g.viewport.shipPixelX, $g.viewport.shipPixelY);
   context.rotate(-$g.game.myShip.d * $g.constants.RADIAN);
-  perf.stop('backgroundGridCanvas.applyRotation', p);
+  perf.stop('backgroundGridCanvas.applyRotation');
 }
 
-function drawLatitudes() { let p = perf.start('backgroundGridCanvas.drawLatitudes');
+function drawLatitudes() { perf.start('backgroundGridCanvas.drawLatitudes');
   // begin with the ship's Y.
   startYPixel = $g.viewport.shipPixelY; // we want this to be negative
   // move up by drawable grid sections
@@ -121,10 +121,10 @@ function drawLatitudes() { let p = perf.start('backgroundGridCanvas.drawLatitude
     );
     currentYPixel += gridPixels;
   }
-  perf.stop('backgroundGridCanvas.drawLatitudes', p);
+  perf.stop('backgroundGridCanvas.drawLatitudes');
 }
 
-function drawLongitudes() { let p = perf.start('backgroundGridCanvas.drawLongitudes');
+function drawLongitudes() { perf.start('backgroundGridCanvas.drawLongitudes');
   // begin with the ship's Y.
   startXPixel = $g.viewport.shipPixelX; // we want this to be negative
   // move up by drawable grid sections
@@ -169,7 +169,7 @@ function drawLongitudes() { let p = perf.start('backgroundGridCanvas.drawLongitu
     );
     currentXPixel += gridPixels;
   }
-  perf.stop('backgroundGridCanvas.drawLongitudes', p);
+  perf.stop('backgroundGridCanvas.drawLongitudes');
 }
 
 export default { init, draw };

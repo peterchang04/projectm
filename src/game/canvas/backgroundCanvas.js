@@ -3,6 +3,7 @@ import Particle from '../actor/particle.js';
 import random from '../../utils/random.js';
 import $g from '../../utils/globals.js';
 import perf from '../../utils/perf.js';
+const temp = {};
 
 const v = { // file scope
   temp: {},
@@ -19,7 +20,7 @@ const v = { // file scope
 
 const particles = {};
 
-function init() { let p = perf.start('backgroundCanvas.init');
+function init() { perf.start('backgroundCanvas.init');
 /*
   The viewable canvas will utilize hypotenuse sided squares (seen below)
   Square have width of the hypotenuse of the larger of 2 dimensions
@@ -64,20 +65,20 @@ function init() { let p = perf.start('backgroundCanvas.init');
     v.shipView.appendChild(v.resourceCanvas);
   }
 
-prepopulateStars();
-  perf.stop('backgroundCanvas.init', p);
+  prepopulateStars();
+  perf.stop('backgroundCanvas.init');
 }
 
-function draw() { let p = perf.start('backgroundCanvas.draw');
+function draw() { perf.start('backgroundCanvas.draw');
   v.drawCount++;
   v.lastDraw = Date.now();
   // figure out the current quadrant [origin, horizNeighbor, vertNeigbor, diagnal]
   drawStars();
 
-  perf.stop('backgroundCanvas.draw', p);
+  perf.stop('backgroundCanvas.draw');
 }
 
-function drawStars(scale = .5) {
+function drawStars(scale = .5) { perf.start('backgroundCanvas.drawStars');
   v.context.clearRect(0, 0, v.canvas.width, v.canvas.height);
   // get the current meter coordinate in pixels (from 0,0)
   v.temp.mXPixels = $g.game.myShip.mX * $g.viewport.pixelsPerMeter;
@@ -169,17 +170,21 @@ function drawStars(scale = .5) {
 
   // restore context back to normal
   v.context.setTransform(1, 0, 0, 1, 0, 0);
+  perf.stop('backgroundCanvas.drawStars');
 }
 
-function getSourceByQuadrant(qX, qY) {
+function getSourceByQuadrant(qX, qY) { perf.start('backgroundCanvas.getSourceByQuadrant');
+  temp.sourceX = (qX % 2 === 0) ? 0 : v.resourceCanvas.width / 2;
+  temp.sourceY = (qY % 2 === 0) ? 0 : v.resourceCanvas.height / 2;
   // given a quadrant (x,y) always render the same source set of stars
+  perf.stop('backgroundCanvas.getSourceByQuadrant');
   return {
-    sourceX: (qX % 2 === 0) ? 0 : v.resourceCanvas.width / 2,
-    sourceY: (qY % 2 === 0) ? 0 : v.resourceCanvas.height / 2
+    sourceX: temp.sourceX,
+    sourceY: temp.sourceY,
   };
 }
 
-function prepopulateStars() { let p = perf.start('backgroundCanvas.prepopulateStars');
+function prepopulateStars() { perf.start('backgroundCanvas.prepopulateStars');
   for (v.temp.i = 0; v.temp.i < 200; v.temp.i++) {
     v.temp.particleX = random.get(5000) % v.resourceCanvas.width;
     v.temp.particleY = random.get(5000) % v.resourceCanvas.height;
@@ -207,7 +212,7 @@ function prepopulateStars() { let p = perf.start('backgroundCanvas.prepopulateSt
     );
     v.resourceContext.fill();
   }
-  perf.stop('backgroundCanvas.prepopulateStars', p);
+  perf.stop('backgroundCanvas.prepopulateStars');
 }
 
 export default {

@@ -5,21 +5,18 @@
       <Heading text="Right Tube" :gridColumnStart="6" :gridColumns="3" :gridRows="1" />
       <SliderVertical
         title="thrust"
+        :initialValue="getGameThrustValue"
         :statusFunction="statusFunction"
         :gridColumnStart="8"
         :gridColumns="1"
         :gridRowStart="1"
         :gridRows="11"
+        :maxValue="100"
+        :minValue="-50"
+        :deadZone="25"
         v-on:update="updateThrust"
       />
 
-      <div class="forwardThrustDiv">
-        <Slider
-          title="Forward Thrust"
-          :initialPercent="0"
-          v-on:update="updateThrust"
-        />
-      </div>
       <div class="angularThrustDiv">
         <Slider
           title="Angular Thrust"
@@ -50,6 +47,9 @@
       };
     },
     computed: {
+      getGameThrustValue() {
+        return $g.game.myShip.thrustValue;
+      },
       borderStyle() {
         return `border-color:${def.roles[2].bgColor}`;
       }
@@ -62,6 +62,9 @@
         $g.game.myShip.aSMax = 20 * (value / 100);
         if ($g.game.myShip.aSMax === 0) $g.game.myShip.aSMax = 1; // minimum aSMax
       }
+    },
+    mounted() {
+
     }
   };
 </script>
@@ -92,15 +95,6 @@
     border-left: 1vw solid transparent;
   }
   /* END This allows for proportionate height / width ratio across viewports */
-
-  .forwardThrustDiv {
-    position: absolute;
-    top: 0px;
-    grid-column-start: 2;
-    grid-column-end: 3;
-    grid-row-start: 2;
-    grid-row-end: 3;
-  }
 
   .angularThrustDiv {
     position: absolute;
