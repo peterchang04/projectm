@@ -1,16 +1,16 @@
 let activate = true;
 let logs = {};
-let now = null;
 let metrics = {};
 
 let start = function() { return; };
 let stop = function() { return; };
 
+const temp = {};
+
 if (activate) {
   start = function(key) {
-    now = performance.now();
     if (!logs[key]) {
-      logs[key] = {};
+      logs[key] = []; // FIFO
       metrics[key] = {
         n: key,
         cost: 0, //relative to baseline
@@ -19,14 +19,15 @@ if (activate) {
         u: 0
       };
     }
-    logs[key][now] = -1;
-    return now;
+    logs[key].push(performance.now());
   }
 
   stop = function(key, startNow) {
-    delete logs[key][startNow];
+    if (logs[key].length) {
+      temp.start = logs[key].shift();
+    }
     metrics[key].c++;
-    metrics[key].t += performance.now() - startNow;
+    metrics[key].t += performance.now() - temp.start;
     return;
   }
 
@@ -91,15 +92,14 @@ if (activate) {
     metrics[key].timeAvg = metrics[key].t / metrics[key].c;
   }
 
-  // create a baseline scenario to compare others to
+  // create a baseline scenario to compare others to. Roughly 3 seconds
   const baselineArray = [1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0];
-  let baseP = null;
   setInterval(() => {
-    baseP = start('__baseline');
+    start('__baseline');
     baselineArray.forEach((item, i) => {
       baselineArray[i] = Math.random();
     });
-    stop('__baseline', baseP);
+    stop('__baseline');
   }, 100);
 
   // attach to global object so can be called from console window

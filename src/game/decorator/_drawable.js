@@ -8,9 +8,9 @@ function add(obj = {}) {
   if (!obj.c) obj.c = '#fff';
   obj.updates = [];
   obj.draws = [];
-  obj.update = function (updateCount = -1) {
+  obj.update = function (elapsedSec, updateCount) {
     obj.updates.forEach((word) => {
-      obj[word](updateCount);
+      obj[word](elapsedSec, updateCount);
     });
   };
   obj.draw = function(context) {

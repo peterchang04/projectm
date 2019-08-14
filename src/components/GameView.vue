@@ -42,11 +42,9 @@
   }
   #canvas_myShip {
     height: auto;
-    width: 30%;
-    left: 35%;
-    right: 35%;
+    width: 30%; /* width overwritten in js */
+    left: 50%;
     top: auto;
-    bottom: 17%;
-    transform: scale(.3);
+    bottom: 33%; /* 2/3 forward 1/3 backwards visibility */
   }
 </style>

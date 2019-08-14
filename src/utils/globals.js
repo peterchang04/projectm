@@ -1,7 +1,9 @@
 const constants = {
   DEBUG: false,
+  // precalc these to save computations
   PI2: Math.PI * 2,
   RADIAN: Math.PI / 180,
+  SQRT2: Math.sqrt(2),
 };
 
 // game related values NOTE: maybe these belong somewhere in /game instead
