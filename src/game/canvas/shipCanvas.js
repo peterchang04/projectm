@@ -40,6 +40,7 @@ function draw() { perf.start('shipCanvas.draw');
   stats.lastDraw = Date.now();
 
   $g.game.myShip.draw(context);
+
   perf.stop('shipCanvas.draw');
 }
 

@@ -17,6 +17,10 @@
         v-on:update="updateThrust"
       />
 
+      <button v-on:click="fireProjectile()" id="testButton">Gun</button>
+
+      <button v-on:click="fireProjectile2()" id="testButton2">Laser</button>
+
       <div class="angularThrustDiv">
         <Slider
           title="Angular Thrust"
@@ -61,6 +65,12 @@
       updateAngular(value) {
         $g.game.myShip.aSMax = 20 * (value / 100);
         if ($g.game.myShip.aSMax === 0) $g.game.myShip.aSMax = 1; // minimum aSMax
+      },
+      fireProjectile() {
+        $g.game.myShip.fireCannon();
+      },
+      fireProjectile2() {
+        $g.game.myShip.fireCannon(1);
       }
     },
     mounted() {
@@ -99,8 +109,22 @@
   .angularThrustDiv {
     position: absolute;
     top: 0px;
-    grid-column-start: 5;
-    grid-column-end: 8;
+    grid-column-start: 3;
+    grid-column-end: 6;
+    grid-row-start: 9;
+    grid-row-end: 10;
+  }
+
+  #testButton {
+    grid-column-start: 3;
+    grid-column-end: 4;
+    grid-row-start: 2;
+    grid-row-end: 3;
+  }
+
+  #testButton2 {
+    grid-column-start: 6;
+    grid-column-end: 7;
     grid-row-start: 2;
     grid-row-end: 3;
   }

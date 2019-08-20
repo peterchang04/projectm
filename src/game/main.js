@@ -2,10 +2,13 @@ import backgroundCanvas from './canvas/backgroundCanvas.js';
 import backgroundGridCanvas from './canvas/backgroundGridCanvas.js';
 import steeringCanvas from './canvas/steeringCanvas.js';
 import shipCanvas from './canvas/shipCanvas.js';
+import actorCanvas from './canvas/actorCanvas.js';
 import $g from '../utils/globals.js';
 import canvasText from '../utils/canvasText.js';
 import perf from '../utils/perf.js';
 import Ship from '../game/actor/ship.js';
+import Projectile from '../game/actor/projectile.js';
+import _factory from '../game/actor/_factory.js';
 
 const stats = {
   updateCount: 0,
@@ -21,19 +24,20 @@ function init() {
   $g.viewport.update(document.getElementById('shipView').offsetWidth, document.getElementById('shipView').offsetHeight);
 
   // register myShip with constants
-  $g.game.actors[0] = new Ship({ mX: 0, mY: 0, angle: 90, d: 0 });
-  $g.game.myShip = $g.game.actors[0]; // set pointer to myShip here
+  $g.game.myShip = new Ship({ mX: 0, mY: 0, angle: 90, d: 0 });
 
   // init dependencies
   canvasText.init();
   shipCanvas.init();
+  actorCanvas.init();
   backgroundCanvas.init();
   backgroundGridCanvas.init();
   steeringCanvas.init();
+  _factory.init();
 
   // start the update loop
-  clearInterval(stats.loopId);
-  stats.loopId = setInterval(() => {
+  clearInterval(global.loopId);
+  global.loopId = setInterval(() => {
     update();
   }, 16.66 /* 60 fps updates */ );
 
@@ -51,6 +55,11 @@ function update() { perf.start('main.update');;
   stats.updateCount++;
   now = Date.now();
   elapsedSec = (now - lastUpdated) / 1000;
+
+  // update myShip
+  $g.game.myShip.update(elapsedSec, stats.updateCount);
+
+  // update all actors
   for (actorKey in $g.game.actors) {
     $g.game.actors[actorKey].update(elapsedSec, stats.updateCount);
   }
@@ -64,7 +73,9 @@ function draw() { perf.start('main.draw');
   backgroundCanvas.draw();
   backgroundGridCanvas.draw();
   shipCanvas.draw();
+  actorCanvas.draw();
   steeringCanvas.draw();
+
   perf.stop('main.draw');
   requestAnimationFrame(draw);
 }

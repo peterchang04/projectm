@@ -35,7 +35,6 @@
 
   .content {
     text-align:left;
-    background-color: black;
     z-index: 1100;
   }
   .content .target {

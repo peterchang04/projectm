@@ -3,6 +3,10 @@ import $g from '../../utils/globals.js';
 let id = 0;
 
 function add(obj = {}) {
+   // coordinates to draw at
+  if (obj.mX === undefined) obj.mX = 0;
+  if (obj.mY === undefined) obj.mY = 0;
+
   obj.id = $g.game.newId();
   obj.temp = {};
   if (!obj.c) obj.c = '#fff';
