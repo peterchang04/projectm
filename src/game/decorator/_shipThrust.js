@@ -4,12 +4,12 @@ import $g from '../../utils/globals.js';
 
 const temp = {}; // memory pointer to avoid allocation for new variables
 
-function add(obj) { perf.start('_shipSystems.add');
+function add(obj) { perf.start('_shipThrust.add');
+  obj.thrustForce = 0; // in Newtons, for accelerating ship
   obj.thrustValue = 0; // position of thruster slider. (-25 --> 100)
-  obj.decelerationSystem = true; // decelerates in the absence of thrust
 
   // more thrust eq more force (eq more speed)
-  obj.updateForceByThrustValue = function(elapsedSec, updateCount) { perf.start('_shipSystems.obj.updateForceByThrustValue');
+  obj.updateForceByThrustValue = function(elapsedSec, updateCount) { perf.start('_shipThrust.obj.updateForceByThrustValue');
     // thrustValue is up to 100.
     temp.metersPerSecondAcceleration = 8; // how fast to accelerate
     this.thrustForce = (this.thrustValue / 100) * this.mass * temp.metersPerSecondAcceleration; // can be negative if reversing
@@ -23,11 +23,11 @@ function add(obj) { perf.start('_shipSystems.add');
     if (this.sMaxY > 0 && this.sY > this.sMaxY) this.forceY = 0;
     if (this.sMaxY < 0 && this.sY < this.sMaxY) this.forceY = 0;
 
-    perf.stop('_shipSystems.obj.updateForceByThrustValue');
+    perf.stop('_shipThrust.obj.updateForceByThrustValue');
   };
 
   // cap max speed by thrust value
-  obj.updateMaxSpeedByThrustValue = function() { perf.start('_shipSystems.obj.updateMaxSpeedByThrustValue');
+  obj.updateMaxSpeedByThrustValue = function() { perf.start('_shipThrust.obj.updateMaxSpeedByThrustValue');
     // max speed is 20% - 100% depending on thrustValue 0-100
     temp.thrustMaxSpeedRatio = Math.abs(obj.thrustValue / 100) * 0.8; // max is .8
     temp.thrustMaxSpeedRatio += 0.2; // now its 20%-100%
@@ -45,13 +45,13 @@ function add(obj) { perf.start('_shipSystems.add');
     // otherwise, sMax stuck at 8 when no thrust.
     if (this.thrustForce === 0) this.sMax = 0;
 
-    perf.stop('_shipSystems.obj.updateMaxSpeedByThrustValue');
+    perf.stop('_shipThrust.obj.updateMaxSpeedByThrustValue');
   }
 
   // a readout of speed. Based on direction
-  obj.calculateSpeed = function(elapsedSec, updateCount) { perf.start('_shipSystems.obj.calculateSpeed');
+  obj.calculateSpeed = function(elapsedSec, updateCount) { perf.start('_shipThrust.obj.calculateSpeed');
     if (updateCount % 10 !== 0) { // only run updateSpeedByThrust every 4th update. Fewer calculations
-      perf.stop('_shipSystems.obj.calculateSpeed');
+      perf.stop('_shipThrust.obj.calculateSpeed');
       return;
     }
 
@@ -60,7 +60,7 @@ function add(obj) { perf.start('_shipSystems.add');
 
     this.s = temp.sXRatio + temp.sYRatio;
 
-    perf.stop('_shipSystems.obj.calculateSpeed');
+    perf.stop('_shipThrust.obj.calculateSpeed');
   };
 
   // register update functions
@@ -68,7 +68,7 @@ function add(obj) { perf.start('_shipSystems.add');
   obj.updates.push('updateMaxSpeedByThrustValue');
   obj.updates.push('calculateSpeed');
 
-  perf.stop('_shipSystems.add');
+  perf.stop('_shipThrust.add');
 }
 
 export default { add };

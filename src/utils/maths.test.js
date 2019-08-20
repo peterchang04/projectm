@@ -5,87 +5,87 @@ const describe = global.describe;
 
 describe('getRadian2P', () => {
   it('should return 0 if 3rd argument is false, but both points same', () => {
-    expect(maths.getRadian2P({ x:0,y:0 }, { x:0,y:0 }, false)).to.equal(0);
-    expect(maths.getRadian2P({ x:0,y:0 }, { x:0,y:0 }, true)).to.equal(Math.PI / 2);
+    expect(maths.getRadian2P(0, 0, 0, 0, false)).to.equal(0);
+    expect(maths.getRadian2P(0, 0, 0, 0, true)).to.equal(Math.PI / 2);
   });
 
   it('should work with centered p1', () => {
-    expect(maths.getRadian2P({ x:0,y:0 }, { x:1,y:1 })).to.equal(Math.PI / 4);
-    expect(maths.getRadian2P({ x:0,y:0 }, { x:1,y:0 })).to.equal(0);
-    expect(maths.getRadian2P({ x:0,y:0 }, { x:1,y:-1 })).to.equal(7 * Math.PI / 4);
-    expect(maths.getRadian2P({ x:0,y:0 }, { x:0,y:-1 })).to.equal(3 * Math.PI / 2);
-    expect(maths.getRadian2P({ x:0,y:0 }, { x:-1,y:-1 })).to.equal(5 * Math.PI / 4);
-    expect(maths.getRadian2P({ x:0,y:0 }, { x:-1,y:0 })).to.equal(Math.PI);
-    expect(maths.getRadian2P({ x:0,y:0 }, { x:-1,y:1 })).to.equal(3 * Math.PI / 4);
-    expect(maths.getRadian2P({ x:0,y:0 }, { x:0,y:1 })).to.equal(Math.PI / 2);
+    expect(maths.getRadian2P(0, 0, 1, 1)).to.equal(Math.PI / 4);
+    expect(maths.getRadian2P(0, 0, 1, 0)).to.equal(0);
+    expect(maths.getRadian2P(0, 0, 1, -1)).to.equal(7 * Math.PI / 4);
+    expect(maths.getRadian2P(0, 0, 0, -1)).to.equal(3 * Math.PI / 2);
+    expect(maths.getRadian2P(0, 0, -1, -1)).to.equal(5 * Math.PI / 4);
+    expect(maths.getRadian2P(0, 0, -1, 0)).to.equal(Math.PI);
+    expect(maths.getRadian2P(0, 0, -1, 1)).to.equal(3 * Math.PI / 4);
+    expect(maths.getRadian2P(0, 0, 0, 1)).to.equal(Math.PI / 2);
   });
 
   it('should work with off center p1', () => {
-    expect(maths.getRadian2P({ x:1,y:1 }, { x:0,y:0 })).to.equal(5 * Math.PI / 4);
+    expect(maths.getRadian2P(1, 1, 0, 0)).to.equal(5 * Math.PI / 4);
   });
 });
 
 describe('getAngle2P', () => {
   it('should return 0 if 3rd argument is false, but both points same', () => {
-    expect(maths.getAngle2P({ x:0,y:0 }, { x:0,y:0 }, false)).to.equal(0);
-    expect(maths.getAngle2P({ x:0,y:0 }, { x:0,y:0 }, true)).to.equal(90);
+    expect(maths.getAngle2P(0, 0, 0, 0, false)).to.equal(0);
+    expect(maths.getAngle2P(0, 0, 0, 0, true)).to.equal(90);
   });
 
   it('should work with centered p1', () => {
-    expect(maths.getAngle2P({ x:0,y:0 }, { x:1,y:1 })).to.equal(45);
-    expect(maths.getAngle2P({ x:0,y:0 }, { x:1,y:0 })).to.equal(0);
-    expect(maths.getAngle2P({ x:0,y:0 }, { x:1,y:-1 })).to.equal(315);
-    expect(maths.getAngle2P({ x:0,y:0 }, { x:0,y:-1 })).to.equal(270);
-    expect(maths.getAngle2P({ x:0,y:0 }, { x:-1,y:-1 })).to.equal(225);
-    expect(maths.getAngle2P({ x:0,y:0 }, { x:-1,y:0 })).to.equal(180);
-    expect(maths.getAngle2P({ x:0,y:0 }, { x:-1,y:1 })).to.equal(135);
-    expect(maths.getAngle2P({ x:0,y:0 }, { x:0,y:1 })).to.equal(90);
+    expect(maths.getAngle2P(0, 0, 1, 1)).to.equal(45);
+    expect(maths.getAngle2P(0, 0, 1, 0)).to.equal(0);
+    expect(maths.getAngle2P(0, 0, 1, -1)).to.equal(315);
+    expect(maths.getAngle2P(0, 0, 0, -1)).to.equal(270);
+    expect(maths.getAngle2P(0, 0, -1, -1)).to.equal(225);
+    expect(maths.getAngle2P(0, 0, -1, 0)).to.equal(180);
+    expect(maths.getAngle2P(0, 0, -1, 1)).to.equal(135);
+    expect(maths.getAngle2P(0, 0, 0, 1)).to.equal(90);
   });
 
   it('should work with off center p1', () => {
-    expect(maths.getAngle2P({ x:1,y:1 }, { x:0,y:0 })).to.equal(225);
+    expect(maths.getAngle2P(1, 1, 0, 0)).to.equal(225);
   });
 });
 
 describe('getDegree2P', () => {
   it('should return 0 if 3rd argument is false, but both points same', () => {
-    expect(maths.getDegree2P({ x:0,y:0 }, { x:0,y:0 }, false)).to.equal(90);
-    expect(maths.getDegree2P({ x:0,y:0 }, { x:0,y:0 }, true)).to.equal(0);
+    expect(maths.getDegree2P(0, 0, 0, 0, false)).to.equal(90);
+    expect(maths.getDegree2P(0, 0, 0, 0, true)).to.equal(0);
   });
 
   it('should work with centered p1', () => {
-    expect(maths.getDegree2P({ x:0,y:0 }, { x:1,y:1 })).to.equal(45);
-    expect(maths.getDegree2P({ x:0,y:0 }, { x:1,y:0 })).to.equal(90);
-    expect(maths.getDegree2P({ x:0,y:0 }, { x:1,y:-1 })).to.equal(135);
-    expect(maths.getDegree2P({ x:0,y:0 }, { x:0,y:-1 })).to.equal(180);
-    expect(maths.getDegree2P({ x:0,y:0 }, { x:-1,y:-1 })).to.equal(225);
-    expect(maths.getDegree2P({ x:0,y:0 }, { x:-1,y:0 })).to.equal(270);
-    expect(maths.getDegree2P({ x:0,y:0 }, { x:-1,y:1 })).to.equal(315);
-    expect(maths.getDegree2P({ x:0,y:0 }, { x:0,y:1 })).to.equal(0);
+    expect(maths.getDegree2P(0, 0, 1, 1)).to.equal(45);
+    expect(maths.getDegree2P(0, 0, 1, 0)).to.equal(90);
+    expect(maths.getDegree2P(0, 0, 1, -1)).to.equal(135);
+    expect(maths.getDegree2P(0, 0, 0, -1)).to.equal(180);
+    expect(maths.getDegree2P(0, 0, -1, -1)).to.equal(225);
+    expect(maths.getDegree2P(0, 0, -1, 0)).to.equal(270);
+    expect(maths.getDegree2P(0, 0, -1, 1)).to.equal(315);
+    expect(maths.getDegree2P(0, 0, 0, 1)).to.equal(0);
   });
 
   it('should work with off center p1', () => {
-    expect(maths.getDegree2P({ x:1,y:1 }, { x:0,y:0 })).to.equal(225);
+    expect(maths.getDegree2P(1, 1, 0, 0)).to.equal(225);
   });
 });
 
-describe('getDistance2P', () => {
+describe('getDistance', () => {
   it('should work for cardinal directions', () => {
-    expect(maths.getDistance2P({ x:0,y:0 }, { x:0,y:2 })).to.equal(2);
-    expect(maths.getDistance2P({ x:0,y:0 }, { x:2,y:0 })).to.equal(2);
-    expect(maths.getDistance2P({ x:0,y:0 }, { x:-2,y:0 })).to.equal(2);
-    expect(maths.getDistance2P({ x:0,y:0 }, { x:0,y:-2 })).to.equal(2);
+    expect(maths.getDistance(0,0,0,2)).to.equal(2);
+    expect(maths.getDistance(0,0,2,0)).to.equal(2);
+    expect(maths.getDistance(0,0,-2,0)).to.equal(2);
+    expect(maths.getDistance(0,0,0,-2)).to.equal(2);
   });
 
   it('should work with diagnals', () => {
-    expect(maths.getDistance2P({ x:0,y:0 }, { x:2,y:2 }).toFixed(4)).to.equal('2.8284');
-    expect(maths.getDistance2P({ x:0,y:0 }, { x:2,y:-2 }).toFixed(4)).to.equal('2.8284');
-    expect(maths.getDistance2P({ x:0,y:0 }, { x:-2,y:2 }).toFixed(4)).to.equal('2.8284');
-    expect(maths.getDistance2P({ x:0,y:0 }, { x:-2,y:-2 }).toFixed(4)).to.equal('2.8284');
+    expect(maths.getDistance(0,0,2,2).toFixed(4)).to.equal('2.8284');
+    expect(maths.getDistance(0,0,2,-2).toFixed(4)).to.equal('2.8284');
+    expect(maths.getDistance(0,0,-2,2).toFixed(4)).to.equal('2.8284');
+    expect(maths.getDistance(0,0,-2,-2).toFixed(4)).to.equal('2.8284');
   });
 
   it('should work with off center p1', () => {
-    expect(maths.getDistance2P({ x:1,y:1 }, { x:-1,y:-1 }).toFixed(4)).to.equal('2.8284');
+    expect(maths.getDistance(1,1,-1,-1).toFixed(4)).to.equal('2.8284');
   });
 });
 

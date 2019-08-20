@@ -4,6 +4,7 @@
     <canvas id="canvas_grid"></canvas>
     <canvas id="canvas_background"></canvas>
     <!-- actors -->
+    <canvas id="canvas_actors"></canvas>
     <canvas id="canvas_myShip">
     </canvas>
     <canvas id="canvas_ships"></canvas>
