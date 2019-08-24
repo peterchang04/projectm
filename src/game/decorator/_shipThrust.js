@@ -1,18 +1,20 @@
 // translates ship settings (throttle, energy settings, into physics outputs)
 import perf from '../../utils/perf.js';
 import $g from '../../utils/globals.js';
+import maths from '../../utils/maths.js';
 
 const temp = {}; // memory pointer to avoid allocation for new variables
 
 function add(obj) { perf.start('_shipThrust.add');
   obj.thrustForce = 0; // in Newtons, for accelerating ship
   obj.thrustValue = 0; // position of thruster slider. (-25 --> 100)
+  obj.dTurn = 0; // where the ship *wants* to go +/- from current
 
   // more thrust eq more force (eq more speed)
-  obj.updateForceByThrustValue = function(elapsedSec, updateCount) { perf.start('_shipThrust.obj.updateForceByThrustValue');
+  const metersPerSecondAcceleration = 8; // how fast to accelerate
+  obj.updateForceByThrustValue = function(stats) { perf.start('_shipThrust.obj.updateForceByThrustValue');
     // thrustValue is up to 100.
-    temp.metersPerSecondAcceleration = 8; // how fast to accelerate
-    this.thrustForce = (this.thrustValue / 100) * this.mass * temp.metersPerSecondAcceleration; // can be negative if reversing
+    this.thrustForce = (this.thrustValue / 100) * this.mass * metersPerSecondAcceleration; // can be negative if reversing
     // adjust for direction
     this.forceY = this.dY * this.thrustForce;
     this.forceX = this.dX * this.thrustForce;
@@ -29,9 +31,9 @@ function add(obj) { perf.start('_shipThrust.add');
   // cap max speed by thrust value
   obj.updateMaxSpeedByThrustValue = function() { perf.start('_shipThrust.obj.updateMaxSpeedByThrustValue');
     // max speed is 20% - 100% depending on thrustValue 0-100
-    temp.thrustMaxSpeedRatio = Math.abs(obj.thrustValue / 100) * 0.8; // max is .8
-    temp.thrustMaxSpeedRatio += 0.2; // now its 20%-100%
-    this.sMax = this.sMaxShip * temp.thrustMaxSpeedRatio;
+    this.temp.thrustMaxSpeedRatio = Math.abs(this.thrustValue / 100) * 0.8; // max is .8
+    this.temp.thrustMaxSpeedRatio += 0.2; // now its 20%-100%
+    this.sMax = this.sMaxShip * this.temp.thrustMaxSpeedRatio;
 
     this.sMaxX = this.sMax * this.dX;
     this.sMaxY = this.sMax * this.dY;
@@ -49,24 +51,78 @@ function add(obj) { perf.start('_shipThrust.add');
   }
 
   // a readout of speed. Based on direction
-  obj.calculateSpeed = function(elapsedSec, updateCount) { perf.start('_shipThrust.obj.calculateSpeed');
-    if (updateCount % 10 !== 0) { // only run updateSpeedByThrust every 4th update. Fewer calculations
-      perf.stop('_shipThrust.obj.calculateSpeed');
-      return;
-    }
+  obj.calculateSpeed = function(elapsed) { perf.start('_shipThrust.obj.calculateSpeed');
+    this.temp.sXRatio = this.dX * this.sX;
+    this.temp.sYRatio = this.dY * this.sY;
 
-    temp.sXRatio = this.dX * this.sX;
-    temp.sYRatio = this.dY * this.sY;
-
-    this.s = temp.sXRatio + temp.sYRatio;
+    this.s = this.temp.sXRatio + this.temp.sYRatio;
 
     perf.stop('_shipThrust.obj.calculateSpeed');
   };
 
+  obj.setAngularThrust = function(elapsed) { perf.start('_shipThrust.obj.setAngularThrust');
+    // TODO: this is all pretty shite. Respond to angular speed only and leave ship systems & limits out of it
+    if (this.dTurn === 0) { // no direction change
+      perf.stop('_shipThrust.obj.setAngularThrust');
+      return;
+    }
+
+    // manage speed angular speed
+    if (this.dTurn > 0) {
+      /* formula for distance = 1/2 (speed)(time^2) */
+      if (this.dTurn > .5 * this.aS * 4 /* 6.25 = 2 ^ 2 */) {
+        // normal accel should take 2 seconds to reach aSMax
+        this.aA = this.aSMax / 2;
+      } else {
+        // decelerate until dTurn is reached
+        this.aA = -this.aSMax / 2;
+        // stop decelerating when aS reaches .5
+        if (this.aS <= 1) this.aA = 0;
+      }
+    } else {
+      /* formula for distance = 1/2 (speed)(time^2) */
+      if (this.dTurn < .5 * this.aS * 4 /* 4 = 2 ^ 2 */) {
+        // normal accel should take 2 seconds to reach aSMax
+        this.aA = -this.aSMax / 2;
+      } else {
+        // decelerate until dTurn is reached
+        this.aA = this.aSMax / 2;
+        // stop decelerating when aS reaches -.5
+        if (this.aS >= -1) this.aA = 0;
+      }
+    }
+
+    // apply acc to aSpeed
+    if (this.dTurn > 0) {
+      this.aS += this.aA * elapsed;
+      // enforce maximum
+      if (this.aS > this.aSMax) this.aS = this.aSMax;
+    } else {
+      this.aS += this.aA * elapsed;
+      // enforce maximum
+      if (this.aS < -this.aSMax) this.aS = -this.aSMax;
+    }
+
+    if (  // stop turning if dTurn gets within .25 of dTarget;
+      Math.abs(this.aS) <= 1 // only do this if approaching at slow speed
+      && Math.abs(this.d - this.dTarget) < .15
+    ) {
+        this.set('dTurn', 0);
+        this.d = this.dTarget;
+        this.aA = 0;
+    }
+
+    // take away from dTurn what has transpired
+    this.set('dTurn', this.dTurn - this.aS * elapsed)
+
+    perf.stop('_shipThrust.obj.setAngularThrust');
+  }
+
   // register update functions
-  obj.updates.push('updateForceByThrustValue');
-  obj.updates.push('updateMaxSpeedByThrustValue');
-  obj.updates.push('calculateSpeed');
+  obj.addUpdate('updateForceByThrustValue', 11);
+  obj.addUpdate('updateMaxSpeedByThrustValue', 10);
+  obj.addUpdate('calculateSpeed', 100, 10);
+  obj.addUpdate('setAngularThrust', 13);
 
   perf.stop('_shipThrust.add');
 }

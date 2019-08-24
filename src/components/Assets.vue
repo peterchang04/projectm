@@ -2,17 +2,20 @@
 <template>
   <div id="assets" :class="{ showAssets }">
     <MyShipSVG id="MyShipSVG" />
+    <AsteroidSVG id="AsteroidSVG" />
   </div>
 </template>
 
 <script>
   import canvasSvg from '../utils/canvasSvg.js';
   import MyShipSVG from '../../public/assets/svg/ships/myShip.svg';
+  import AsteroidSVG from '../../public/assets/svg/asteroids/asteroid.svg';
   import $g from '../utils/globals.js';
 
   export default {
     components: {
-      MyShipSVG
+      MyShipSVG,
+      AsteroidSVG,
     },
     props: {
       showAssets: {
@@ -37,6 +40,7 @@
     left: -1000px;
     z-index: 9999;
     text-align: left;
+    pointer-events: none;
   }
   #assets.showAssets {
     top: 0;

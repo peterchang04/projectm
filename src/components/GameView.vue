@@ -8,10 +8,11 @@
     <canvas id="canvas_myShip">
     </canvas>
     <canvas id="canvas_ships"></canvas>
-    <canvas id="canvas_bullets"></canvas>
+    <canvas id="canvas_projectiles"></canvas>
     <!-- parallax stuff -->
     <!-- <canvas id="canvas_foreground"></canvas> -->
     <canvas id="canvas_listener"></canvas>
+    <!-- TOP LAYER -->
   </div>
 </template>
 

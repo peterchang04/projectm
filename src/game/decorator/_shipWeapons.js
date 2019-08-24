@@ -15,8 +15,10 @@ function add(obj) { perf.start('_shipWeapons.add');
       mX: obj.mX,
       mY: obj.mY,
       d: obj.d,
+      exemptColliders: { [`${this.id}`]: this }
     });
-    $g.game.actors[temp.projectile.id] = temp.projectile;
+    $g.game.projectiles[temp.projectile.id] = temp.projectile;
+
     perf.stop('_shipWeapons.obj.fireCannon');
   };
 

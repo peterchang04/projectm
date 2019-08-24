@@ -1,9 +1,13 @@
 import canvg from 'canvg';
-import globals from '../utils/globals.js';
+import $g from '../utils/globals.js';
 const svg = {};
 const elAssets = null;
+const temp = {};
+const canvases = {};
+const contexts = {};
+const canvasReferenceBank = [];
 /*
-  Given an svg id
+  GIVEN AN SVG ID...
   1. <svg> is converted into text string and stored in js memory
   2. svg is translated to an canvas using canvg, stored on svg[id].canvas
     any compositing (lighting, damage textures) will be done here
@@ -14,107 +18,145 @@ const elAssets = null;
   4. draw to game canvas from canvas_rotate
 */
 
+/*
+  TO ENABLE A NEW SVG ASSET
+  Import into /components/Assets.vue by svg id
+*/
+
 function init() {
   // load all assets and sort them into respective canvases
   const elAssets = document.getElementById('assets');
+  const elCanvasDiv = document.createElement('div');
+  elCanvasDiv.id = 'svgCanvasDiv';
+  elCanvasDiv.style = 'width:100%;';
+  elAssets.appendChild(elCanvasDiv);
 
-  for (let i = 0; i < elAssets.children.length; i++) {
-    const svgDOM = elAssets.children[i];
-    const id = svgDOM.id;
-    if (svgDOM.tagName !== 'svg') return;
-    svg[id] = {
-      direction: -1, // using rotation to force redraws. Start at -1 to force first draw
-      svg: svgDOM,
-      html: svgDOM.outerHTML
-    };
-    // wrap the svg in a id based container
-    svg[id].wrapper = document.createElement('div');
-    svg[id].wrapper.style = `display:inline-block; background-color: rgb(15, 0, 0); border: 2px solid #444;`;
-    svg[id].wrapper.id = `${id}_wrapper`;
-    svgDOM.parentNode.insertBefore(svg[id].wrapper, svgDOM);
-    svg[id].wrapper.appendChild(svgDOM);
-    // create a copy canvas for this svg
-    svg[id].canvas = document.createElement("canvas");
-    svg[id].canvas.id = `${id}_canvas`;
-    svg[id].context = svg[id].canvas.getContext('2d');
-    /* all svgs should be natively 100x100. 142 is the hypotenuse, so as we rotate, no edges will be lost */
-    svg[id].canvas.width = 142 * globals.viewport.pixelRatio;
-    svg[id].canvas.height = 142 * globals.viewport.pixelRatio;
-    // create rotation canvas
-    svg[id].canvas_rotate = document.createElement("canvas");
-    svg[id].canvas_rotate.id = `${id}_canvas_rotate`;
-    svg[id].context_rotate = svg[id].canvas_rotate.getContext('2d');
-    svg[id].canvas_rotate.width = svg[id].canvas.width;
-    svg[id].canvas_rotate.height = svg[id].canvas.height;
+  // pre-generate a load of canvases to represent all the different svg actors
+  for (temp.i = 0; temp.i < 50; temp.i++) {
+    // wrapper for temp.i
+    temp.wrapperDiv = document.createElement("div");
+    temp.wrapperDiv.id = `wrapper_${temp.i}`;
+    temp.wrapperDiv.style = "display:inline-block;width:47%;" // so we can fit 2 cols on page
 
-    // copy the svg to copy canvas
-    svgToCanvas(id);
+    // second canvas - rotate
+    temp.keyA = `rotate_${temp.i}`;
+    canvases[temp.keyA] = document.createElement("canvas");
+    canvases[temp.keyA].id = temp.keyA;
+    canvases[temp.keyA].style = 'width:15vw';
+    contexts[temp.keyA] = canvases[temp.keyA].getContext('2d');
+    canvases[temp.keyA].width = 142;
+    canvases[temp.keyA].height = 142;
+    temp.wrapperDiv.appendChild(canvases[temp.keyA]);
 
-    // for debugging, otherwise these should be undrawn canvases
-    if (globals.constants.DEBUG) {
-      applyRotation(id, 0);
-      svg[id].wrapper.appendChild(svg[id].canvas);
-      svg[id].wrapper.appendChild(svg[id].canvas_rotate);
-      svg[id].canvas.style = `height:50px; width:50px;border-left:1px solid #222;`;
-      svg[id].canvas_rotate.style = `height:50px; width:50px;border-left:1px solid #222;`;
+    // reference to this canvas
+    canvasReferenceBank.push(temp.i);
+
+    // append to parent canvasDiv
+    if ($g.constants.DEBUG) {
+      elCanvasDiv.prepend(temp.wrapperDiv);
     }
-  } // end for
+  }
+
+  for (temp.i = 0; temp.i < elAssets.children.length; temp.i++) {
+    const svgDOM = elAssets.children[temp.i];
+    const svgId = svgDOM.id;
+    // exit early if not svg
+    if (svgDOM.tagName === 'svg') {
+      svg[svgId] = {
+        direction: -1, // using rotation to force redraws. Start at -1 to force first draw
+        svg: svgDOM,
+        html: svgDOM.outerHTML
+      };
+
+      svg[svgId].canvas = document.createElement("canvas");
+      svg[svgId].canvas.id = `copyCanvas_${svgId}`;
+      svg[svgId].canvas.style = 'width:15vw';
+      svg[svgId].context = svg[svgId].canvas.getContext('2d');
+      svg[svgId].canvas.width = 142;
+      svg[svgId].canvas.height = 142;
+
+      if ($g.constants.DEBUG) elCanvasDiv.prepend(svg[svgId].canvas);
+      svgToCanvas(svgId);
+    }
+  }
 }
 
 function svgToCanvas(id) {
   // render to canvas using canvg
   canvg(svg[id].canvas, svg[id].html, {
     ignoreDimensions: true,
-    scaleWidth: 100 * globals.viewport.pixelRatio,
-    scaleHeight: 100 * globals.viewport.pixelRatio,
+    scaleWidth: 100,
+    scaleHeight: 100,
     // not sure why pixel ratio doesn't apply here
     offsetX: 21, // to draw 100x100 svg in middle of 142x142 canvas
     offsetY: 21, // to draw 100x100 svg in middle of 142x142 canvas
   });
-  if (globals.constants.DEBUG) {
+  if ($g.constants.DEBUG) {
     // draw a 142 diameter circle representing the boundaries of rotating a 100x100 square
     svg[id].context.beginPath();
     svg[id].context.strokeStyle = 'rgb(255, 0, 0)';
-    svg[id].context.lineWidth = 2 * globals.viewport.pixelRatio;
-    svg[id].context.arc(svg[id].canvas.width / 2, svg[id].canvas.height / 2, svg[id].canvas.width / 2, 0, globals.constants.PI2);
+    svg[id].context.lineWidth = 2 * $g.viewport.pixelRatio;
+    svg[id].context.arc(svg[id].canvas.width / 2, svg[id].canvas.height / 2, svg[id].canvas.width / 2, 0, $g.constants.PI2);
     svg[id].context.stroke();
     // draw the 100x100 frame of original svg
     svg[id].context.beginPath();
     svg[id].context.strokeStyle = '#fff';
-    svg[id].context.rect(21 * globals.viewport.pixelRatio, 21 * globals.viewport.pixelRatio, 100 * globals.viewport.pixelRatio, 100 * globals.viewport.pixelRatio);
+    svg[id].context.rect(21, 21, 100, 100);
     svg[id].context.stroke();
   }
 }
 
-function draw(targetContext, id, options = {
-  // direction:,
-  // widthPercent,
-  // x,y (centerpoint)
+function draw(targetContext, options = {
+  // svg: // which svg?
+  // id: // id of the actor being drawn, each actor can have different layers and rotation
+  // d:, // direction, rotation
+  // pixelLength: // also width, since all SVGs are square 100x100
+  // x: coordinate of center svg
+  // y: coordinate of center svg
 }) {
-  if (!(id in svg)) return console.warn(`${id} has not been loaded`);
-
+  if (!(options.svg in svg)) return console.warn(`SVG ${options.svg} has not been loaded`);
   // only draws direction if orientation has updated
-  applyRotation(id, options.direction);
+  // allocate a svg canvas spot
+  temp.actor = (options.id === 0) ? $g.game.myShip : $g.game.actors[options.id];
+  if (!temp.actor.svgCanvasRef) {
+    temp.actor.svgCanvasRef = canvasReferenceBank.pop();
+    if (temp.actor.svgCanvasRef === null) console.warn("time to implement deallocate for canvasSvg actors");
+    // clear the settings for this canvas
+    contexts[`rotate_${temp.actor.svgCanvasRef}`].direction = -1;
+  }
+
+  applyRotation(options.svg, temp.actor.svgCanvasRef, options.d);
+
+  temp.imageRotateCanvasLength = options.pixelLength * $g.constants.SQRT2;
 
   // copy to target canvas
-  targetContext.drawImage(svg[id].canvas_rotate, 0, 0, targetContext.canvas.width, targetContext.canvas.width);
+  targetContext.drawImage(
+    canvases[`rotate_${temp.actor.svgCanvasRef}`],
+    options.x - (temp.imageRotateCanvasLength * 0.5 /* offset so coordinate is center of image */), // top left X coordinate in targetContext where to paint
+    options.y - (temp.imageRotateCanvasLength * 0.5 /* offset so coordinate is center of image */), // top left Y coordinate in targetContext where to paint
+    /* keep in mind the canvas the canvas of rotated svg is 1.41 x wider to allow for full rotation */
+    temp.imageRotateCanvasLength, // width of the eventual svg element
+    temp.imageRotateCanvasLength, // height of the eventual
+  );
 }
 
-function applyRotation(id, direction) {
+function applyRotation(svgId, canvasRef, direction) {
   // round rotate to nearest integer
   const directionInt = Math.ceil(direction * 2) / 2; // rounds to nearest half (.5)
 
-  if (svg[id].direction === directionInt) return; // don't draw rotation if same angle
+  if (contexts[`rotate_${canvasRef}`].direction === directionInt) return; // don't draw rotation if same angle
+  contexts[`rotate_${canvasRef}`].direction = directionInt; // store for next compare
   // get the rotated context for drawing
-  svg[id].context_rotate.clearRect(0, 0, svg[id].canvas_rotate.width, svg[id].canvas_rotate.height);
-  svg[id].context_rotate.translate(svg[id].canvas_rotate.width/2, svg[id].canvas_rotate.height/2);
-  svg[id].context_rotate.rotate(directionInt * globals.constants.RADIAN);
-  svg[id].context_rotate.drawImage(svg[id].canvas, -svg[id].canvas_rotate.width/2, -svg[id].canvas_rotate.width/2);
+  contexts[`rotate_${canvasRef}`].clearRect(0, 0, canvases[`rotate_${canvasRef}`].width, canvases[`rotate_${canvasRef}`].height);
+  contexts[`rotate_${canvasRef}`].translate(canvases[`rotate_${canvasRef}`].width/2, canvases[`rotate_${canvasRef}`].height/2);
+  contexts[`rotate_${canvasRef}`].rotate(directionInt * $g.constants.RADIAN);
+  contexts[`rotate_${canvasRef}`].drawImage(
+    svg[svgId].canvas, // from copyCanvas
+    -canvases[`rotate_${canvasRef}`].width/2,
+     -canvases[`rotate_${canvasRef}`].width/2
+   );
   // restore context back to normal
-  svg[id].context_rotate.setTransform(1, 0, 0, 1, 0, 0);
-
-  // save the updated rotation
-  svg[id].direction = directionInt;
+  contexts[`rotate_${canvasRef}`].setTransform(1, 0, 0, 1, 0, 0);
 }
 
 export default { init, draw };

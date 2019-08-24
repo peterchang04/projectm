@@ -5,6 +5,8 @@ import perf from '../../utils/perf.js';
 
 export default class Particle {
   constructor(initialObj = {}) { /* e.g. { x,y,w,h,d,s } */ perf.start('Particle.constructor');
+    this.class = 'Particle';
+    this.c = '#fff';
     // set initial values
     for (const key in initialObj) {
       this[key] = initialObj[key];
