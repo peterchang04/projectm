@@ -8,11 +8,21 @@ const constants = {
 
 // game related values NOTE: maybe these belong somewhere in /game instead
 const game = {
-  actors: { 0: null }, // all actors here. myShip = [0]
+  actors: {}, // all actors here. myShip = [0]
+  projectiles: {},
+  particles: {},
   id: 0,
   newId: function() {
     return this.id++;
   },
+};
+
+// pregenerated entities - save on memory allocation
+const bank = {
+  projectiles: [],
+  asteroids: [],
+  ships: [],
+  particles: [],
 };
 
 const viewport = {
@@ -41,6 +51,6 @@ const viewport = {
 };
 
 // set global javascript  references to these values
-global.$g = { viewport, game, constants };
+global.$g = { viewport, game, constants, bank };
 
-export default { constants, viewport, game };
+export default { constants, viewport, game, bank };

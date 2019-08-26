@@ -2,17 +2,26 @@
 import perf from '../../utils/perf.js';
 import $g from '../../utils/globals.js';
 import maths from '../../utils/maths.js';
+import { cloneDeep } from 'lodash';
 
 const temp = {}; // memory pointer to avoid allocation for new variables
+/* list all used properties here. Used to cross-reference check in decorate.js & set defaults */
+const properties = {
+  thrustForce: 0, // in Newtons, for accelerating ship
+  thrustValue: 0, // position of thruster slider. (-25 --> 100)
+  dTurn: 0, // where the ship *wants* to go +/- from current
+};
+
+function getProperties() {
+  return properties;
+}
 
 function add(obj) { perf.start('_shipThrust.add');
-  obj.thrustForce = 0; // in Newtons, for accelerating ship
-  obj.thrustValue = 0; // position of thruster slider. (-25 --> 100)
-  obj.dTurn = 0; // where the ship *wants* to go +/- from current
+  Object.assign(obj, cloneDeep(properties)); // merge properties
 
   // more thrust eq more force (eq more speed)
   const metersPerSecondAcceleration = 8; // how fast to accelerate
-  obj.updateForceByThrustValue = function(stats) { perf.start('_shipThrust.obj.updateForceByThrustValue');
+  obj.updateForceByThrustValue = function() { perf.start('_shipThrust.obj.updateForceByThrustValue');
     // thrustValue is up to 100.
     this.thrustForce = (this.thrustValue / 100) * this.mass * metersPerSecondAcceleration; // can be negative if reversing
     // adjust for direction
@@ -127,4 +136,4 @@ function add(obj) { perf.start('_shipThrust.add');
   perf.stop('_shipThrust.add');
 }
 
-export default { add };
+export default { add, getProperties };

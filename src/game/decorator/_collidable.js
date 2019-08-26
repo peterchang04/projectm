@@ -2,40 +2,56 @@ import $g from '../../utils/globals.js';
 import perf from '../../utils/perf.js';
 import maths from '../../utils/maths.js';
 import SAT from 'sat';
+import { cloneDeep } from 'lodash';
 
-let id = 0;
 let temp = {};
+/* list all used properties here. Used to cross-reference check in decorate.js & set defaults */
+const properties = {
+  isCollisionTest: true,
+  longColliders: {}, // all other objects, occassionally test to see if
+  midColliders: {}, // coordinates close enough to touch within X (10) frames
+  shortColliders: {}, // coordinates within inner square
+  exemptColliders: {}, // deemed to never collide again
+};
+
+function getProperties() {
+  return properties;
+}
 
 function add(obj) { perf.start('_collidable.add');
-  obj.isCollisionTester = true; // has collision detection built in
-
-  // all new objects start
-  obj.longColliders = {}; // all other objects, occassionally test to see if
-  obj.midColliders = {}; // coordinates close enough to touch within X (10) frames
-  obj.shortColliders = {}; // coordinates within inner square
-  obj.exemptColliders = {}; // deemed to never collide again
+  Object.assign(obj, cloneDeep(properties)); // merge properties
 
   obj.resetCollision = function() {
-    this.shortColliders = {};
-    this.midColliders = {};
     this.longColliders = {};
-    this.exemptColliders = {}; // deemed to never collide again
+    this.midColliders = {};
+    this.shortColliders = {};
+    this.exemptColliders = {};
+  };
+
+  obj.initCollision = function(initialObj = {}) {
+    // only init real, not factory stuff
+    if (this.id in $g.game.actors || this.id in $g.game.projectiles) {
+      // clear collision detection history
+      this.resetCollision();
+      // retain exemptColliders being passed in
+      if (initialObj.exemptColliders) this.exemptColliders = initialObj.exemptColliders;
+
+      // take the new entity info and recalculate Polygon
+      this.setupPolygon();
+      this.testAllCollidees();
+    }
   };
 
   obj.setupPolygon = function() {
     if (!this.polygon) console.warn(`id:${this.id} all collidables should have a polygon`);
     if (this.polygon) { // initialize a polygon
-      if (this.id === 260) console.log(this.polygon, this.length);
       this.temp.vectors = [];
       // this.polygon must be counterclockwise starting closest to 11:59
       this.temp.vectorScale = this.length / 100;
       this.temp.vectors = this.polygon.map((point) => {
         return new SAT.Vector(point.x * this.temp.vectorScale, point.y * this.temp.vectorScale);
       });
-      console.log('tempVectors', this.temp.vectors, this.temp.vectorScale);
       this.Polygon = new SAT.Polygon(new SAT.Vector(), this.temp.vectors);
-      console.log('calcPoints', this.Polygon.calcPoints);
-      if (this.id === 260) console.log(this.Polygon);
     }
   };
 
@@ -120,7 +136,7 @@ function add(obj) { perf.start('_collidable.add');
   }
 
   obj.updateCollidableDirection = function() { perf.start('_collidable.obj.updateCollidableDirection');
-    if (this.dLast !== this.d) {
+    if (this.dLast !== this.d && this.Polygon) {
       // SAT.Polygon's angle system is different from projectm
       this.Polygon.setAngle(maths.degreeToRadian(this.d + 90));
     }
@@ -145,9 +161,6 @@ function add(obj) { perf.start('_collidable.add');
       }
 
       this.temp.scale = (this.length / 2) / 50;
-      if (this.id === 260) {
-        console.log(this);
-      }
       this.Polygon.calcPoints.map((point) => {
         context.beginPath();
         context.arc(
@@ -169,6 +182,7 @@ function add(obj) { perf.start('_collidable.add');
   obj.addUpdate('checkMidCollisions', 101, 4);
   obj.addUpdate('checkShortCollisions', 102, 1);
   obj.addUpdate('updateCollidableDirection', 1, 1);
+  obj.inits.push('initCollision');
 
   perf.stop('_collidable.add');
 }
@@ -212,4 +226,4 @@ function checkShortDeescalate(obj, obj2) { perf.start('_collidable.checkShortDee
   perf.start('_collidable.checkShortDeescalate');
 }
 
-export default { add };
+export default { add, getProperties };

@@ -1,7 +1,4 @@
-import physics from '../decorator/_physics.js';
-import drawable from '../decorator/_drawable.js';
-import shipThrust from '../decorator/_shipThrust.js';
-import collidable from '../decorator/_collidable.js';
+import decorate from '../decorator/decorate.js';
 import perf from '../../utils/perf.js';
 import maths from '../../utils/maths.js';
 import $g from '../../utils/globals.js';
@@ -10,13 +7,11 @@ const temp = {};
 
 export default class Projectile {
   constructor(initialObj = { d: 0, sMax: 80, type: 0 }) { /* e.g. { x,y,w,h,d,s } */ perf.start('Projectile.constructor');
-    this.class = 'Projectile';
-    Object.assign(this, initialObj);
-    drawable.add(this);
-    physics.add(this);
-    collidable.add(this);
+    decorate.add(this, initialObj, ['entity', 'drawable', 'updatable', 'physics', 'collidable']);
 
     this.addUpdate('removeByDistance', 100, 10);
+
+    this.inits.push('factoryInit');
 
     // get rid of unneeded functions
     this.removeUpdate('updateDirection');
@@ -30,7 +25,8 @@ export default class Projectile {
   }
 
   onCollide(collidee) { perf.start('Projectile.onCollide');
-    this.factoryReturn();
+    console.log(this.id, 'collided with', collidee.id, this.exemptColliders);
+    this.remove();
     perf.stop('Projectile.onCollide');
   }
 
@@ -68,20 +64,23 @@ export default class Projectile {
 
   removeByDistance(elapsed) { perf.start('Projectile.removeByDistance');
     if (maths.getDistance(this.mXStart, this.mYStart, this.mX, this.mY) > this.maxDistance) {
-      this.factoryReturn();
+      this.remove();
     }
     perf.stop('Projectile.removeByDistance');
   }
 
-  applyType(type = 0) { perf.start('Projectile.applyType');
-    Object.assign(this, projectileTypes[this.type]);
-    // solve for widthOffsetX based on projectileWidth
-    this.widthOffsetX = -0.5 * projectileTypes[this.type].projectileWidth;
+  factoryInit() {
     // set speed to sMax
     this.updateTrig();
 
     this.sX = this.dX * this.sMax;
     this.sY = this.dY * this.sMax;
+  }
+
+  applyType() { perf.start('Projectile.applyType');
+    Object.assign(this, types[this.type]);
+    // solve for widthOffsetX based on projectileWidth
+    this.widthOffsetX = -0.5 * types[this.type].projectileWidth;
 
     // record beginning mX mY
     this.mXStart = this.mX;
@@ -91,7 +90,7 @@ export default class Projectile {
   }
 }
 
-const projectileTypes = {
+const types = {
   0: { // standard
     sMax: 150,
     length: 0.5,
@@ -119,5 +118,3 @@ const projectileTypes = {
     ]
   },
 };
-
-global.projectile = Projectile;

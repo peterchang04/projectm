@@ -11,33 +11,33 @@ import Ship from '../game/actor/ship.js';
 import Projectile from '../game/actor/projectile.js';
 import Asteroid from '../game/actor/asteroid.js';
 import _factory from '../game/actor/_factory.js';
+import decorate from '../game/decorator/decorate.js';
 
+const temp = {};
 const stats = {
   updateCount: 0,
   lastDraw: null, // epoch ms from Date.now()
   renderCount: 0,
   lastUpdated: Date.now(),
   // keep track of the timings for previous 10 frames - will be shifted down per update
-  update: {
-    1: Date.now(),
-    2: Date.now(),
-    3: Date.now(),
-    4: Date.now(),
-    5: Date.now(),
-    6: Date.now(),
-    7: Date.now(),
-    8: Date.now(),
-    9: Date.now(),
-    10: Date.now(),
-    11: Date.now(),
-    12: Date.now(),
-  },
+  updateFrameCount: 12, // how many previou timings to keep track of
+  update: {}, // previous frame timings
 };
-const temp = {};
+// keep track the the previous timings - will be shifted down per update
+for (temp.i = 1; temp.i <= stats.updateFrameCount; temp.i++) {
+  stats.update[temp.i] = Date.now();
+}
 
-$g.game.actors = {};
-$g.game.projectiles = {};
-$g.game.particles = {};
+function incrementFramesUpdated() {
+  stats.updateCount++;
+  stats.now = Date.now();
+  stats.elapsed = (stats.now - stats.lastUpdated) / 1000; // in seconds
+  // shift the last X frames' timings
+  for (temp.i = stats.updateFrameCount; temp.i >= 2; /* frame 1 is manually updated */ temp.i--) {
+    stats.update[temp.i] = stats.update[temp.i-1];
+  }
+  stats.update[1] = stats.lastUpdated;
+}
 
 function init() {
   // get the shipView's dimensions
@@ -45,7 +45,7 @@ function init() {
 
   // register myShip with constants
   $g.game.myShip = new Ship({ type: 0, mX: 0, mY: 0, d: 0 });
-  $g.game.actors[$g.game.myShip.id] = $g.game.myShip;
+  $g.game.myShip.init();
 
   // init dependencies
   canvasText.init();
@@ -58,10 +58,11 @@ function init() {
   _factory.init();
 
   // PLACEHOLDER - initialize 3 asteroids
-  temp.asteroid0 = _factory.getAsteroid({ length: 100, mX: 100, mY: 100, d: 0, sMax: 0, aS: 30 });
-  $g.game.actors[temp.asteroid0.id] = temp.asteroid0;
-  // temp.asteroid1 = _factory.getAsteroid({ length: 20, mX: 100, mY: 100, d: -12, sMax: 5, aS: 15 });
-  // $g.game.actors[temp.asteroid1.id] = temp.asteroid1;
+  temp.asteroid0 = $g.bank.asteroids.pop();
+  temp.asteroid0.init({ length: 100, mX: 100, mY: 100, d: 0, sMax: 0, aS: 0 });
+  temp.asteroid1 = $g.bank.asteroids.pop();
+  temp.asteroid1.init({ length: 20, mX: -100, mY: 100, d: -12, sMax: 5, aS: 15 });
+  //
   // temp.asteroid2 = _factory.getAsteroid({ length: 50, mX: -70, mY: -50, d: 5, sMax: 10, aS: -35  });
   // $g.game.actors[temp.asteroid2.id] = temp.asteroid2;
   // temp.asteroid3 = _factory.getAsteroid({ length: 60, mX: .10, mY: 100, d: 0, sMax: 10, aS: -80  });
@@ -79,9 +80,8 @@ function init() {
   // }
 
   // start the update loop
-  clearInterval(global.loopId);
+  clearInterval(global.loopId); // for hot reloads (development), prevents double timing
   global.loopId = setInterval(() => {
-    // console.log(temp.asteroid1.mX, temp.asteroid1.mY);
     update();
   }, 16.66 /* 60 fps updates */ );
 
@@ -90,23 +90,7 @@ function init() {
 }
 
 function update() { perf.start('main.update');;
-  stats.updateCount++;
-  stats.now = Date.now();
-  stats.elapsed = (stats.now - stats.lastUpdated) / 1000; // in seconds
-
-  // shift the last 10 frames' timings
-  stats.update[12] = stats.update[11];
-  stats.update[11] = stats.update[10]
-  stats.update[10] = stats.update[9];
-  stats.update[9] = stats.update[8];
-  stats.update[8] = stats.update[7];
-  stats.update[7] = stats.update[6];
-  stats.update[6] = stats.update[5];
-  stats.update[5] = stats.update[4];
-  stats.update[4] = stats.update[3];
-  stats.update[3] = stats.update[2];
-  stats.update[2] = stats.update[1];
-  stats.update[1] = stats.lastUpdated;
+  incrementFramesUpdated();
 
   // update all actors
   for (temp.actorKey in $g.game.actors) {

@@ -1,30 +1,19 @@
-import physics from '../decorator/_physics.js';
-import drawable from '../decorator/_drawable.js';
-import collidable from '../decorator/_collidable.js';
 import canvasSvg from '../../utils/canvasSvg.js';
 import perf from '../../utils/perf.js';
 import $g from '../../utils/globals.js';
+import decorate from '../decorator/decorate.js';
 
 const temp = {};
 
 export default class Asteroid {
-  constructor(initialObj = { type: 0 }) { /* e.g. { x,y,w,h,d,s } */ perf.start('Asteroid.constructor');
-    this.class = 'Asteroid';
-    this.isCollidable = true;
-    Object.assign(this, initialObj);
-
-    drawable.add(this);
-    physics.add(this);
-    this.applyType();
-    collidable.add(this);
-    this.setupPolygon();
-    if (this.id === 201) console.log(this);
+  constructor() { /* e.g. { x,y,w,h,d,s } */ perf.start('Asteroid.constructor');
+    decorate.add(this, {}, ['entity', 'drawable', 'updatable', 'physics', 'collidable']);
     // get rid of unneeded functions
     this.removeUpdate('applyResistanceForce');
     this.removeUpdate('updateSpeedByForce');
 
     this.addDraw('drawMe');
-    this.addDraw('drawCollisionPoints', 100, 'canvas_actors');
+    this.addDraw('drawCollisionPoints', 100);
     perf.stop('Asteroid.constructor');
   }
 
@@ -36,7 +25,7 @@ export default class Asteroid {
     Object.assign(this, types[this.type]);
     // solve for widthOffsetX based on projectileWidth
     // set speed to sMax
-    this.updateTrig();
+    this.updateTrig(); // rerun this to allow sX, sY to be solved
 
     this.sX = this.dX * this.sMax;
     this.sY = this.dY * this.sMax;
@@ -72,14 +61,16 @@ const types = {
     // length: 20,
     // mass: 80000, // kg
     polygon: [
-      { x: -23, y: 46, },
-      { x: -50, y: 0 },
-      { x: -45, y: -45 },
+      { x: -30, y: 41, },
+      { x: -48, y: 9 },
+      { x: -31, y: -49 },
+      { x: 3, y: -49, },
 
       // other side
-      { x: 50, y: -45, },
-      { x: 50, y: 0 },
-      { x: 25, y: 50 },
+      { x: 49, y: -23},
+
+      { x: 49, y: 16 },
+      { x: 16, y: 48 },
     ],
   }
 };

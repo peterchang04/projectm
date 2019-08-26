@@ -1,8 +1,4 @@
-import physics from '../decorator/_physics.js';
-import drawable from '../decorator/_drawable.js';
-import shipThrust from '../decorator/_shipThrust.js';
-import shipWeapons from '../decorator/_shipWeapons.js';
-import collidable from '../decorator/_collidable.js';
+import decorate from '../decorator/decorate.js';
 import canvasSvg from '../../utils/canvasSvg.js';
 import perf from '../../utils/perf.js';
 import $g from '../../utils/globals.js';
@@ -11,17 +7,9 @@ const temp = {};
 
 export default class Ship {
   constructor(initialObj = {}) { /* e.g. { x,y,w,h,d,s } */ perf.start('Ship.constructor');
-    this.class = 'Ship';
-    this.isCollidable = true;
-    Object.assign(this, initialObj);
+    decorate.add(this, initialObj, ['entity', 'drawable', 'updatable', 'physics', 'collidable', 'shipThrust', 'shipWeapons']);
 
-    drawable.add(this);
     this.applyType();
-    physics.add(this);
-    shipThrust.add(this);
-    shipWeapons.add(this);
-    collidable.add(this);
-    this.setupPolygon();
 
     // myShip logic
     if (this.id === 0) {

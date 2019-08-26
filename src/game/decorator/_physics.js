@@ -3,39 +3,51 @@ import cardinalDirection from '../../utils/cardinalDirection.js';
 import maths from '../../utils/maths.js';
 import globals from '../../utils/globals.js';
 import perf from '../../utils/perf.js';
+import { cloneDeep } from 'lodash';
 
 const temp = {};
-function add(obj) { perf.start('_physics.add');
-  // mass
-  if (obj.mass === undefined) obj.mass = 1000; // in Kg
+/* list all used properties here. Used to cross-reference check in decorate.js & set defaults */
+const properties = {
+  // PHYSICAL
+  mass: 1000, // in Kg
+  mXLast: -1,
+  mYLast: -1,
 
   // DIRECTION
-  if (obj.x === undefined) obj.x = 150; // coordinate
-  if (obj.y === undefined) obj.y = 150; // coordinate
-  if (obj.d === undefined) obj.d = 0; // in degrees. cardinal 0 is up, 359.9 is almost up
-  obj.dLast = -1.1; // different from d, to trigger update
-  if (obj.dX === undefined) obj.dX = 0; // this is the unit circle X coordinate value based on degrees
-  if (obj.dY === undefined) obj.dY = 0; // this is hte unit circle Y coordinate value based on degrees
+  d: 0, // in degrees, cardinal 0 is up. 359.9 is almost up
+  dLast: -1.1, // differnt from d to trigger update
+  // calculated by obj.d updating
+  dX: 0, // unit circle (-1 -> 1) value based on degrees. e.g. {d:0, dX:0} {d:90, dX: 1} {d:45, dX: 1/SQRT2}
+  dY: 0, // unit circle (-1 -> 1) value based on degrees. e.g. {d:0, dY:1} {d:90, dY: 0} {d:45, dY: 1/SQRT2}
+  // TODO: move these to thrust?
+  aS: 0, // angle per second
+  aSMax: 0, // angle per second limits
+  aA: 0, // angle per second accleration
 
   // SPEED
-  if (obj.s === undefined) obj.s = 0; // DERIVED from sX and sY. meters / second
+  sX: 0, // x-axis meters / second
+  sY: 0, // y-axis meters / second
+  s: 0, // CALCULATED from sX and sY. in meters / second
+  // TODO move sMax stuff to shipThrust.js
+  sMaxX: 100, // DERIVED from sMax * dX
+  sMaxY: 100, // DERIVED from sMax * dY
+  sMax: 100, // Speed cap at any given moment
 
-  if (obj.sX === undefined) obj.sX = 0; // x axis speed +/-
-  if (obj.sY === undefined) obj.sY = 0; // y axis speed +/-
-  if (obj.forceX === undefined) obj.forceX = 0; // force applied to X axis (thrust)
-  if (obj.forceY === undefined) obj.forceY = 0; // force applied to Y axis (thrust)
-  if (obj.forceResistX === undefined) obj.forceResistX = 0;
-  if (obj.forceResistY === undefined) obj.forceResistY = 0;
-  if (obj.sMax === undefined) obj.sMax = 100; // DERIVED from s to sX, sY ratio
-  if (obj.sMaxX === undefined) obj.sMaxX = 100;
-  if (obj.sMaxY === undefined) obj.sMaxY = 100;
+  // FORCE
+  forceX: 0, // Thrust force applied to X axis
+  forceY: 0, // Thrust force applied to Y axis
+  forceResistX: 0,
+  forceResistY: 0,
+};
 
-  // angular acceleration
-  if (obj.aS === undefined) obj.aS = 0; // angle / second
-  if (obj.aSMax === undefined) obj.aSMax = 45; // angle / second
-  if (obj.aA === undefined) obj.aA = 0; // acceleration angle / second^2
+function getProperties() {
+  return properties;
+}
 
-/* allow for callbacks to be added for triggering on change */
+function add(obj) { perf.start('_physics.add');
+  Object.assign(obj, cloneDeep(properties)); // merge properties
+  // TODO: Move vue hooks to own decorator
+  /* Vue hook allow for callbacks to be added for triggering on change */
   obj.callbacks = {};
   obj.addOnUpdate = function(key, name, func, overwrite = false) { perf.start('_physics.obj.addOnUpdate');
     // first item? create {}
@@ -57,6 +69,10 @@ function add(obj) { perf.start('_physics.add');
   };
 
   obj.updatePosition = function(elapsed) { perf.start('_physics.obj.updatePosition');
+    // record mXLast, mYLast
+    this.mXLast = this.mX;
+    this.mYLast = this.mY;
+
     this.mX += this.sX * elapsed;
     this.mY += this.sY * elapsed;
 
@@ -131,6 +147,11 @@ function add(obj) { perf.start('_physics.add');
     perf.stop('_physics.obj.updateSpeedByForce');
   };
 
+  obj.initPhysics = function() {
+    this.updateTrig();
+  };
+  obj.inits.push('updateTrig');
+
   // register update functions
   obj.addUpdate('updatePosition', 21);
   obj.addUpdate('updateDirection', 20);
@@ -140,4 +161,4 @@ function add(obj) { perf.start('_physics.add');
   perf.stop('_physics.add');
 }
 
-export default { add };
+export default { add, getProperties };
