@@ -7,43 +7,25 @@ const temp = {};
 
 export default class Ship {
   constructor(initialObj = {}) { /* e.g. { x,y,w,h,d,s } */ perf.start('Ship.constructor');
-    decorate.add(this, initialObj, ['entity', 'drawable', 'updatable', 'physics', 'collidable', 'shipThrust', 'shipWeapons']);
+    const decoratorList = ['entity', 'drawable', 'settersAndHooks', 'updatable', 'physics', 'collidable', 'shipThrust', 'shipWeapons'];
+    decorate.add(this, initialObj, decoratorList);
 
     this.applyType();
 
     // myShip logic
     if (this.id === 0) {
+      // attach function to obj
+      this.drawCollisionPoints = drawMyShipCollisionPoints;
+
       this.addDraw('drawMyShip', 1, 'canvas_myShip');
       this.addDraw('drawCollisionPoints', 100, 'canvas_myShip'); // overwrite the original from _collision.js which specifies canvas_actors
-
-      // override _collision.drawCollisionPoints
-      this.drawCollisionPoints = function(context) { perf.start('_myShip.obj.drawCollisionPoints');
-        if (context.canvas.id !== 'canvas_myShip') return;
-        if (this.Polygon) {
-          context.fillStyle = 'rgb(255,0,255)';
-          this.temp.scale = (context.canvas.width / $g.constants.SQRT2) / 100;
-          this.polygon.map((point) => {
-            context.beginPath();
-            context.arc(
-              (context.canvas.width / 2) + (this.temp.scale * point.x),
-              (context.canvas.width / 2) - (this.temp.scale * point.y),
-              3,
-              0,
-              $g.constants.PI2
-            );
-            context.fill();
-          });
-        }
-
-        perf.stop('_myShip.obj.drawCollisionPoints');
-      };
     }
 
     perf.stop('Ship.constructor');
   }
 
   // add a fn to the draws queue
-  drawMyShip(context) {
+  drawMyShip(context) { perf.start('Ship.drawMyShip');
     if (context.canvas.id !== 'canvas_myShip') return;
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
     canvasSvg.draw(context, {
@@ -54,10 +36,11 @@ export default class Ship {
       x: context.canvas.width / 2,
       y: context.canvas.height / 2
     });
+    perf.stop('Ship.drawMyShip');
   };
 
-  onCollide() {
-    return true;
+  onCollide() { perf.start('Ship.onCollide');
+    return perf.stop('Ship.onCollide');;
   }
 
   applyType() { perf.start('Ship.applyType');
@@ -83,4 +66,27 @@ const shipTypes = {
       { x: 4, y: 48 }
     ],
   }
+};
+
+// override _collision.drawCollisionPoints NOT a class function, which would then apply to all ships
+function drawMyShipCollisionPoints(context) { perf.start('_myShip.obj.drawMyShipCollisionPoints');
+  if (!$g.constants.DRAWCOLLISION) return;
+  if (context.canvas.id !== 'canvas_myShip') return;
+  if (this.Polygon) {
+    context.fillStyle = 'rgb(255,0,255)';
+    this.temp.scale = (context.canvas.width / $g.constants.SQRT2) / 100;
+    this.polygon.map((point) => {
+      context.beginPath();
+      context.arc(
+        (context.canvas.width / 2) + (this.temp.scale * point.x),
+        (context.canvas.width / 2) - (this.temp.scale * point.y),
+        3,
+        0,
+        $g.constants.PI2
+      );
+      context.fill();
+    });
+  }
+
+  perf.stop('_myShip.obj.drawMyShipCollisionPoints');
 };

@@ -66,7 +66,7 @@ if (activate) {
         }
       });
     });
-    perf.stats.totalCost = metrics['main.draw'].cost + metrics['main.update'].cost;
+    perf.stats.totalCost = metrics['main.draw'].cost; // main.draw should be running always
     perf.stats.costPerSec = +(perf.stats.totalCost / (performance.now() / 1000)).toFixed(2);
 
     perf.byName.sort(function(a, b) {

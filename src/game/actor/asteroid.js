@@ -17,8 +17,8 @@ export default class Asteroid {
     perf.stop('Asteroid.constructor');
   }
 
-  onCollide() {
-    return;
+  onCollide() { perf.start('Asteroid.onCollide');
+    return perf.stop('Asteroid.onCollide');;
   }
 
   applyType() { perf.start('Asteroid.applyType');
@@ -34,23 +34,20 @@ export default class Asteroid {
   };
 
   // add a fn to the draws queue
-  drawMe(context) {
-    // solve for distance from myShip by coordinate
-    this.temp.pixelDistX = (this.mX * $g.viewport.pixelsPerMeter) - ($g.game.myShip.mX * $g.viewport.pixelsPerMeter);
-    this.temp.pixelDistY = (this.mY * $g.viewport.pixelsPerMeter) - ($g.game.myShip.mY * $g.viewport.pixelsPerMeter);
-
-    // translate this point by myShip rotation (https://academo.org/demos/rotation-about-point/)
-    this.temp.pixelDistXPrime = (this.temp.pixelDistX * $g.game.myShip.dY) - (this.temp.pixelDistY * $g.game.myShip.dX);
-    this.temp.pixelDistYPrime = (this.temp.pixelDistY * $g.game.myShip.dY) + (this.temp.pixelDistX * $g.game.myShip.dX);
+  drawMe(context) { perf.start('Asteroid.drawMe');
+    temp.viewportPixel = this.getViewportPixel(this.mX, this.mY, this.length);
+    if (!temp.viewportPixel.isVisible) return perf.stop('Asteroid.drawMe');
 
     canvasSvg.draw(context, {
       svg: 'AsteroidSVG',
       id: this.id,
-      d: this.d,
+      d: this.d - $g.game.myShip.d,
       pixelLength: this.length * $g.viewport.pixelsPerMeter,
-      x: $g.viewport.shipPixelX + this.temp.pixelDistXPrime,
-      y: $g.viewport.shipPixelY - this.temp.pixelDistYPrime
+      x: temp.viewportPixel.x,
+      y: temp.viewportPixel.y
     });
+
+     perf.stop('Asteroid.drawMe');
   };
 }
 
@@ -59,7 +56,7 @@ const types = {
     // sMax: 40,
     // aSMax: 1,
     // length: 20,
-    // mass: 80000, // kg
+    mass: 80000, // kg
     polygon: [
       { x: -30, y: 41, },
       { x: -48, y: 9 },

@@ -16,21 +16,24 @@ function getProperties() {
 function add(obj) { perf.start('_shipWeapons.add');
   Object.assign(obj, cloneDeep(properties)); // merge properties
 
-  // more thrust eq more force (eq more speed)
-  obj.fireCannon = function(type = 0) { perf.start('_shipWeapons.obj.fireCannon');
-    temp.projectile = $g.bank.projectiles.pop();
-    // wipe this projectile
-    temp.projectile.init({
-      type,
-      mX: this.mX,
-      mY: this.mY,
-      d: this.d,
-      exemptColliders: { [`${this.id}`]: this }
-    });
-    perf.stop('_shipWeapons.obj.fireCannon');
-  };
+  // attach functions to obj
+  obj.fireCannon = fireCannon;
 
   perf.stop('_shipWeapons.add');
+}
+
+// more thrust eq more force (eq more speed)
+function fireCannon(type = 0) { perf.start('_shipWeapons.obj.fireCannon');
+  temp.projectile = $g.bank.projectiles.pop();
+  // wipe this projectile
+  temp.projectile.init({
+    type,
+    mX: this.mX,
+    mY: this.mY,
+    d: this.d,
+    exemptColliders: { [`${this.id}`]: this }
+  });
+  perf.stop('_shipWeapons.obj.fireCannon');
 }
 
 export default { add, getProperties };

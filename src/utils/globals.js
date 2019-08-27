@@ -1,5 +1,6 @@
 const constants = {
   DEBUG: false,
+  DRAWCOLLISION: false,
   // precalc these to save computations
   PI2: Math.PI * 2,
   RADIAN: Math.PI / 180,
@@ -23,6 +24,13 @@ const bank = {
   asteroids: [],
   ships: [],
   particles: [],
+};
+
+const whichBank = { // given a classname, which queue does it belong in?
+  Asteroid: 'actors',
+  Ship: 'actors',
+  Projectile: 'projectiles',
+  Particle: 'particles',
 };
 
 const viewport = {
@@ -51,6 +59,6 @@ const viewport = {
 };
 
 // set global javascript  references to these values
-global.$g = { viewport, game, constants, bank };
+global.$g = { viewport, game, constants, bank, whichBank };
 
-export default { constants, viewport, game, bank };
+export default { constants, viewport, game, bank, whichBank };

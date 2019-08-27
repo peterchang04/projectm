@@ -1,7 +1,9 @@
+import perf from '../../utils/perf.js';
 import entity from './_entity.js';
 import physics from './_physics.js';
 import drawable from './_drawable.js';
 import updatable from './_updatable.js';
+import settersAndHooks from './_settersAndHooks.js';
 import collidable from './_collidable.js';
 import shipThrust from './_shipThrust.js';
 import shipWeapons from './_shipWeapons.js';
@@ -14,6 +16,7 @@ const decorators = [
   { name: 'entity', ...entity },
   { name: 'drawable', ...drawable },
   { name: 'updatable', ...updatable },
+  { name: 'settersAndHooks', ...settersAndHooks },
   // game mechanics
   { name: 'physics', ...physics },
   { name: 'collidable', ...collidable },
@@ -25,7 +28,7 @@ const decorators = [
 // run the check
 check();
 
-function check() {
+function check() { perf.start('decorate.check');
   const testObj = { id: -1 };
   decorators.map((decorator) => {
     // check for 'add' function
@@ -42,9 +45,10 @@ function check() {
     // apply decorator to obj
     decorator.add(testObj);
   });
+  perf.stop('decorate.check');
 }
 
-function add(obj, initialObj = {}, entities = []) { // entities example: [ 'drawable', 'updatable', 'physics' ]
+function add(obj, initialObj = {}, entities = []) { perf.start('decorate.add'); // entities example: [ 'drawable', 'updatable', 'physics' ]
   // overlay initialObj AFTER all decorators applied
   temp.obj = new Object();
   temp.obj.id = $g.game.newId();
@@ -61,6 +65,7 @@ function add(obj, initialObj = {}, entities = []) { // entities example: [ 'draw
 
   // assign initial obj, so type can be set, which init() probably needs
   Object.assign(obj, temp.obj, initialObj);
+  perf.stop('decorate.add');
   return obj;
 }
 

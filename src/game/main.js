@@ -43,9 +43,10 @@ function init() {
   // get the shipView's dimensions
   $g.viewport.update(document.getElementById('shipView').offsetWidth, document.getElementById('shipView').offsetHeight);
 
+  _factory.init();
   // register myShip with constants
-  $g.game.myShip = new Ship({ type: 0, mX: 0, mY: 0, d: 0 });
-  $g.game.myShip.init();
+  $g.game.myShip = $g.bank.ships.shift();
+  $g.game.myShip.init({ type: 0, mX: 0, mY: 0, d: 0 });
 
   // init dependencies
   canvasText.init();
@@ -55,7 +56,6 @@ function init() {
   backgroundGridCanvas.init();
   projectileCanvas.init();
   steeringCanvas.init();
-  _factory.init();
 
   // PLACEHOLDER - initialize 3 asteroids
   temp.asteroid0 = $g.bank.asteroids.pop();

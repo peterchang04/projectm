@@ -10,7 +10,6 @@ export default class Projectile {
     decorate.add(this, initialObj, ['entity', 'drawable', 'updatable', 'physics', 'collidable']);
 
     this.addUpdate('removeByDistance', 100, 10);
-
     this.inits.push('factoryInit');
 
     // get rid of unneeded functions
@@ -21,6 +20,7 @@ export default class Projectile {
     // add to draw queue
     this.addDraw('drawMe');
     this.addDraw('drawCollisionPoints', 100, 'canvas_projectiles');
+
     perf.stop('Projectile.constructor');
   }
 
@@ -32,32 +32,21 @@ export default class Projectile {
 
   // add a fn to the draws queue
   drawMe(context) { perf.start('Projectile.drawMe');
-    // solve for distance from myShip by coordinate
-    this.temp.pixelDistX = (this.mX * $g.viewport.pixelsPerMeter) - ($g.game.myShip.mX * $g.viewport.pixelsPerMeter);
-    this.temp.pixelDistY = (this.mY * $g.viewport.pixelsPerMeter) - ($g.game.myShip.mY * $g.viewport.pixelsPerMeter);
-
-    // translate this point by myShip rotation (https://academo.org/demos/rotation-about-point/)
-    this.temp.pixelDistXPrime = (this.temp.pixelDistX * $g.game.myShip.dY) - (this.temp.pixelDistY * $g.game.myShip.dX);
-    this.temp.pixelDistYPrime = (this.temp.pixelDistY * $g.game.myShip.dY) + (this.temp.pixelDistX * $g.game.myShip.dX);
-
-    // see if it's off screen
-    if (Math.abs(this.temp.pixelDistXPrime) > $g.viewport.pixelWidth || Math.abs(this.temp.pixelDistYPrime) > $g.viewport.pixelHeight) {
-      perf.stop('Projectile.drawMe');
-      return;
-    }
+    temp.viewportPixel = this.getViewportPixel(this.mX, this.mY, this.length);
+    if (!temp.viewportPixel.isVisible) return perf.stop('Projectile.drawMe');
 
     // reset context
     context.setTransform(1, 0, 0, 1, 0, 0); // restore context rotate / translate
     // rotation center set on projectile center
-    context.translate($g.viewport.shipPixelX + this.temp.pixelDistXPrime, $g.viewport.shipPixelY - this.temp.pixelDistYPrime);
+    context.translate(temp.viewportPixel.x, temp.viewportPixel.y);
     context.rotate((this.d - $g.game.myShip.d) * $g.constants.RADIAN);
 
     context.fillStyle = this.projectileColor;
     context.fillRect(
       0 + this.widthOffsetX,
       0, // y coordinates on canvas increase down on screen
-      this.projectileWidth,
-      this.projectileHeight
+      this.projectileWidth * $g.viewport.pixelsPerMeter,
+      -this.length * $g.viewport.pixelsPerMeter,
     );
     perf.stop('Projectile.drawMe');
   };
@@ -69,18 +58,19 @@ export default class Projectile {
     perf.stop('Projectile.removeByDistance');
   }
 
-  factoryInit() {
+  factoryInit() { perf.start('Projectile.factoryInit');
     // set speed to sMax
     this.updateTrig();
 
     this.sX = this.dX * this.sMax;
     this.sY = this.dY * this.sMax;
+    perf.stop('Projectile.factoryInit');
   }
 
   applyType() { perf.start('Projectile.applyType');
     Object.assign(this, types[this.type]);
     // solve for widthOffsetX based on projectileWidth
-    this.widthOffsetX = -0.5 * types[this.type].projectileWidth;
+    this.widthOffsetX = -0.5 * (types[this.type].projectileWidth * $g.viewport.pixelsPerMeter);
 
     // record beginning mX mY
     this.mXStart = this.mX;
@@ -93,28 +83,26 @@ export default class Projectile {
 const types = {
   0: { // standard
     sMax: 150,
-    length: 0.5,
+    length: 2,
     mass: 0.5, // kg
-    projectileColor: "#bbb",
-    projectileWidth: 3,
-    projectileHeight: 8,
-    maxDistance: 250,
+    projectileColor: "#fff",
+    projectileWidth: 1, // in meters
+    maxDistance: 500,
     polygon: [
       { x:0, y:50 },
-      { x:0, y:0 },
+      { x:0, y:-50 },
     ]
   },
   1: { // lasery thing
     sMax: 800,
-    length: 0.5,
+    length: 20,
     mass: 0.5, // kg
     projectileColor: "#FF0000",
-    projectileWidth: 1,
-    projectileHeight: 50,
+    projectileWidth: .5,
     maxDistance: 200,
     polygon: [
-      { x:0, y:50 },
-      { x:0, y:0 },
+      { x:0, y: 125 }, // exaggerate forward detect due to laser speed
+      { x:0, y: -75 },
     ]
   },
 };
