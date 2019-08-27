@@ -55,7 +55,7 @@
             doing this in onStart because ship may not be loaded before multiDrag
             addOnUpdate won't overwrite if function exists already.
           */
-          $g.game.myShip.addOnUpdate('dTurn', 'pilotSteering', (value, oldValue, obj) => {
+          $g.game.myShip.onUpdate('dTurn', 'pilotSteering', (value, oldValue, obj) => {
             // update the position of #dragger as ship turns, if not active
             if (!this.active) {
               this.screenDegree = (value < 0) ? 360 + value : value;

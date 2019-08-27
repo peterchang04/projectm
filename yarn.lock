@@ -4576,6 +4576,11 @@ lodash@^4.17.11:
   version "4.17.11"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
 
+lodash@^4.17.15:
+  version "4.17.15"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
+  integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
+
 log-symbols@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/log-symbols/-/log-symbols-2.2.0.tgz#5740e1c5d6f0dfda4ad9323b5332107ef6b4c40a"
@@ -6644,6 +6649,11 @@ safe-regex@^1.1.0:
 "safer-buffer@>= 2.1.2 < 3", safer-buffer@^2.0.2, safer-buffer@^2.1.0:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
+
+sat@^0.7.1:
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/sat/-/sat-0.7.1.tgz#fe1806b2c677fc2eec9943649ad187871f18f9ea"
+  integrity sha512-YFkI+KMARdAxqIVSS79TaTdPLOWFWeWe/J+A7Rc4xBNn7lxuqWGJs9YmZURaipMjWAM9FLK3s4W1+yEdFu3/5w==
 
 sax@^1.1.4, sax@^1.2.4, sax@~1.2.4:
   version "1.2.4"

@@ -2,6 +2,8 @@
   <div class="proportionateHeightWrapper">
     <div id="captainPanel" class="panelGrid" :style="borderStyle">
       <Heading text="Cap'n Panel" :gridColumnStart="1" :gridColumns="3" />
+
+      <button v-on:click="toggleCollision" id="toggleCollision">Collision</button>
     </div>
   </div>
 </template>
@@ -21,6 +23,11 @@
         return `border-color:${def.roles[1].bgColor}`;
       }
     },
+    methods: {
+      toggleCollision() {
+        $g.constants.DRAWCOLLISION = !$g.constants.DRAWCOLLISION;
+      }
+    }
   };
 </script>
 
@@ -50,4 +57,11 @@
     border-left: 1vw solid transparent;
   }
   /* END This allows for proportionate height / width ratio across viewports */
+  #toggleCollision {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 11;
+    grid-row-end: 12;
+    width: 100%;
+  }
 </style>

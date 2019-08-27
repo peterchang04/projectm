@@ -1,35 +1,52 @@
 /*
   Memory save and stutter avoider
   Pregenerates actors into memory. Bank the ones not in use, retrieve from bank instead of creating new ones.
+
+  To get an entity for use, pop() it from $g.bank.entity
 */
 import Projectile from './projectile.js';
+import Asteroid from './asteroid.js';
+import Particle from './particle.js';
+import Ship from './ship.js';
 import $g from '../../utils/globals.js';
 import perf from '../../utils/perf.js';
 
-const projectileBank = [];
 const temp = {};
 
 function init() { perf.start('_factory.init');
-  // make 200 projectiles
-  for (temp.x = 0; temp.x < 200; temp.x++) {
-    projectileBank[temp.x] = new Projectile();
-    projectileBank[temp.x].remove = function() { perf.start('_factory.projectile.remove');
-      projectileBank.push(this);
-      delete $g.game.actors[this.id]; // removes the reference only. Original object is safe in bank.
-      perf.start('_factory.projectile.remove');
-      return;
-    };
+  // make 25 ships - ships are first to reserve id:0 for crew
+  for (temp.x = 0; temp.x < 25; temp.x++) {
+    $g.bank.ships[temp.x] = new Ship();
+    $g.bank.ships[temp.x].remove = remove;
   }
+
+  // make 200 projectiles
+  for (temp.x = 0; temp.x < 100; temp.x++) {
+    $g.bank.projectiles[temp.x] = new Projectile();
+    $g.bank.projectiles[temp.x].remove = remove;
+  }
+
+  // make 20 asteroids
+  for (temp.x = 0; temp.x < 40; temp.x++) {
+    $g.bank.asteroids[temp.x] = new Asteroid();
+    $g.bank.asteroids[temp.x].remove = remove;
+  }
+  
+  // make 200 particles
+  for (temp.x = 0; temp.x < 100; temp.x++) {
+    $g.bank.particles[temp.x] = new Particle();
+    $g.bank.particles[temp.x].remove = remove;
+  }
+
   perf.stop('_factory.init');
+  // TODO: detect and handle shortages
 }
 
-// modelled like the constructor
-function getProjectile(initialObj) { perf.start('_factory.getProjectile');
-  temp.projectile = projectileBank.pop();
-  Object.assign(temp.projectile, initialObj);
-  temp.projectile.applyType();
-  perf.stop('_factory.getProjectile');
-  return temp.projectile;
+function remove() { perf.start('_factory.obj.remove');
+  $g.whichBank[this.constructor.name];
+  $g.bank[`${this.constructor.name.toLowerCase()}s`].push(this);
+  delete $g.game[$g.whichBank[this.constructor.name]][this.id];
+  return perf.stop('_factory.obj.remove');
 }
 
-export default { getProjectile, init };
+export default { init };
