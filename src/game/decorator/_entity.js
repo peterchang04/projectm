@@ -21,8 +21,8 @@ function add(obj) { perf.start('_entity.add');
 
 function init(initialObj) { perf.start('_entity.init'); // run own init functions
   // add it to a queue if it isn't already there
-  if (!(this.id in $g.game[$g.whichBank[this.constructor.name]])) {
-    $g.game[$g.whichBank[this.constructor.name]][this.id] = this;
+  if (!(this.id in $g.game[$g.whichBank[this.className]])) {
+    $g.game[$g.whichBank[this.className]][this.id] = this;
   }
   // apply initialObj to this
   Object.assign(this, initialObj); // merge properties
