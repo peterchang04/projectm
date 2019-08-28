@@ -249,7 +249,6 @@ function checkMidDeescalate(obj, obj2) { perf.start('_collidable.checkMidDeescal
 }
 
 function checkShortCollide(obj, obj2) { perf.start('_collidable.checkShortCollide');
-  // TODO: for now, short collide always returns true. - eventually, box or circle models
   temp.isCollide = SAT.testPolygonPolygon(obj.Polygon, obj2.Polygon);
   perf.stop('_collidable.checkShortCollide');
   return temp.isCollide;

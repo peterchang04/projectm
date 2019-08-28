@@ -17,7 +17,9 @@ export default class Asteroid {
     perf.stop('Asteroid.constructor');
   }
 
-  onCollide() { perf.start('Asteroid.onCollide');
+  onCollide(collidee) { perf.start('Asteroid.onCollide');
+    console.log(collidee.id, this.id);
+    console.log('asteroid collide!');
     return perf.stop('Asteroid.onCollide');;
   }
 

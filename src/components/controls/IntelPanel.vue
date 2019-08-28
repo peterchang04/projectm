@@ -1,7 +1,7 @@
 <template>
   <div class="proportionateHeightWrapper">
     <div id="intelPanel" class="panelGrid" :style="borderStyle">
-      <Heading text="Ntel Panel" :gridColumnStart="1" :gridColumns="3" />
+      <Heading text="Intel Panel" :gridColumnStart="1" :gridColumns="3" />
     </div>
   </div>
 </template>

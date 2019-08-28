@@ -5,24 +5,29 @@
     <canvas id="canvas_background"></canvas>
     <!-- actors -->
     <canvas id="canvas_actors"></canvas>
-    <canvas id="canvas_myShip">
-    </canvas>
-    <canvas id="canvas_ships"></canvas>
     <canvas id="canvas_projectiles"></canvas>
+    <canvas id="canvas_particles"></canvas>
     <!-- parallax stuff -->
     <!-- <canvas id="canvas_foreground"></canvas> -->
     <canvas id="canvas_listener"></canvas>
     <!-- TOP LAYER -->
+    <PilotSteering :class="{ hide: currentRole !== 2 }" />
   </div>
 </template>
 
 <script>
   import Main from '../game/main.js';
+  import PilotSteering from './controls/PilotSteering.vue';
 
   export default {
-    components: {},
+    components: { PilotSteering },
     mounted: function () {
       Main.init();
+    },
+    computed: {
+      currentRole() {
+        return this.$store.state.currentRole;
+      },
     }
   };
 </script>
@@ -48,5 +53,9 @@
     left: 50%;
     top: auto;
     bottom: 33%; /* 2/3 forward 1/3 backwards visibility */
+  }
+  .hide {
+    z-index: -1;
+    visibility: hidden;
   }
 </style>

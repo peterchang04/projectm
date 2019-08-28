@@ -6,28 +6,25 @@ const temp = {};
 let canvas = null;
 let context = null;
 
-function init() { perf.start('actorCanvas.init');
+function init() { perf.start('particleCanvas.init');
   // setup draw canvas
-  canvas = document.getElementById('canvas_actors');
+  canvas = document.getElementById('canvas_particles');
   context = canvas.getContext('2d');
   canvas.width = $g.viewport.pixelWidth;
   canvas.height = $g.viewport.pixelHeight;
 
-  $g.viewport.shipPixelX = $g.viewport.pixelWidth / 2;
-  $g.viewport.shipPixelY = $g.viewport.pixelHeight * (2/3);
-
-  perf.stop('actorCanvas.init');
+  perf.stop('particleCanvas.init');
 }
 
-function draw() { perf.start('actorCanvas.draw');
+function draw() { perf.start('particleCanvas.draw');
   context.setTransform(1, 0, 0, 1, 0, 0); // restore context rotate / translate
   context.clearRect(0, 0, canvas.width, canvas.height);
 
-  Object.keys($g.game.actors).forEach((id) => {
-    $g.game.actors[id].draw(context);
+  Object.keys($g.game.particles).forEach((id) => {
+    $g.game.particles[id].draw(context);
   });
 
-  perf.stop('actorCanvas.draw');
+  perf.stop('particleCanvas.draw');
 }
 
 export default { init, draw };

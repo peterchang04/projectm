@@ -1,5 +1,5 @@
 <template>
-  <div id="intel">
+  <div id="game">
     <TargetsBar />
     <GameView />
     <RoleBar />
@@ -8,9 +8,6 @@
     <CaptainPanel v-if="currentRole === 1"></CaptainPanel>
     <PilotPanel v-if="currentRole === 2"></PilotPanel>
     <IntelPanel v-if="currentRole === 3"></IntelPanel>
-
-    <!-- TOP LAYER -->
-    <PilotSteering :class="{ hide: currentRole !== 2 }" />
 
     <span id="test">{{ thrusterValue }}</span>
   </div>
@@ -25,10 +22,9 @@
   import PilotPanel from '../controls/PilotPanel.vue';
   import IntelPanel from '../controls/IntelPanel.vue';
   import GameView from '../GameView.vue';
-  import PilotSteering from '../controls/PilotSteering.vue';
 
   export default {
-    name: 'intel',
+    name: 'game',
     components: {
       TargetsBar,
       RoleBar,
@@ -38,7 +34,6 @@
       PilotPanel,
       IntelPanel,
       GameView,
-      PilotSteering,
     },
     props: {
       msg: String
@@ -63,13 +58,9 @@
     z-index:3000;
     color: white;
   }
-  #intel {
+  #game {
     display: flex;
     flex-direction: column;
     height: 100%;
-  }
-  .hide {
-    z-index: -1;
-    visibility: hidden;
   }
 </style>

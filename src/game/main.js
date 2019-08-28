@@ -1,9 +1,9 @@
 import backgroundCanvas from './canvas/backgroundCanvas.js';
 import backgroundGridCanvas from './canvas/backgroundGridCanvas.js';
 import steeringCanvas from './canvas/steeringCanvas.js';
-import shipCanvas from './canvas/shipCanvas.js';
 import actorCanvas from './canvas/actorCanvas.js';
 import projectileCanvas from './canvas/projectileCanvas.js';
+import particleCanvas from './canvas/particleCanvas.js';
 import $g from '../utils/globals.js';
 import canvasText from '../utils/canvasText.js';
 import perf from '../utils/perf.js';
@@ -40,7 +40,7 @@ function incrementFramesUpdated() {
 }
 
 function init() {
-  // get the shipView's dimensions
+  // get the gameView's dimensions
   $g.viewport.update(document.getElementById('shipView').offsetWidth, document.getElementById('shipView').offsetHeight);
 
   _factory.init();
@@ -50,11 +50,11 @@ function init() {
 
   // init dependencies
   canvasText.init();
-  shipCanvas.init();
   actorCanvas.init();
   backgroundCanvas.init();
   backgroundGridCanvas.init();
   projectileCanvas.init();
+  particleCanvas.init();
   steeringCanvas.init();
 
   // PLACEHOLDER - initialize 3 asteroids
@@ -62,6 +62,8 @@ function init() {
   temp.asteroid0.init({ length: 100, mX: 100, mY: 100, d: 0, sMax: 0, aS: 0 });
   temp.asteroid1 = $g.bank.asteroids.pop();
   temp.asteroid1.init({ length: 20, mX: -100, mY: 100, d: -12, sMax: 5, aS: 15 });
+  temp.asteroid2 = $g.bank.asteroids.pop();
+  temp.asteroid2.init({ length: 40, mX: 0, mY: 100, d: 0, sMax: 3, aS: -6 });
   //
   // temp.asteroid2 = _factory.getAsteroid({ length: 50, mX: -70, mY: -50, d: 5, sMax: 10, aS: -35  });
   // $g.game.actors[temp.asteroid2.id] = temp.asteroid2;
@@ -99,6 +101,9 @@ function update() { perf.start('main.update');;
   for (temp.objectId in $g.game.projectiles) {
     $g.game.projectiles[temp.objectId].update(stats);
   }
+  for (temp.objectId in $g.game.particles) {
+    $g.game.particles[temp.objectId].update(stats);
+  }
 
   stats.lastUpdated = stats.now;
   perf.stop('main.update');
@@ -111,27 +116,13 @@ function draw() { perf.start('main.draw');
 
   backgroundCanvas.draw();
   backgroundGridCanvas.draw();
-  shipCanvas.draw();
   actorCanvas.draw();
   steeringCanvas.draw();
   projectileCanvas.draw();
+  particleCanvas.draw();
 
   perf.stop('main.draw');
   requestAnimationFrame(draw);
 }
-
-/* REFERENCE FOR UPDATES FREQUENCIES
-every X updates : results in X fps : frame ever Xms
-  1 : 60fps : 17ms
-  2 : 30fps : 32ms
-  3 : 20fps : 50ms
-  4 : 15fps : 67ms
-  5 : 12fps : 83ms
-  6 : 10fps : 100ms
-  10: 6fps : 167ms
-  12: 5fps : 200ms
-  15: 4fps : 250ms
-  30: 2fps : 500ms
-*/
 
 export default { init };

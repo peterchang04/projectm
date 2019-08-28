@@ -25,7 +25,7 @@ export default class Projectile {
   }
 
   onCollide(collidee) { perf.start('Projectile.onCollide');
-    console.log(this.id, 'collided with', collidee.id, this.exemptColliders);
+    if (this.collisionEffect) this.collisionEffect(this);
     this.remove();
     perf.stop('Projectile.onCollide');
   }
@@ -91,7 +91,53 @@ const types = {
     polygon: [
       { x:0, y:50 },
       { x:0, y:-50 },
-    ]
+    ],
+    collisionEffect: (projectile) => {
+      // center explosion
+      temp.particle = $g.bank.particles.pop();
+      temp.particle.init({
+        d: 0,
+        mX: projectile.mX,
+        mY: projectile.mY,
+        type: 1,
+      });
+      // 3 sparks
+      temp.particle = $g.bank.particles.pop();
+      temp.particle.init({
+        d: projectile.d + 180 + maths.random(-40, -20), // opposite of projectile, with a bit of random spread
+        mX: projectile.mX, mY: projectile.mY,
+        sMax: maths.random(40, 90),
+        type: 0,
+        animateFrames: maths.random(20, 45),
+      });
+      temp.particle = $g.bank.particles.pop();
+      temp.particle.init({
+        d: projectile.d + 180 + maths.random(-15, 15), // opposite of projectile, with a bit of random spread
+        mX: projectile.mX, mY: projectile.mY,
+        sMax: 60,
+        type: 0,
+        animateFrames: maths.random(20, 45),
+      });
+      temp.particle = $g.bank.particles.pop();
+      temp.particle.init({
+        d: projectile.d + 180 + maths.random(20, 40), // opposite of projectile, with a bit of random spread
+        mX: projectile.mX, mY: projectile.mY,
+        sMax: maths.random(40, 90),
+        type: 0,
+        animateFrames: maths.random(20, 45),
+      });
+      // optional 4th spark
+      if (maths.random(0, 1) === 1) {
+        temp.particle = $g.bank.particles.pop();
+        temp.particle.init({
+          d: projectile.d + 180 + maths.random(-40, 40), // opposite of projectile, with a bit of random spread
+          mX: projectile.mX, mY: projectile.mY,
+          sMax: maths.random(40, 90),
+          type: 0,
+          animateFrames: maths.random(6, 20),
+        });
+      }
+    },
   },
   1: { // lasery thing
     sMax: 800,

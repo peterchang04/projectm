@@ -32,6 +32,8 @@ function init(initialObj) { perf.start('_entity.init'); // run own init function
   this.inits.map((word) => {
     this[word](initialObj);
   });
+  // apply initialObj again, to overwrite any type specifics
+  Object.assign(this, initialObj); // merge properties
   perf.stop('_entity.init');
 }
 

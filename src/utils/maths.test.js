@@ -187,3 +187,48 @@ describe('radianToDegree', () => {
     expect(maths.radianToDegree((Math.PI * 7 / 4) - Math.PI * 2)).to.equal(135);
   });
 });
+
+describe('random', () => {
+  it('-3 to 3', () => {
+    let isValid = true;
+    let has3 = '';
+    let hasNeg3 = '';
+    for (var i = 0; i < 100; i++) {
+      let result = maths.random(-3, 3);
+      if (result < -3 || result > 3) isValid = false;
+      if (result === 3) has3 = 'has3';
+      if (result === -3) hasNeg3 = 'hasNeg3';
+    }
+    expect(isValid).to.equal(true);
+    expect(has3).to.equal('has3');
+    expect(hasNeg3).to.equal('hasNeg3');
+  });
+  it('3 to -3 (reverse args)', () => {
+    let isValid = true;
+    let has3 = false;
+    let hasNeg3 = false
+    for (var i = 0; i < 100; i++) {
+      let result = maths.random(3, -3);
+      if (result < -3 || result > 3) isValid = false;
+      if (result === 3) has3 = 'has3';
+      if (result === -3) hasNeg3 = 'hasNeg3';
+    }
+    expect(isValid).to.equal(true);
+    expect(has3).to.equal('has3');
+    expect(hasNeg3).to.equal('hasNeg3');
+  });
+  it('0-10', () => {
+    let isValid = true;
+    let has10 = false;
+    let has0 = false
+    for (var i = 0; i < 100; i++) {
+      let result = maths.random(10);
+      if (result < 0 || result > 10) isValid = false;
+      if (result === 10) has10 = 'has10';
+      if (result === 0) has0 = 'has0';
+    }
+    expect(isValid).to.equal(true);
+    expect(has10).to.equal('has10');
+    expect(has0).to.equal('has0');
+  });
+});

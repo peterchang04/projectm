@@ -48,7 +48,7 @@ function init() { perf.start('_factory.init');
 
 function remove() { perf.start('_factory.obj.remove');
   $g.whichBank[this.className];
-  $g.bank[`${this.constructor.name.toLowerCase()}s`].push(this);
+  $g.bank[`${this.className.toLowerCase()}s`].push(this);
   delete $g.game[$g.whichBank[this.className]][this.id];
   return perf.stop('_factory.obj.remove');
 }

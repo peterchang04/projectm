@@ -52,8 +52,6 @@ const viewport = {
     */
     this.pixelsPerMeter = this.pixelHeight / 315;
   },
-  shipX: 0,
-  shipY: 0,
   shipPixelX: 0,
   shipPixelY: 0,
 };

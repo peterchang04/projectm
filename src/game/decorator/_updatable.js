@@ -93,3 +93,17 @@ function calculateFrameSkipOffset(updatesByName) {
 };
 
 export default { add, getProperties };
+
+/* REFERENCE FOR UPDATES FREQUENCIES
+every X updates : results in X fps : frame ever Xms
+  1 : 60fps : 17ms
+  2 : 30fps : 32ms
+  3 : 20fps : 50ms
+  4 : 15fps : 67ms
+  5 : 12fps : 83ms
+  6 : 10fps : 100ms
+  10: 6fps : 167ms
+  12: 5fps : 200ms
+  15: 4fps : 250ms
+  30: 2fps : 500ms
+*/

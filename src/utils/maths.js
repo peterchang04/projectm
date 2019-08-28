@@ -87,6 +87,17 @@ function roundHalf(number) {
   return Math.ceil(number * 2) / 2;
 }
 
+function random(a = 10, b = 0) { // accepts a range of 2 numbers
+  if (a > b) {
+    temp.max = a;
+    temp.min = b;
+  } else {
+    temp.min = a;
+    temp.max = b;
+  }
+  return Math.floor(Math.random() * (temp.max - temp.min + 1)) + temp.min;
+}
+
 export default {
   getAngle2P,
   getRadian2P,
@@ -99,4 +110,5 @@ export default {
   radianToDegree,
   radianToAngle,
   roundHalf,
+  random,
 };
