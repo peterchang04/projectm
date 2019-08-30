@@ -20,14 +20,14 @@ function add(obj) { perf.start('_entity.add');
 }
 
 function init(initialObj) { perf.start('_entity.init'); // run own init functions
-  // add it to a queue if it isn't already there
+  // add entity to a queue if it isn't already there
   if (!(this.id in $g.game[$g.whichBank[this.className]])) {
     $g.game[$g.whichBank[this.className]][this.id] = this;
   }
   // apply initialObj to this
   Object.assign(this, initialObj); // merge properties
 
-  this.applyType();
+  this.applyType(initialObj);
   // run init functions
   this.inits.map((word) => {
     this[word](initialObj);

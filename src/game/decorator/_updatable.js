@@ -55,7 +55,7 @@ function removeUpdate(name) { perf.start('_updatable.removeUpdate');
 function update(stats) { perf.start('_updatable.update');
   this.updates.map((word) => {
     if (this.updatesByName[word].frameSkip > 1) {
-      temp.equality = this.updatesByName[word].frameSkipOffset || 0 % this.updatesByName[word].frameSkip;
+      temp.equality = (this.updatesByName[word].frameSkipOffset || 0) % this.updatesByName[word].frameSkip;
       if ((stats.updateCount + this.id) % this.updatesByName[word].frameSkip !== temp.equality) return perf.stop('_updatable.update');;
     }
     this[word]((stats.now - stats.update[this.updatesByName[word].frameSkip]) / 1000);

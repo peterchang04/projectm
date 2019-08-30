@@ -17,10 +17,9 @@ function init() { perf.start('particleCanvas.init');
 }
 
 function draw() { perf.start('particleCanvas.draw');
-  context.setTransform(1, 0, 0, 1, 0, 0); // restore context rotate / translate
   context.clearRect(0, 0, canvas.width, canvas.height);
 
-  Object.keys($g.game.particles).forEach((id) => {
+  Object.keys($g.game.particles).map((id) => {
     $g.game.particles[id].draw(context);
   });
 

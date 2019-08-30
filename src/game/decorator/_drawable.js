@@ -52,11 +52,12 @@ function removeDraw(name) { perf.start('_drawable.removeDraw');
 
 // the draw calls, in sorted order
 function draw(context) { perf.start('_drawable.draw');
+  context.save();
   this.draws.forEach((word) => {
     // see if a canvas has been specified
     if (this.drawsByName[word].canvasId && this.drawsByName[word].canvasId !== context.canvas.id) return;
-    context.setTransform(1, 0, 0, 1, 0, 0); // restore context rotate / translate before every draw
     this[word](context);
+    context.restore();
   });
   perf.stop('_drawable.draw');
 };
@@ -76,14 +77,21 @@ function sortDraws(drawsByName) { perf.start('_drawable.sortDraws');
 };
 
 // given a mX and mY, output
-function getViewportPixel(mX, mY, length = 10) { perf.start('_drawable.getViewportPixel');
+function getViewportPixel(mX, mY, length = 10, isMyShip = false) { perf.start('_drawable.getViewportPixel');
   // solve for dist from ship
   temp.distX = mX - $g.game.myShip.mX;
   temp.distY = mY - $g.game.myShip.mY;
 
   // translate this point by myShip rotation (https://academo.org/demos/rotation-about-point/)
-  temp.distXPrime = (temp.distX * $g.game.myShip.dY) - (temp.distY * $g.game.myShip.dX);
-  temp.distYPrime = (temp.distY * $g.game.myShip.dY) + (temp.distX * $g.game.myShip.dX);
+  if (isMyShip) {
+    // apply no rotation because myShip is perspective
+    temp.distXPrime = temp.distX;
+    temp.distYPrime = temp.distY;
+  } else {
+    temp.distXPrime = (temp.distX * $g.game.myShip.dY) - (temp.distY * $g.game.myShip.dX);
+    temp.distYPrime = (temp.distY * $g.game.myShip.dY) + (temp.distX * $g.game.myShip.dX);
+  }
+
 
   temp.pixelResult.x = $g.viewport.shipPixelX + (temp.distXPrime * $g.viewport.pixelsPerMeter);
   temp.pixelResult.y = $g.viewport.shipPixelY - (temp.distYPrime * $g.viewport.pixelsPerMeter);

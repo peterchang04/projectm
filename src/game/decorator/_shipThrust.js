@@ -9,6 +9,7 @@ const temp = {}; // memory pointer to avoid allocation for new variables
 const properties = {
   thrustForce: 0, // in Newtons, for accelerating ship
   thrustValue: 0, // position of thruster slider. (-25 --> 100)
+  thrustPercent: 0, // DERIVED from thrust force and thrust value
   dTurn: 0, // where the ship *wants* to go +/- from current
 };
 
@@ -24,12 +25,18 @@ function add(obj) { perf.start('_shipThrust.add');
   obj.updateMaxSpeedByThrustValue = updateMaxSpeedByThrustValue;
   obj.calculateSpeed = calculateSpeed;
   obj.setAngularThrust = setAngularThrust;
+  obj.updateThrustParticles = updateThrustParticles;
+  obj.updateForwardThrustParticles = updateForwardThrustParticles;
+  obj.updateBackwardThrustParticles = updateBackwardThrustParticles;
+  obj.updateAngularThrustParticles = updateAngularThrustParticles;
+
 
   // register update functions
   obj.addUpdate('updateForceByThrustValue', 11);
   obj.addUpdate('updateMaxSpeedByThrustValue', 10);
   obj.addUpdate('calculateSpeed', 100, 10);
   obj.addUpdate('setAngularThrust', 13);
+  obj.addUpdate('updateThrustParticles', 100, 2);
 
   perf.stop('_shipThrust.add');
 }
@@ -38,7 +45,8 @@ function add(obj) { perf.start('_shipThrust.add');
 const metersPerSecondAcceleration = 8; // how fast to accelerate
 function updateForceByThrustValue() { perf.start('_shipThrust.obj.updateForceByThrustValue');
   // thrustValue is up to 100.
-  this.thrustForce = (this.thrustValue / 100) * this.mass * metersPerSecondAcceleration; // can be negative if reversing
+  this.thrustPercent = (this.thrustValue / 100);
+  this.thrustForce = this.thrustPercent * this.mass * metersPerSecondAcceleration; // can be negative if reversing
   // adjust for direction
   this.forceY = this.dY * this.thrustForce;
   this.forceX = this.dX * this.thrustForce;
@@ -90,55 +98,164 @@ function setAngularThrust(elapsed) { perf.start('_shipThrust.obj.setAngularThrus
     return perf.stop('_shipThrust.obj.setAngularThrust');
   }
 
-  // manage speed angular speed
-  if (this.dTurn > 0) {
-    /* formula for distance = 1/2 (speed)(time^2) */
-    if (this.dTurn > .5 * this.aS * 4 /* 6.25 = 2 ^ 2 */) {
-      // normal accel should take 2 seconds to reach aSMax
-      this.aA = this.aSMax / 2;
-    } else {
-      // decelerate until dTurn is reached
-      this.aA = -this.aSMax / 2;
-      // stop decelerating when aS reaches .5
-      if (this.aS <= 1) this.aA = 0;
-    }
+  // see what the desired aS is and apply acceleration until we get there
+  temp.isPositive = (this.dTurn >= 0) ? 1 : -1;
+  if (Math.abs(this.dTurn) > this.aSMax * 1.5) { // start slowing down 1.5 seconds away from dTarget
+    temp.aSDesired = this.aSMax * temp.isPositive;
   } else {
-    /* formula for distance = 1/2 (speed)(time^2) */
-    if (this.dTurn < .5 * this.aS * 4 /* 4 = 2 ^ 2 */) {
-      // normal accel should take 2 seconds to reach aSMax
-      this.aA = -this.aSMax / 2;
-    } else {
-      // decelerate until dTurn is reached
-      this.aA = this.aSMax / 2;
-      // stop decelerating when aS reaches -.5
-      if (this.aS >= -1) this.aA = 0;
+    temp.aSDesired = this.aSMax / 2 * temp.isPositive;
+    if (Math.abs(this.dTurn) < 7) {
+      temp.aSDesired = 2 * temp.isPositive;
     }
   }
 
-  // apply acc to aSpeed
-  if (this.dTurn > 0) {
-    this.aS += this.aA * elapsed;
-    // enforce maximum
-    if (this.aS > this.aSMax) this.aS = this.aSMax;
-  } else {
-    this.aS += this.aA * elapsed;
-    // enforce maximum
-    if (this.aS < -this.aSMax) this.aS = -this.aSMax;
-  }
+  if (this.aS > temp.aSDesired) this.aA = this.aSMax / -2;
+  if (this.aS < temp.aSDesired) this.aA = this.aSMax / 2;
+
+  // apply aA to aS
+  this.aS += this.aA * elapsed;
+  if (this.aS < -this.aSMax) this.aS = -this.aSMax;
+  if (this.aS > this.aSMax) this.aS = this.aSMax;
+
+  // take away from dTurn what has transpired
+  this.set('dTurn', this.dTurn - this.aS * elapsed);
 
   if (  // stop turning if dTurn gets within .25 of dTarget;
-    Math.abs(this.aS) <= 1 // only do this if approaching at slow speed
-    && Math.abs(this.d - this.dTarget) < .15
+    Math.abs(this.aS) <= 2 // only do this if approaching at slow speed
+    && Math.abs(this.d - this.dTarget) < .25
   ) {
       this.set('dTurn', 0);
       this.d = this.dTarget;
+      this.aS = 0;
       this.aA = 0;
   }
 
-  // take away from dTurn what has transpired
-  this.set('dTurn', this.dTurn - this.aS * elapsed)
-
   perf.stop('_shipThrust.obj.setAngularThrust');
 }
+
+function updateThrustParticles() { perf.start('_shipThrust.updateThrustParticles');
+  if (this.thrustForce > 0) this.updateForwardThrustParticles();
+  if (this.thrustForce < 0) this.updateBackwardThrustParticles();
+  if (this.aA !== 0) this.updateAngularThrustParticles();
+  perf.stop('_shipThrust.updateThrustParticles');
+}
+
+function updateForwardThrustParticles() { perf.start('_shipThrust.updateForwardThrustParticles');
+  this.thrusters.forward.map((thruster) => {
+    temp.particle = $g.bank.particles.pop();
+
+    temp.distX = thruster.x / 100 * this.length;
+    temp.distY = -thruster.y / 100 * this.length;
+
+    // alt calculations based on myShip, because of perspective
+    if (this.id === $g.game.myShip.id) {
+      temp.distXPrime = (temp.distX * $g.game.myShip.dY) - (temp.distY * $g.game.myShip.dX);
+      temp.distYPrime = (temp.distY * $g.game.myShip.dY) + (temp.distX * $g.game.myShip.dX);
+      temp.distX = temp.distXPrime;
+      temp.distY = temp.distYPrime;
+    }
+
+    // calc particle travel
+    temp.animateFrames = Math.ceil((15 * Math.abs(this.thrustPercent)) + 5); // 5-20
+
+    // calc particle size
+    temp.length = this.size / 2;
+    temp.length = temp.length / (Math.abs(this.thrustPercent) + 1);
+
+    temp.particle.init({
+      mX: this.mX + temp.distX,
+      mY: this.mY - temp.distY,
+      d: this.d - 180,
+      c: 'rgba(147,230,255,1)',
+      sMax: 120,
+      animateFrames: temp.animateFrames,
+      length: 10,
+      type: 1
+    });
+  });
+  perf.stop('_shipThrust.updateForwardThrustParticles');
+}
+
+function updateBackwardThrustParticles() { perf.start('_shipThrust.updateBackwardThrustParticles');
+  this.thrusters.backward.map((thruster) => {
+    temp.particle = $g.bank.particles.pop();
+
+    temp.distX = thruster.x / 100 * this.length;
+    temp.distY = -thruster.y / 100 * this.length;
+
+    // alt calculations based on myShip, because of perspective
+    if (this.id === $g.game.myShip.id) {
+      temp.distXPrime = (temp.distX * $g.game.myShip.dY) - (temp.distY * $g.game.myShip.dX);
+      temp.distYPrime = (temp.distY * $g.game.myShip.dY) + (temp.distX * $g.game.myShip.dX);
+      temp.distX = temp.distXPrime;
+      temp.distY = temp.distYPrime;
+    }
+
+    // calc particle travel
+    temp.animateFrames = Math.ceil((15 * Math.abs(this.thrustPercent)) + 5); // 5-20
+
+    // calc particle size
+    temp.length = this.size / 2;
+    temp.length = temp.length / (Math.abs(this.thrustPercent) + 1);
+
+    temp.particle.init({
+      mX: this.mX + temp.distX,
+      mY: this.mY - temp.distY,
+      d: this.d,
+      c: 'rgba(147,230,255,1)',
+      sMax: 120,
+      animateFrames: temp.animateFrames,
+      length: 10,
+      type: 1
+    });
+  });
+  perf.stop('_shipThrust.updateBackwardThrustParticles');
+}
+
+function updateAngularThrustParticles() { perf.start('_shipThrust.updateAngularThrustParticles');
+  temp.thrusters = [];
+  temp.aAPercent = Math.abs(this.aA / (this.aSMaxShip / 2));
+  if (this.aA > 0) {
+    temp.thrusters.push(this.thrusters.leftForward); // left first. there's a reason later for this
+    temp.thrusters.push(this.thrusters.rightBackward); // right second. there's a reason later for this
+  } else {
+    temp.thrusters.push(this.thrusters.leftBackward); // left first. there's a reason later for this
+    temp.thrusters.push(this.thrusters.rightForward); // right second. there's a reason later for this
+  }
+  temp.thrusters.map((thruster, i) => {
+    temp.particle = $g.bank.particles.pop();
+
+    temp.distX = thruster.x / 100 * this.length;
+    temp.distY = -thruster.y / 100 * this.length;
+
+    // alt calculations based on myShip, because of perspective
+    if (this.id === $g.game.myShip.id) {
+      temp.distXPrime = (temp.distX * $g.game.myShip.dY) - (temp.distY * $g.game.myShip.dX);
+      temp.distYPrime = (temp.distY * $g.game.myShip.dY) + (temp.distX * $g.game.myShip.dX);
+      temp.distX = temp.distXPrime;
+      temp.distY = temp.distYPrime;
+    }
+
+    // calc particle travel
+    temp.animateFrames = Math.ceil((5 * Math.abs(temp.aAPercent)) + 3); // 2-7
+
+    // calc particle size
+    temp.length = this.size / 4;
+    temp.length = temp.length / (Math.abs(temp.aAPercent) + 1);
+
+    temp.particle.init({
+      mX: this.mX + temp.distX,
+      mY: this.mY - temp.distY,
+      d: this.d + ((i == 0) ? -90 : 90),
+      c: 'rgba(147,230,255,1)',
+      sMax: 100,
+      animateFrames: temp.animateFrames,
+      length: 10,
+      type: 1
+    });
+  });
+  perf.stop('_shipThrust.updateAngularThrustParticles');
+}
+
 
 export default { add, getProperties };

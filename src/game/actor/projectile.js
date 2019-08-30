@@ -6,7 +6,7 @@ import $g from '../../utils/globals.js';
 const temp = {};
 
 export default class Projectile {
-  constructor(initialObj = { d: 0, sMax: 80, type: 0 }) { /* e.g. { x,y,w,h,d,s } */ perf.start('Projectile.constructor');
+  constructor(initialObj = { d: 0, sMax: 0, type: 0 }) { /* e.g. { x,y,w,h,d,s } */ perf.start('Projectile.constructor');
     decorate.add(this, initialObj, ['entity', 'drawable', 'updatable', 'physics', 'collidable']);
 
     this.addUpdate('removeByDistance', 100, 10);
@@ -24,8 +24,8 @@ export default class Projectile {
     perf.stop('Projectile.constructor');
   }
 
-  onCollide(collidee) { perf.start('Projectile.onCollide');
-    if (this.collisionEffect) this.collisionEffect(this);
+  onCollide(collidee, response) { perf.start('Projectile.onCollide');
+    if (this.collisionEffect) this.collisionEffect(this, collidee);
     this.remove();
     perf.stop('Projectile.onCollide');
   }
@@ -44,9 +44,9 @@ export default class Projectile {
     context.fillStyle = this.projectileColor;
     context.fillRect(
       0 + this.widthOffsetX,
-      0, // y coordinates on canvas increase down on screen
+      0 - this.length * $g.viewport.pixelsPerMeter * 0.5,
       this.projectileWidth * $g.viewport.pixelsPerMeter,
-      -this.length * $g.viewport.pixelsPerMeter,
+      this.length * $g.viewport.pixelsPerMeter,
     );
     perf.stop('Projectile.drawMe');
   };
@@ -100,6 +100,7 @@ const types = {
         mX: projectile.mX,
         mY: projectile.mY,
         type: 1,
+        length: 20,
       });
       // 3 sparks
       temp.particle = $g.bank.particles.pop();
@@ -140,15 +141,69 @@ const types = {
     },
   },
   1: { // lasery thing
-    sMax: 800,
+    sMax: 600,
     length: 20,
     mass: 0.5, // kg
     projectileColor: "#FF0000",
     projectileWidth: .5,
     maxDistance: 200,
     polygon: [
-      { x:0, y: 125 }, // exaggerate forward detect due to laser speed
-      { x:0, y: -75 },
-    ]
+      { x:0, y: 50 },
+      { x:0, y: -50 },
+    ],
+    collisionEffect: (projectile, collidee) => {
+      // burning effect
+      temp.particle = $g.bank.particles.pop();
+      temp.particle.init({
+        d: collidee.d, // match direction with collidee
+        sMax: collidee.sMax, // match speed with collidee.. as if it was burning
+        mX: projectile.mX,
+        mY: projectile.mY,
+        type: 1,
+        length: 5,
+        c: '#ff6868',
+        animateFrames: 60,
+      });
+      // 3 sparks
+      temp.particle = $g.bank.particles.pop();
+      temp.particle.init({
+        d: projectile.d + 180 + maths.random(-40, -20), // opposite of projectile, with a bit of random spread
+        mX: projectile.mX, mY: projectile.mY,
+        sMax: maths.random(40, 90),
+        type: 0,
+        animateFrames: maths.random(20, 45),
+        c: '#ff6868'
+      });
+      temp.particle = $g.bank.particles.pop();
+      temp.particle.init({
+        d: projectile.d + 180 + maths.random(-15, 15), // opposite of projectile, with a bit of random spread
+        mX: projectile.mX, mY: projectile.mY,
+        sMax: 60,
+        type: 0,
+        animateFrames: maths.random(20, 45),
+        c: '#ff6868'
+      });
+      temp.particle = $g.bank.particles.pop();
+      temp.particle.init({
+        d: projectile.d + 180 + maths.random(20, 40), // opposite of projectile, with a bit of random spread
+        mX: projectile.mX, mY: projectile.mY,
+        sMax: maths.random(40, 90),
+        type: 0,
+        animateFrames: maths.random(20, 45),
+        c: '#fff'
+      });
+      // optional 4th spark
+      if (maths.random(0, 1) === 1) {
+        temp.particle = $g.bank.particles.pop();
+        temp.particle.init({
+          d: projectile.d + 180 + maths.random(-40, 40), // opposite of projectile, with a bit of random spread
+          mX: projectile.mX, mY: projectile.mY,
+          sMax: maths.random(40, 90),
+          type: 0,
+          animateFrames: maths.random(6, 20),
+          c: '#ff6868'
+        });
+      }
+    },
   },
 };

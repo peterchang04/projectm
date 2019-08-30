@@ -1,7 +1,8 @@
 import { expect } from 'chai';
-import maths from '../../src/utils/maths.js';
 const it = global.it;
 const describe = global.describe;
+import maths from '../../src/utils/maths.js';
+
 
 describe('getRadian2P', () => {
   it('should return 0 if 3rd argument is false, but both points same', () => {

@@ -29,9 +29,9 @@ const properties = {
   sY: 0, // y-axis meters / second
   s: 0, // CALCULATED from sX and sY. in meters / second
   // TODO move sMax stuff to shipThrust.js
-  sMaxX: 100, // DERIVED from sMax * dX
-  sMaxY: 100, // DERIVED from sMax * dY
-  sMax: 100, // Speed cap at any given moment
+  sMaxX: 0, // DERIVED from sMax * dX
+  sMaxY: 0, // DERIVED from sMax * dY
+  sMax: 0, // Speed cap at any given moment
 
   // FORCE
   forceX: 0, // Thrust force applied to X axis
