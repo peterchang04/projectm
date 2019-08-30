@@ -55,6 +55,10 @@
   * create an account first, or the join channel flow can be tricky
   * https://discord.gg/GK6Dzjk
 
+### Updating Vue CLI & plugins + services
+* install a new vue project using global vue create - shows which versions are up-to-date
+* go into current project and update each dependency according to those versions
+
 ### Google Cloud Infrastructure
 * Cloud Build trigger
   - trigger type: branch
