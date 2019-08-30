@@ -28,6 +28,8 @@
 <script>
   import multiDrag from '../../utils/multiDrag.js';
 
+  const temp = {};
+
   export default {
     name: 'slider',
     props: {
@@ -67,12 +69,11 @@
       // init the dragging actions
       multiDrag.activate({
         el: leverHandle,
-        onMove: (e) => {
+        onMove: (clientX) => {
           // stop any current setTimeouts
           clearTimeout(this.clearTimeoutActualProgress);
-
+          const pixelDistance = clientX - this.minX;
           // calculate percent from current X
-          const pixelDistance = e.touches[0].clientX - this.minX;
           let percent = pixelDistance * 100 / this.grooveWidth;
           if (percent < 0) percent = 0;
           if (percent > 100) percent = 100;
@@ -84,15 +85,14 @@
           // adjust progress text if handle covers it
           this.offsetProgressText = (this.percent > 85) ? true : false;
         },
-        onStart: (e) => {
+        onStart: (clientX) => {
           // calculate activateX and activateX offset
-          this.activateX = e.touches[0].clientX;
+          this.activateX = clientX;
           const currentXFromPercent = (this.percent * this.grooveWidth / 100) + this.minX;
           this.activateXOffset = currentXFromPercent - this.activateX + this.minX;
           this.active = true;
-
         },
-        onEnd: (e) => {
+        onEnd: () => {
           this.active = false;
           if (this.actualPercent === this.percent) return;
 

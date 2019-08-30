@@ -28,6 +28,8 @@
           v-on:update="updateAngular"
         />
       </div>
+
+      <div class="console">{{getConsole}}</div>
     </div>
   </div>
 </template>
@@ -37,20 +39,26 @@
   import SliderVertical from './SliderVertical.vue';
   import Heading from './Heading.vue';
   import $g from '../../utils/globals.js';
+  import { mapState } from 'vuex';
   import def from '../../definitions';
 
   export default {
     name: 'pilotPanel',
     components: { SliderVertical, Slider, Heading },
     props: {
-      msg: String
+      msg: String,
     },
     data() {
       return {
         statusFunction: (value) => { return `${value} %` },
       };
     },
+
     computed: {
+      ...mapState(['console']),
+      getConsole() {
+        return this.console;
+      },
       getGameThrustValue() {
         return $g.game.myShip.thrustValue;
       },
@@ -112,8 +120,8 @@
     top: 0px;
     grid-column-start: 3;
     grid-column-end: 6;
-    grid-row-start: 9;
-    grid-row-end: 10;
+    grid-row-start: 11;
+    grid-row-end: 12;
   }
 
   #testButton {
@@ -128,5 +136,13 @@
     grid-column-end: 7;
     grid-row-start: 2;
     grid-row-end: 3;
+  }
+
+  .console {
+    background-color: white;
+    grid-column-start: 1;
+    grid-column-end: 8;
+    grid-row-start: 3;
+    grid-row-end: 9;
   }
 </style>

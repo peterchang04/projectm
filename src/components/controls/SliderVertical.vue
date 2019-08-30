@@ -136,8 +136,9 @@
 
       multiDrag.activate({
         el: this.$el.querySelector('.handle'),
-        onMove: (e) => {
-          const pixelDistance = e.touches[e.which].clientY - this.minY;
+        onMove: (clientX, clientY, touch) => {
+          console.log(clientY);
+          let pixelDistance = clientY - this.minY;
           let percent = pixelDistance * 100 / this.height;
           if (percent < 0) percent = 0;
           if (percent > 100) percent = 100;
@@ -151,10 +152,10 @@
           // use this compare to exit function early
           this.previousPosition = this.position;
         },
-        onStart: (e) => {
+        onStart: (clientX, clientY, touch) => {
           this.active = true;
         },
-        onEnd: (e) => {
+        onEnd: (clientX, clientY, touch) => {
           this.active = false;
         }
       });

@@ -39,7 +39,7 @@ let endRadian = -1;
 function draw() { perf.start('steeringCanvas.draw');
   // solve for dist between current degree and target degree
   endRadian = maths.angleToRadian($g.game.myShip.dTurn - 90);
-  if (lastEndRadian === endRadian) return; // don't draw, don't clear
+  if (lastEndRadian === endRadian) return perf.stop('steeringCanvas.draw'); // don't draw, don't clear
   lastEndRadian = endRadian;
 
   context.clearRect(0, 0, canvas.width, canvas.height);

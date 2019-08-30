@@ -15,6 +15,8 @@
   import maths from '../../utils/maths.js';
   import $g from '../../utils/globals.js';
 
+  const temp = {};
+
   export default {
     name: 'pilot',
     components: {},
@@ -47,10 +49,9 @@
 
       multiDrag.activate({
         el: dragger,
-        onStart: (e) => {
+        onStart: () => {
           this.active = true;
           if (this.direction === 0) this.direction = 1; // initialize this value, or the first press could be -359.9 dTurn
-
           /*
             doing this in onStart because ship may not be loaded before multiDrag
             addOnUpdate won't overwrite if function exists already.
@@ -62,7 +63,7 @@
             }
           });
         },
-        onMove: (e) => {
+        onMove: (clientX, clientY) => {
           // solve for center once
           if (this.centerX === -1) {
             // get boundaries for computations
@@ -74,8 +75,8 @@
           this.screenDegree = maths.getDegree2P(
             this.centerX,
             $g.viewport.viewportHeight - this.centerY,
-            e.touches[0].clientX,
-            $g.viewport.viewportHeight - e.touches[0].clientY
+            clientX,
+            $g.viewport.viewportHeight - clientY
           );
           this.screenDegree = maths.roundHalf(this.screenDegree);
 
@@ -92,10 +93,10 @@
           $g.game.myShip.dTarget = ($g.game.myShip.d + $g.game.myShip.dTurn) % 360;
           this.dTarget = $g.game.myShip.dTarget;
         },
-        onEnd: (e) => {
+        onEnd: () => {
           this.active = false;
         },
-        onDown: (e) => {
+        onDown: () => {
           if (this.active) { // continue updating dTurn, dTarget as if moving
             // dTurn decrements as the ship turns
             $g.game.myShip.dTurn = (this.direction === 1) ? this.screenDegree : (360 - this.screenDegree) * -1;

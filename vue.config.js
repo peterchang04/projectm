@@ -1,7 +1,7 @@
 /* The vue standard config file */
 module.exports = {
   devServer: {
-    port: 80
+    port: 80,
   },
   chainWebpack(config) {
     // Only convert .svg files that are imported by these files as Vue component
@@ -20,5 +20,13 @@ module.exports = {
       .end()
       .use('svg-to-vue-component')
       .loader('svg-to-vue-component/loader')
+
+    // update the js outfile with hash to avoid caching on ios
+    if (process.env.NODE_ENV === 'development') {
+      config
+        .output
+        .filename('[name].[hash].js')
+        .end()
+    }
   }
 };
