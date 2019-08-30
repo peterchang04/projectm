@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "canvg": "^1.5.3",
+    "canvg": "2.0.0",
     "cookie_js": "^1.2.2",
     "ejs": "^2.6.1",
     "express": "^4.16.3",
