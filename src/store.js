@@ -6,7 +6,8 @@ const initialState = {
   isHost: null, // null: hasn't picked, 0: no, 1: yes
   currentRole: null, // null: hasn't picked, 0: engi, 1: captain, 2: pilot, 3: intel
   // pilot controls
-  thrustValue: 0, // the position of the thruster control
+  thrustValue: 0, // the position of the thruster control,
+  console: [0],
 };
 
 export default {

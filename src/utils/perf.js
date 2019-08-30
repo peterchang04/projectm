@@ -62,6 +62,7 @@ if (activate) {
       // push to all the arrays
       Object.keys(perf).forEach((perfType) => {
         if (Array.isArray(perf[perfType])) {
+          if (perfType === 'byUnfinished' && metrics[key].u === 0) return;
           perf[perfType].push(metrics[key]);
         }
       });
@@ -81,6 +82,7 @@ if (activate) {
     perf.byUnfinished.sort(function(a, b) {
       return b.u - a.u;
     });
+
 
     // calc total cost / second
 

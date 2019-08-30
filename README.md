@@ -44,6 +44,12 @@
 * launch project using /launchDocker.bat
   * docker may ask for permission to access c:/
 
+### Development Server - running on mobile phone locally
+* be connected to same wifi Network
+* windows firewall - inbound rule allow port 80. outbound rule allow port 80
+* load local IP on phone (192.168.1.1xx);
+
+
 ### Other software
 * Install Discord
   * create an account first, or the join channel flow can be tricky

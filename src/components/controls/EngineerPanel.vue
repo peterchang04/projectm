@@ -4,6 +4,9 @@
       <Heading text="Hull" :gridColumnStart="1" :gridColumns="5" />
       <Heading text="Energy Use" :gridColumnStart="6" :gridColumns="3" :gridRows="1" />
       <SliderVertical :gridColumnStart="1" :gridColumns="1" :gridRowStart="2" :gridRows="10" />
+
+      <SliderVertical :gridColumnStart="8" :gridColumns="1" :gridRowStart="2" :gridRows="10" />
+
     </div>
   </div>
 </template>
