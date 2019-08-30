@@ -47,13 +47,6 @@
     left: 0;
     top: 0;
   }
-  #canvas_myShip {
-    height: auto;
-    width: 30%; /* width overwritten in js */
-    left: 50%;
-    top: auto;
-    bottom: 33%; /* 2/3 forward 1/3 backwards visibility */
-  }
   .hide {
     z-index: -1;
     visibility: hidden;

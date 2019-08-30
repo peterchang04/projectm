@@ -8,15 +8,19 @@ const constants = {
 };
 
 // game related values NOTE: maybe these belong somewhere in /game instead
-const game = {
-  actors: {}, // all actors here. myShip = [0]
-  projectiles: {},
-  particles: {},
-  id: 0,
-  newId: function() {
-    return this.id++;
-  },
-};
+let game = {};
+function init() {
+  game = {
+    actors: {}, // all actors here. myShip = [0]
+    projectiles: {},
+    particles: {},
+    id: 0,
+    newId: function() {
+      return this.id++;
+    },
+  };
+}
+init();
 
 // pregenerated entities - save on memory allocation
 const bank = {

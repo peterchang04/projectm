@@ -14,6 +14,15 @@ import perf from '../../utils/perf.js';
 const temp = {};
 
 function init() { perf.start('_factory.init');
+  // clear actors and stuff
+  $g.game.actors = {};
+  $g.game.projectiles = {};
+  $g.game.particles = {};
+
+  $g.bank.ships = [];
+  $g.bank.projectiles = [];
+  $g.bank.asteroids = [];
+
   // make 25 ships - ships are first to reserve id:0 for crew
   for (temp.x = 0; temp.x < 25; temp.x++) {
     $g.bank.ships[temp.x] = new Ship();

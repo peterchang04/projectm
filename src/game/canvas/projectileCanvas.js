@@ -17,10 +17,9 @@ function init() { perf.start('projectileCanvas.init');
 }
 
 function draw() { perf.start('projectileCanvas.draw');
-  context.setTransform(1, 0, 0, 1, 0, 0); // restore context rotate / translate
   context.clearRect(0, 0, canvas.width, canvas.height);
 
-  Object.keys($g.game.projectiles).forEach((id) => {
+  Object.keys($g.game.projectiles).map((id) => {
     $g.game.projectiles[id].draw(context);
   });
 

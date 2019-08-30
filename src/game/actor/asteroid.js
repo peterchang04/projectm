@@ -12,14 +12,14 @@ export default class Asteroid {
     this.removeUpdate('applyResistanceForce');
     this.removeUpdate('updateSpeedByForce');
 
-    this.addDraw('drawMe');
-    this.addDraw('drawCollisionPoints', 100);
+    this.addDraw('drawMe', 1, 'canvas_actors');
+    this.addDraw('drawCollisionPoints', 100, 'canvas_actors');
     perf.stop('Asteroid.constructor');
   }
 
   onCollide(collidee) { perf.start('Asteroid.onCollide');
-    console.log(collidee.id, this.id);
-    console.log('asteroid collide!');
+    // console.log(collidee.id, this.id);
+    // console.log('asteroid collide!');
     return perf.stop('Asteroid.onCollide');;
   }
 

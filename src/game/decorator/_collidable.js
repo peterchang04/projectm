@@ -35,7 +35,7 @@ function add(obj) { perf.start('_collidable.add');
 
   /* priority 100+ so it runs after all movement has been calculated, checks long, mid, short in sequence */
   obj.addUpdate('checkLongCollisions', 100, 12);
-  obj.addUpdate('checkMidCollisions', 101, 4);
+  obj.addUpdate('checkMidCollisions', 101, 2);
   obj.addUpdate('checkShortCollisions', 102, 1);
   // updates when physics change direction
   obj.addUpdate('updatePolygonDirection', 1, 1);
@@ -197,7 +197,7 @@ function checkShortCollisions() { perf.start('_collidable.obj.checkShortCollisio
     // test to see if collided, or de-escalate to mid
     if (checkShortCollide(this, this.shortColliders[id])) {
       if (this.onCollide) {
-        this.onCollide(this.shortColliders[id]);
+        this.onCollide(this.shortColliders[id], temp.Response);
       } else {
         console.warn(`${this.class} tests for collision and should have a onCollide(collidee) function`);
       }
@@ -226,8 +226,8 @@ function checkLongCollide(obj, obj2) { perf.start('_collidable.checkLongCollide'
 
 function checkMidCollide(obj, obj2) { perf.start('_collidable.checkMidCollide');
   temp.isCollide = (
-    Math.abs(obj.mX - obj2.mX) < (obj.length / 2) + (obj2.length / 2)
-    && Math.abs(obj.mY - obj2.mY) < (obj.length / 2) + (obj2.length / 2)
+    Math.abs(obj.mX - obj2.mX) < (obj.length + obj2.length) /* divided by half would be proper bounding circle, but lets start mid detection earlier than that */
+    && Math.abs(obj.mY - obj2.mY) < (obj.length + obj2.length)
   );
   perf.stop('_collidable.checkMidCollide');
   return temp.isCollide;

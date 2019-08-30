@@ -20,10 +20,9 @@ function init() { perf.start('actorCanvas.init');
 }
 
 function draw() { perf.start('actorCanvas.draw');
-  context.setTransform(1, 0, 0, 1, 0, 0); // restore context rotate / translate
   context.clearRect(0, 0, canvas.width, canvas.height);
 
-  Object.keys($g.game.actors).forEach((id) => {
+  Object.keys($g.game.actors).map((id) => {
     $g.game.actors[id].draw(context);
   });
 

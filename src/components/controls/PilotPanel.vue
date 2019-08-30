@@ -63,8 +63,9 @@
         $g.game.myShip.thrustValue = value;
       },
       updateAngular(value) {
-        $g.game.myShip.aSMax = 20 * (value / 100);
-        if ($g.game.myShip.aSMax === 0) $g.game.myShip.aSMax = 1; // minimum aSMax
+        $g.game.myShip.aSMax = $g.game.myShip.aSMaxShip * (value / 100);
+        // min aSMax is 10% of capacity
+        if ($g.game.myShip.aSMax < $g.game.myShip.aSMaxShip / 10) $g.game.myShip.aSMax = $g.game.myShip.aSMaxShip / 10;
       },
       fireProjectile() {
         $g.game.myShip.fireCannon();
