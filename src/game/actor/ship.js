@@ -200,7 +200,7 @@ const shipTypes = {
       { x: -4, y: 48, },
       { x: -29, y: -30 },
       { x: -18, y: -45 },
-      // other side
+       // other side
       { x: 18, y: -45 },
       { x: 29, y: -30 },
       { x: 4, y: 48 }
@@ -212,6 +212,14 @@ const shipTypes = {
       rightForward: { x: 8, y: 41, wMin: 5, wMax: 20 },
       leftBackward: { x: -20, y: -25, wMin: 5, wMax: 30 },
       rightBackward: { x: 20, y: -25, wMin: 5, wMax: 30 },
-    }
+    },
+    cannons: [ // forward facing
+      { x: -29, y: -23 },
+      { x: 29, y: -23 },
+    ],
+    turrets: [ // shoots in any direction
+      { x: -10, y: -10 },
+      { x: 10, y: -10 },
+    ]
   }
 };
