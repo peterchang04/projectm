@@ -79,7 +79,7 @@
         $g.game.myShip.fireCannon();
       },
       fireProjectile2() {
-        $g.game.myShip.fireCannon(1);
+        $g.game.myShip.fireTurrets();
       }
     },
     mounted() {
