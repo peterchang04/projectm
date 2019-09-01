@@ -18,7 +18,7 @@ let currentXPixel = 0;
 let currentYText = '';
 let currentXText = '';
 // calculations
-const gridDistance = 100; // meters
+const gridDistance = 1000; // meters
 let gridPixels = 0; // how many pixels in between grids?
 let screenGridCount = 0; // how many grids can fit on screen?
 
@@ -47,20 +47,20 @@ function draw() { perf.start('backgroundGridCanvas.draw');
   context.clearRect(0, 0, canvas.width, canvas.height);
 
   // draw coordinates for debugging
-  coordinates = `(LAT ${$g.game.myShip.mX.toFixed(1)} m , LNG ${$g.game.myShip.mY.toFixed(1)} m)`;
-  canvasText.draw(
-    context,
-    coordinates,
-    $g.viewport.shipPixelX - (context.measureText(coordinates).width * $g.viewport.pixelRatio / 2),
-    $g.viewport.shipPixelY + (($g.viewport.pixelsPerMeter * 30) / 1.5)
-  );
-  speedText = `${$g.game.myShip.d.toFixed(1)}° ${$g.game.myShip.s.toFixed(1)} m/s ${$g.game.myShip.aS.toFixed(1)} deg/s`;
-  canvasText.draw(
-    context,
-    speedText,
-    $g.viewport.shipPixelX - (context.measureText(speedText).width * $g.viewport.pixelRatio / 2),
-    $g.viewport.shipPixelY + (($g.viewport.pixelsPerMeter * 30) / 1.5) + canvasText.getLetterHeight()
-  );
+  // coordinates = `(LAT ${$g.game.myShip.mX.toFixed(1)} m , LNG ${$g.game.myShip.mY.toFixed(1)} m)`;
+  // canvasText.draw(
+  //   context,
+  //   coordinates,
+  //   $g.viewport.shipPixelX - (context.measureText(coordinates).width * $g.viewport.pixelRatio / 2),
+  //   $g.viewport.shipPixelY + (($g.viewport.pixelsPerMeter * 30) / 1.5)
+  // );
+  // speedText = `${$g.game.myShip.d.toFixed(1)}° ${$g.game.myShip.s.toFixed(1)} m/s ${$g.game.myShip.aS.toFixed(1)} deg/s`;
+  // canvasText.draw(
+  //   context,
+  //   speedText,
+  //   $g.viewport.shipPixelX - (context.measureText(speedText).width * $g.viewport.pixelRatio / 2),
+  //   $g.viewport.shipPixelY + (($g.viewport.pixelsPerMeter * 30) / 1.5) + canvasText.getLetterHeight()
+  // );
 
   applyRotation(context);
   drawLatitudes();

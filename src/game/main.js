@@ -1,9 +1,9 @@
-import backgroundCanvas from './canvas/backgroundCanvas.js';
 import backgroundGridCanvas from './canvas/backgroundGridCanvas.js';
 import steeringCanvas from './canvas/steeringCanvas.js';
 import actorCanvas from './canvas/actorCanvas.js';
 import projectileCanvas from './canvas/projectileCanvas.js';
 import particleCanvas from './canvas/particleCanvas.js';
+import starCanvas from './canvas/starCanvas.js';
 import $g from '../utils/globals.js';
 import canvasText from '../utils/canvasText.js';
 import perf from '../utils/perf.js';
@@ -51,11 +51,11 @@ function init() {
   // init dependencies
   canvasText.init();
   actorCanvas.init();
-  backgroundCanvas.init();
   backgroundGridCanvas.init();
   projectileCanvas.init();
   particleCanvas.init();
   steeringCanvas.init();
+  starCanvas.init();
 
   // PLACEHOLDER - initialize 3 asteroids
   temp.asteroid0 = $g.bank.asteroids.pop();
@@ -64,22 +64,6 @@ function init() {
   temp.asteroid1.init({ length: 20, mX: -100, mY: 100, d: -12, sMax: 5, aS: 15 });
   temp.asteroid2 = $g.bank.asteroids.pop();
   temp.asteroid2.init({ length: 40, mX: 0, mY: 100, d: 0, sMax: 3, aS: -6 });
-  //
-  // temp.asteroid2 = _factory.getAsteroid({ length: 50, mX: -70, mY: -50, d: 5, sMax: 10, aS: -35  });
-  // $g.game.actors[temp.asteroid2.id] = temp.asteroid2;
-  // temp.asteroid3 = _factory.getAsteroid({ length: 60, mX: .10, mY: 100, d: 0, sMax: 10, aS: -80  });
-  // $g.game.actors[temp.asteroid3.id] = temp.asteroid3;
-  // for (let i = 0; i < 12; i++) {
-  //   temp.asteroidX = _factory.getAsteroid({
-  //     length: Math.floor(Math.random() * 75) + 5,
-  //     mX: Math.floor(Math.random() * 400) - 200,
-  //     mY: Math.floor(Math.random() * 400) - 200,
-  //     d: -85,
-  //     sMax: Math.floor(Math.random() * 15) + 3,
-  //     aS: Math.floor(Math.random() * 100) - 50
-  //   });
-  //   $g.game.actors[temp.asteroidX.id] = temp.asteroidX;
-  // }
 
   // start the update loop
   clearInterval(global.loopId); // for hot reloads (development), prevents double timing
@@ -114,12 +98,12 @@ function draw() { perf.start('main.draw');
   stats.lastDraw = Date.now();
   stats.renderCount++;
 
-  backgroundCanvas.draw();
   backgroundGridCanvas.draw();
   actorCanvas.draw();
   steeringCanvas.draw();
   projectileCanvas.draw();
   particleCanvas.draw();
+  starCanvas.draw();
 
   perf.stop('main.draw');
   requestAnimationFrame(draw);

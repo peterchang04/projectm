@@ -142,7 +142,7 @@
     background-color: white;
     grid-column-start: 1;
     grid-column-end: 8;
-    grid-row-start: 3;
+    grid-row-start: 4;
     grid-row-end: 9;
   }
 </style>
