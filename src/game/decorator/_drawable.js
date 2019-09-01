@@ -92,7 +92,6 @@ function getViewportPixel(mX, mY, length = 10, isMyShip = false) { perf.start('_
     temp.distYPrime = (temp.distY * $g.game.myShip.dY) + (temp.distX * $g.game.myShip.dX);
   }
 
-
   temp.pixelResult.x = $g.viewport.shipPixelX + (temp.distXPrime * $g.viewport.pixelsPerMeter);
   temp.pixelResult.y = $g.viewport.shipPixelY - (temp.distYPrime * $g.viewport.pixelsPerMeter);
   // see if this is close enough to draw

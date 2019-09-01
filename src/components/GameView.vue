@@ -1,6 +1,7 @@
 <template>
   <div id="shipView">
     <!-- BOTTOM LAYER -->
+    <canvas id="canvas_stars"></canvas>
     <canvas id="canvas_grid"></canvas>
     <canvas id="canvas_background"></canvas>
     <!-- actors -->
