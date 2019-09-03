@@ -1,5 +1,5 @@
 import decorate from '../decorator/decorate.js';
-import canvasSvg from '../../utils/canvasSvg.js';
+import compositeSvg from '../../utils/compositeSvg.js';
 import perf from '../../utils/perf.js';
 import $g from '../../utils/globals.js';
 
@@ -25,15 +25,9 @@ export default class Ship {
   drawMe(context) { perf.start('Ship.drawMe');
     temp.viewportPixel = this.getViewportPixel(this.mX, this.mY, this.length);
     if (!temp.viewportPixel.isVisible) return perf.stop('Ship.drawMe');
-    canvasSvg.draw(context, {
-      svg: 'MyShipSVG',
-      id: this.id,
-      d: (this.id == 0) ? this.d - $g.game.myShip.d : this.d, // this ship is always rendered forward
-      pixelLength: this.length * $g.viewport.pixelsPerMeter,
-      x: temp.viewportPixel.x,
-      y: temp.viewportPixel.y
-    });
 
+    compositeSvg.draw(context, this, temp.viewportPixel.x, temp.viewportPixel.y);
+    
     perf.stop('Ship.drawMe');
   };
 
@@ -190,6 +184,7 @@ export default class Ship {
 
 const shipTypes = {
   0: { // 0
+    svg: 'MyShipSVG',
     sMaxShip: 50, // this is the ship max speed value and fixed. sMax will vary depending on thrust
     aSMaxShip: 20, // angular speed max for this ship
     sMax: 40,

@@ -1,7 +1,8 @@
 <template>
   <div class="proportionateHeightWrapper">
     <div id="intelPanel" class="panelGrid" :style="borderStyle">
-      <Heading text="Intel Panel" :gridColumnStart="1" :gridColumns="3" />
+      <Heading text="Targets" :gridColumnStart="1" :gridColumns="3" />
+      <IntelTargetList />
     </div>
   </div>
 </template>
@@ -10,10 +11,11 @@
   import $g from '../../utils/globals.js';
   import def from '../../definitions';
   import Heading from './Heading.vue';
+  import IntelTargetList from './IntelTargetList.vue';
 
   export default {
     name: 'intelControls',
-    components: { Heading },
+    components: { Heading, IntelTargetList },
     computed: {
       borderStyle() {
         return `border-color:${def.roles[3].bgColor}`;

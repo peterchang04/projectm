@@ -17,11 +17,10 @@
       MyShipSVG,
       AsteroidSVG,
     },
-    props: {
-      showAssets: {
-        type: Boolean,
-        default: false, // set to true to debug, should be committed as false
-      },
+    computed: {
+      showAssets() {
+        return $g.constants.SHOWASSETS;
+      }
     },
     mounted: function (){
       // processes all the assets

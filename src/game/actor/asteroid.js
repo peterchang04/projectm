@@ -1,4 +1,5 @@
 import canvasSvg from '../../utils/canvasSvg.js';
+import compositeSvg from '../../utils/compositeSvg';
 import perf from '../../utils/perf.js';
 import $g from '../../utils/globals.js';
 import decorate from '../decorator/decorate.js';
@@ -40,16 +41,9 @@ export default class Asteroid {
     temp.viewportPixel = this.getViewportPixel(this.mX, this.mY, this.length);
     if (!temp.viewportPixel.isVisible) return perf.stop('Asteroid.drawMe');
 
-    canvasSvg.draw(context, {
-      svg: 'AsteroidSVG',
-      id: this.id,
-      d: this.d - $g.game.myShip.d,
-      pixelLength: this.length * $g.viewport.pixelsPerMeter,
-      x: temp.viewportPixel.x,
-      y: temp.viewportPixel.y
-    });
+    compositeSvg.draw(context, this, temp.viewportPixel.x, temp.viewportPixel.y);
 
-     perf.stop('Asteroid.drawMe');
+    perf.stop('Asteroid.drawMe');
   };
 }
 
@@ -59,6 +53,8 @@ const types = {
     // aSMax: 1,
     // length: 20,
     mass: 80000, // kg
+    svg: 'AsteroidSVG',
+    svgComposites: ['rotate'],
     polygon: [
       { x: -30, y: 41, },
       { x: -48, y: 9 },
