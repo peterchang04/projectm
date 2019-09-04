@@ -1,10 +1,11 @@
 <template>
   <div id="targetsBar" class="proportionateHeightWrapper">
     <div class="content">
-      <Target :index="0" />
-      <Target :index="1" />
-      <Target :index="2" />
-      <Target :index="3" callsign="WX" />
+      <!-- target indices presented out of order to maximize forward viewing space -->
+      <Target :index="0" :id="targets[0]" />
+      <Target :index="1" :id="targets[2]" />
+      <Target :index="2" :id="targets[3]" />
+      <Target :index="3" :id="targets[1]" />
     </div>
   </div>
 </template>
@@ -12,11 +13,31 @@
 <script>
   import Target from './Target.vue';
 
+  const temp = {};
+
   export default {
     name: 'targetsBar',
     components: { Target },
     props: {
       msg: String
+    },
+    data() {
+      return {
+        targets: [],
+      };
+    },
+    methods: {
+      updateTargets() {
+        this.targets = $g.game.myShip.targets;
+      }
+    },
+    mounted() {
+      temp.timer = setInterval(() => {
+        this.updateTargets();
+      }, 200);
+    },
+    destroyed() {
+      clearInterval(temp.timer);
     }
   };
 </script>

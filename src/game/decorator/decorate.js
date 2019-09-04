@@ -7,6 +7,7 @@ import settersAndHooks from './_settersAndHooks.js';
 import collidable from './_collidable.js';
 import shipThrust from './_shipThrust.js';
 import shipWeapons from './_shipWeapons.js';
+import shipTargeting from './_shipTargeting.js';
 
 const temp = {};
 
@@ -23,6 +24,7 @@ const decorators = [
   // ship systems
   { name: 'shipThrust', ...shipThrust },
   { name: 'shipWeapons', ...shipWeapons },
+  { name: 'shipTargeting', ...shipTargeting },
 ];
 
 // run the check

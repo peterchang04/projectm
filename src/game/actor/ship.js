@@ -7,8 +7,9 @@ const temp = {};
 
 export default class Ship {
   constructor(initialObj = {}) { /* e.g. { x,y,w,h,d,s } */ perf.start('Ship.constructor');
-    const decoratorList = ['entity', 'drawable', 'settersAndHooks', 'updatable', 'physics', 'collidable', 'shipThrust', 'shipWeapons'];
+    const decoratorList = ['entity', 'drawable', 'settersAndHooks', 'updatable', 'physics', 'collidable', 'shipThrust', 'shipWeapons', 'shipTargeting'];
     decorate.add(this, initialObj, decoratorList);
+    this.name = `S-${this.id}`;
 
     this.applyType();
 
@@ -27,7 +28,7 @@ export default class Ship {
     if (!temp.viewportPixel.isVisible) return perf.stop('Ship.drawMe');
 
     compositeSvg.draw(context, this, temp.viewportPixel.x, temp.viewportPixel.y);
-    
+
     perf.stop('Ship.drawMe');
   };
 
