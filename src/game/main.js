@@ -6,6 +6,7 @@ import particleCanvas from './canvas/particleCanvas.js';
 import starCanvas from './canvas/starCanvas.js';
 import $g from '../utils/globals.js';
 import canvasText from '../utils/canvasText.js';
+import compositeSvg from '../utils/compositeSvg.js';
 import perf from '../utils/perf.js';
 import Ship from '../game/actor/ship.js';
 import Projectile from '../game/actor/projectile.js';
@@ -49,6 +50,7 @@ function init() {
   $g.game.myShip.init({ type: 0, mX: 0, mY: 0, d: 0 });
 
   // init dependencies
+  compositeSvg.init();
   canvasText.init();
   actorCanvas.init();
   backgroundGridCanvas.init();

@@ -1,6 +1,7 @@
 const constants = {
   DEBUG: false,
   DRAWCOLLISION: false,
+  SHOWASSETS: false,
   // precalc these to save computations
   PI2: Math.PI * 2,
   RADIAN: Math.PI / 180,
@@ -29,6 +30,8 @@ const bank = {
   ships: [],
   particles: [],
 };
+
+const svg = {}; // see canvasSvg, the raw transfers from .svg files to canvas
 
 const whichBank = { // given a classname, which queue does it belong in?
   Asteroid: 'actors',
@@ -61,6 +64,6 @@ const viewport = {
 };
 
 // set global javascript  references to these values
-global.$g = { viewport, game, constants, bank, whichBank };
+global.$g = { viewport, game, constants, bank, whichBank, svg };
 
-export default { constants, viewport, game, bank, whichBank };
+export default { constants, viewport, game, bank, whichBank, svg };
