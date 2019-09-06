@@ -27,6 +27,7 @@ function add(obj) { perf.start('_drawable.add');
   obj.removeDraw = removeDraw;
   obj.draw = draw;
   obj.getViewportPixel = getViewportPixel;
+
   perf.stop('_drawable.add');
 }
 

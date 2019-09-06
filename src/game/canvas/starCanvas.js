@@ -42,7 +42,7 @@ function prepopulateStars() {
       x: maths.random(0, 99),
       y: maths.random(0, 99),
       w: (maths.random(0, 99) / 100 * $g.viewport.pixelsPerMeter),
-      c: `rgba(255,255,255,${maths.random(40, 90) / 100})`,
+      c: `rgba(255,255,255,${maths.random(25, 50) / 100})`,
       scale: maths.random(0,20) / 100, // 0.0-0.2 in scale
     });
   }

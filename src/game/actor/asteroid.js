@@ -14,6 +14,9 @@ export default class Asteroid {
     this.removeUpdate('applyResistanceForce');
     this.removeUpdate('updateSpeedByForce');
 
+    // setup composite drawing queue
+    this.svgComposites = ['rotate', 'target'];
+
     this.addDraw('drawMe', 1, 'canvas_actors');
     this.addDraw('drawCollisionPoints', 100, 'canvas_actors');
     perf.stop('Asteroid.constructor');
@@ -40,7 +43,7 @@ export default class Asteroid {
   // add a fn to the draws queue
   drawMe(context) { perf.start('Asteroid.drawMe');
     temp.viewportPixel = this.getViewportPixel(this.mX, this.mY, this.length);
-    if (!temp.viewportPixel.isVisible) return perf.stop('Asteroid.drawMe');
+    if (!temp.viewportPixel.isVisible && $g.game.myShip.targets.indexOf(this.id) === -1) return perf.stop('Asteroid.drawMe');
 
     compositeSvg.draw(context, this, temp.viewportPixel.x, temp.viewportPixel.y);
 
@@ -55,7 +58,6 @@ const types = {
     // length: 20,
     mass: 80000, // kg
     svg: 'AsteroidSVG',
-    svgComposites: ['rotate'],
     polygon: [
       { x: -30, y: 41, },
       { x: -48, y: 9 },

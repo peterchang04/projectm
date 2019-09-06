@@ -1,3 +1,5 @@
+import perf from './perf.js';
+
 const halfPI = Math.PI / 2;
 const oneEightyByPI = 180 / Math.PI;
 const PIBy180 = Math.PI / 180;
@@ -10,84 +12,90 @@ let radian = null;
 let angle = null;
 let degree = null;
 
-function getRadian2P(centerX, centerY, pointX, pointY, equalIsUp = true /* will return up instead of undefined */) {
+function getRadian2P(centerX, centerY, pointX, pointY, equalIsUp = true /* will return up instead of undefined */) { perf.start('maths.getRadian2P');
   // zero out center
   temp.zeroedX = pointX - centerX;
   temp.zeroedY = pointY - centerY;
-  if (equalIsUp && temp.zeroedX === 0 && temp.zeroedY === 0) return halfPI;
+  if (equalIsUp && temp.zeroedX === 0 && temp.zeroedY === 0) {
+    perf.stop('maths.getRadian2P');
+    return halfPI;
+  }
   temp.radian = Math.atan2(temp.zeroedY, temp.zeroedX);
-  return (temp.radian < 0) ? temp.radian + twoPI : temp.radian;
+  temp.result = (temp.radian < 0) ? temp.radian + twoPI : temp.radian;
+  perf.stop('maths.getRadian2P');
+  return temp.result;
 }
 
-function getAngle2P(centerX, centerY, pointX, pointY, equalIsUp = true /* will return up instead of undefined */) {
+function getAngle2P(centerX, centerY, pointX, pointY, equalIsUp = true /* will return up instead of undefined */) { perf.start('maths.getAngle2P');
   temp.angle = getRadian2P(centerX, centerY, pointX, pointY, equalIsUp) * oneEightyByPI;
   if (temp.angle < 0) temp.angle += 360;
+  perf.stop('maths.getAngle2P');
   return temp.angle;
 }
 
-function getDegree2P(centerX, centerY, pointX, pointY, equalIsUp = true /* will return up instead of undefined */) {
+function getDegree2P(centerX, centerY, pointX, pointY, equalIsUp = true /* will return up instead of undefined */) { perf.start('maths.getDegree2P');
   temp.angle = radianToAngle(getRadian2P(centerX, centerY, pointX, pointY, equalIsUp));
-  return angleToDegree(temp.angle);;
+  temp.result = angleToDegree(temp.angle);
+  perf.stop('maths.getDegree2P');
+  return temp.result;
 }
 
-function _getRadian2P(p1, p2, equalIsUp = true /* will return up instead of undefined */) {
-  // zero out p1
-  p2Zeroed.x = p2.x - p1.x;
-  p2Zeroed.y = p2.y - p1.y;
-  if (equalIsUp && p2Zeroed.x === 0 && p2Zeroed.y === 0) return halfPI;
-  radian = Math.atan2(p2Zeroed.y, p2Zeroed.x);
-  return (radian < 0) ? radian + twoPI : radian;
+function getDistance(x1, y1, x2, y2) { perf.start('maths.getDistance');
+  temp.result = Math.sqrt(((x1 - x2) * (x1 - x2)) + ((y1 - y2) * (y1 - y2)));
+  perf.stop('maths.getDistance');
+  return temp.result;
 }
 
-function _getAngle2P(p1, p2, equalIsUp = true) {
-  angle = getRadian2P(p1, p2, equalIsUp) * oneEightyByPI;
-  if (angle < 0) angle = 360 + angle;
-  return angle;
-}
-
-function _getDegree2P(p1, p2, equalIsUp = true) {
-  angle = radianToAngle(getRadian2P(p1, p2, equalIsUp));
-  // if (degree < 0) degree = 360 + degree;
-  return angleToDegree(angle);
-}
-
-function getDistance(x1, y1, x2, y2) {
-  return Math.sqrt(((x1 - x2) * (x1 - x2)) + ((y1 - y2) * (y1 - y2)));
-}
-
-function angleToRadian(angle) {
+function angleToRadian(angle) { perf.start('maths.angleToRadian');
   radian = angle * PIBy180;
-  if (radian === twoPI) return 0;
-  return (radian < 0) ? radian + twoPI : radian;
+  if (radian === twoPI) {
+    perf.stop('maths.angleToRadian');
+    return 0;
+  }
+  temp.result = (radian < 0) ? radian + twoPI : radian;
+  perf.stop('maths.angleToRadian');
+  return temp.result;
 }
 
-function degreeToRadian(degree) {
-  return angleToRadian(degreeToAngle(degree));
+function degreeToRadian(degree) { perf.start('maths.degreeToRadian');
+  temp.result = angleToRadian(degreeToAngle(degree));
+  perf.stop('maths.degreeToRadian');
+  return temp.result;
 }
 
-function degreeToAngle(degree) {
+function degreeToAngle(degree) { perf.start('maths.degreeToAngle');
   const transform = 360 - degree - 270;
-  return (transform < 0) ? 360 + transform : transform;
+  temp.result = (transform < 0) ? 360 + transform : transform;
+  perf.stop('maths.degreeToAngle');
+  return temp.result;
 }
 
-function angleToDegree(angle) {
+function angleToDegree(angle) { perf.start('maths.degreeToAngle');
   const transform = 360 - angle - 270;
-  return (transform < 0) ? 360 + transform : transform;
+  temp.result = (transform < 0) ? 360 + transform : transform;
+  perf.stop('maths.degreeToAngle');
+  return temp.result;
 }
 
-function radianToAngle(radian) {
-  return radian * oneEightyByPI;
+function radianToAngle(radian) { perf.start('maths.radianToAngle');
+  temp.result = radian * oneEightyByPI;
+  perf.stop('maths.radianToAngle');
+  return temp.result;
 }
 
-function radianToDegree(radian) {
-  return angleToDegree(radianToAngle(radian));
+function radianToDegree(radian) { perf.start('maths.radianToDegree');
+  temp.result = angleToDegree(radianToAngle(radian));
+  perf.stop('maths.radianToDegree');
+  return temp.result;
 }
 
-function roundHalf(number) {
-  return Math.ceil(number * 2) / 2;
+function roundHalf(number) { perf.start('maths.roundHalf');
+  temp.result = Math.ceil(number * 2) / 2;
+  perf.stop('maths.roundHalf');
+  return temp.result;
 }
 
-function random(a = 10, b = 0) { // accepts a range of 2 numbers
+function random(a = 0, b = 10) { perf.start('maths.random'); // accepts a range of 2 numbers
   if (a > b) {
     temp.max = a;
     temp.min = b;
@@ -95,7 +103,9 @@ function random(a = 10, b = 0) { // accepts a range of 2 numbers
     temp.min = a;
     temp.max = b;
   }
-  return Math.floor(Math.random() * (temp.max - temp.min + 1)) + temp.min;
+  temp.result = Math.floor(Math.random() * (temp.max - temp.min + 1)) + temp.min;
+  perf.stop('maths.random');
+  return temp.result;
 }
 
 export default {

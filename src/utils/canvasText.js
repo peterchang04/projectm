@@ -1,5 +1,7 @@
 // Copies images of prerendered text from one canvas to another. More performant than actually trying to render text on the fly
 import $g from '../utils/globals.js';
+import perf from '../utils/perf.js';
+
 let elShipView = null;
 const dictionary = {
   A:0, B:1, C:2, D:3, E:4,
@@ -26,7 +28,7 @@ function reset() {
   init();
 }
 
-function init() { // init called by index.html font resource onload
+function init() { perf.start('canvasText.init'); // init called by index.html font resource onload
   initted = true;
   window.addEventListener('reloadCanvasText', () => {
     reset(); // if the font loads after init is called, reload all text elements
@@ -64,16 +66,15 @@ function init() { // init called by index.html font resource onload
   textContext.fillText('0123456789', 0, letterHeight * 5);
   textContext.fillText(Object.keys(dictionary).join(''), 0, letterHeight * 6);
 
-
-
   global.initCanvasText = init;
+  perf.stop('canvasText.init');
 }
 
 // origin of draw will be upper left pixel
 let i = 0;
 let sourceX = 0, sourceY = 0, destX = 0, destY = 0, sourceYMod = 0;
-function draw(targetContext, text, x, y, type = 0 /* 0: white, 1: grey, 2: red */) {
-  if (!initted) return;
+function draw(targetContext, text, x, y, type = 0 /* 0: white, 1: grey, 2: red */) { perf.start('canvasText.draw');
+  if (!initted) return perf.stop('canvasText.draw');;
   sourceY = type * letterHeight * 2; // for color
   destX = x;
   destY = y;
@@ -102,6 +103,7 @@ function draw(targetContext, text, x, y, type = 0 /* 0: white, 1: grey, 2: red *
 
     destX += letterSpacing; // increment letter
   }
+  perf.stop('canvasText.draw');
 }
 
 function getLetterHeight() {

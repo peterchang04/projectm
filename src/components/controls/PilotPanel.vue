@@ -29,7 +29,7 @@
         />
       </div>
 
-      <div class="console">{{getConsole}}</div>
+      <!-- <div class="console">{{getConsole}}</div> -->
     </div>
   </div>
 </template>

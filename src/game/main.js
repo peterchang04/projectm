@@ -47,7 +47,7 @@ function init() {
   _factory.init();
   // register myShip with constants
   $g.game.myShip = $g.bank.ships.shift();
-  $g.game.myShip.init({ type: 0, mX: 0, mY: 0, d: 0 });
+  $g.game.myShip.init({ type: 0, mX: -10, mY: 10, d: 3 });
 
   // init dependencies
   compositeSvg.init();
@@ -61,11 +61,19 @@ function init() {
 
   // PLACEHOLDER - initialize 3 asteroids
   temp.asteroid0 = $g.bank.asteroids.pop();
-  temp.asteroid0.init({ length: 100, mX: 100, mY: 100, d: 0, sMax: 0, aS: 0 });
+  temp.asteroid0.init({ length: 100, mX: 50, mY: 50, d: 0, sMax: 0, aS: 0 });
   temp.asteroid1 = $g.bank.asteroids.pop();
   temp.asteroid1.init({ length: 20, mX: -100, mY: 100, d: -12, sMax: 5, aS: 15 });
   temp.asteroid2 = $g.bank.asteroids.pop();
   temp.asteroid2.init({ length: 40, mX: 0, mY: 100, d: 0, sMax: 3, aS: -6 });
+  temp.asteroid3 = $g.bank.asteroids.pop();
+  temp.asteroid3.init({ length: 80, mX: -30, mY: -50, d: -60, sMax: 9, aS: 52 });
+  temp.asteroid4 = $g.bank.asteroids.pop();
+  temp.asteroid4.init({ length: 15, mX: -300, mY: -100, d: 26, sMax: 7, aS: -32 });
+  temp.asteroid5 = $g.bank.asteroids.pop();
+  temp.asteroid5.init({ length: 6, mX: -600, mY: -100, d: 26, sMax: 7, aS: -32 });
+  temp.asteroid6 = $g.bank.asteroids.pop();
+  temp.asteroid6.init({ length: 7, mX: -500, mY: -100, d: 26, sMax: 7, aS: -32 });
 
   // start the update loop
   clearInterval(global.loopId); // for hot reloads (development), prevents double timing
