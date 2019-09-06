@@ -25,7 +25,7 @@ export default class Ship {
   // add a fn to the draws queue
   drawMe(context) { perf.start('Ship.drawMe');
     temp.viewportPixel = this.getViewportPixel(this.mX, this.mY, this.length);
-    if (!temp.viewportPixel.isVisible) return perf.stop('Ship.drawMe');
+    if (!temp.viewportPixel.isVisible && $g.game.myShip.targets.indexOf(this.id) === -1) return perf.stop('Ship.drawMe');
 
     compositeSvg.draw(context, this, temp.viewportPixel.x, temp.viewportPixel.y);
 

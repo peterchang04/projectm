@@ -35,11 +35,16 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    user-select: none;
   }
   body {
     margin: 0;
     padding: 0;
     touch-action: none;
+  }
+  svg {
+    width: 6vw;
+    height: 6vw;
   }
   #app {
     font-family: 'Fira Sans Extra Condensed', Helvetica, Arial, sans-serif;

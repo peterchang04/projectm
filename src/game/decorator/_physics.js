@@ -1,5 +1,3 @@
-// TODO: update distance to reflect camera resolution to pixel ratio
-import cardinalDirection from '../../utils/cardinalDirection.js';
 import maths from '../../utils/maths.js';
 import globals from '../../utils/globals.js';
 import perf from '../../utils/perf.js';
@@ -38,6 +36,10 @@ const properties = {
   forceY: 0, // Thrust force applied to Y axis
   forceResistX: 0,
   forceResistY: 0,
+
+  // RELATIVE TO MYSHIP
+  distanceFromMyShip: 0,
+  directionFromMyShip: 0,
 };
 
 function getProperties() {
@@ -52,6 +54,8 @@ function add(obj) { perf.start('_physics.add');
   obj.applyResistanceForce = applyResistanceForce;
   obj.updateSpeedByForce = updateSpeedByForce;
   obj.initPhysics = initPhysics;
+  obj.calculateDistanceFromMyShip = calculateDistanceFromMyShip;
+  obj.calculateDirectionFromMyShip = calculateDirectionFromMyShip;
 
   // register init function for physics
   obj.inits.push('updateTrig');
@@ -61,6 +65,8 @@ function add(obj) { perf.start('_physics.add');
   obj.addUpdate('updateDirection', 20);
   obj.addUpdate('applyResistanceForce', 12, 4);
   obj.addUpdate('updateSpeedByForce', 13, 4);
+  obj.addUpdate('calculateDistanceFromMyShip', 100, 10);
+  obj.addUpdate('calculateDirectionFromMyShip', 100, 12);
 
   perf.stop('_physics.add');
 }
@@ -81,11 +87,26 @@ function updateDirection(elapsed) { perf.start('_physics.obj.updateDirection');
   // increment direction based on aS
   this.d += this.aS * elapsed;
   this.d = this.d % 360;
-  // this.angle = maths.degreeToAngle(this.d);
-  // this.radian = maths.angleToRadian(this.angle);
-  this.updateTrig();
+
+  if (this.dLast !== this.d) {
+    this.updateTrig();
+  }
   perf.stop('_physics.obj.updateDirection');
 };
+
+function calculateDistanceFromMyShip() { perf.start('_physics.obj.calculateDistanceFromMyShip');
+  if (this.id !== $g.game.myShip.id) {
+    this.distanceFromMyShip = maths.getDistance(this.mX, this.mY, $g.game.myShip.mX, $g.game.myShip.mY);
+  }
+  return perf.stop('_physics.obj.calculateDistanceFromMyShip');
+}
+
+function calculateDirectionFromMyShip() { perf.start('_physics.obj.calculateDirectionFromMyShip');
+  if (this.id !== $g.game.myShip.id) {
+    this.directionFromMyShip = maths.getDegree2P($g.game.myShip.mX, $g.game.myShip.mY, this.mX, this.mY);
+  }
+  return perf.stop('_physics.obj.calculateDirectionFromMyShip');
+}
 
 function updateTrig(elapsed) { perf.start('_physics.obj.updateTrig');
   // do the trig calculations once here

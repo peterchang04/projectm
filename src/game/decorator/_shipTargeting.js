@@ -6,7 +6,7 @@ import { cloneDeep } from 'lodash';
 const temp = {}; // memory pointer to avoid allocation for new variables
 /* list all used properties here. Used to cross-reference check in decorate.js & set defaults */
 const properties = {
-  targets: [], // up to 4 targets
+  targets: [null, null, null, null], // up to 4 targets
   target: null, // the currently selected target, from this.targets
 };
 
@@ -20,27 +20,38 @@ function add(obj) { perf.start('_shipTargeting.add');
   // attach functions
   obj.addTarget = addTarget;
   obj.removeTarget = removeTarget;
+  obj.getTargetSlot = getTargetSlot;
   obj.selectTarget = selectTarget;
   obj.deselectTarget = deselectTarget;
 
   perf.stop('_shipTargeting.add');
 }
 
-// more thrust eq more force (eq more speed)
 function addTarget(id) { perf.start('_shipTargeting.obj.addTarget');
-  if (this.targets.indexOf(+id) === -1) this.targets.push(+id);
-  console.log('add', this.targets);
+  temp.targetSlot = this.getTargetSlot();
+  if (temp.targetSlot !== null && this.targets.indexOf(+id) === -1) {
+    this.targets[temp.targetSlot] = +id;
+  }
   return perf.stop('_shipTargeting.obj.addTarget');
+}
+
+// to preserve forward viewable space, targets are added in this order 0, 3, 1, 2
+function getTargetSlot() { perf.start('_shipTargeting.obj.getTargetSlot');
+  if (this.targets[0] === null) return 0;
+  if (this.targets[3] === null) return 3;
+  if (this.targets[1] === null) return 1;
+  if (this.targets[2] === null) return 2;
+  return null;
+  perf.start('_shipTargeting.obj.getTargetSlot');
 }
 
 function removeTarget(id) { perf.start('_shipTargeting.obj.removeTarget');
   temp.targetIndex = this.targets.indexOf(+id);
   if (temp.targetIndex >= 0) {
-    this.targets.splice(temp.targetIndex, 1);
+    this.targets[temp.targetIndex] = null;
   }
   // also remove as target if applicable
   if (+this.target === +id) this.target === null;
-  console.log('remove', this.targets);
   return perf.stop('_shipTargeting.obj.removeTarget');
 }
 

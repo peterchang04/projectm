@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-labelledby="title"
+aria-describedby="desc" role="img" xmlns:xlink="http://www.w3.org/1999/xlink"
+width="100" height="100">
+  <title>Add Marker</title>
+  <desc>A flat styled icon from Orion Icon Library.</desc>
+  <path data-name="layer2"
+  d="M55.883 28.287c.07-.756.117-1.518.117-2.286A24 24 0 0 0 8 26c0 .786.047 1.564.117 2.335.008.092.019.183.029.274C10.057 47.556 32 62 32 62s21.859-14.618 23.84-33.314c.016-.134.031-.267.043-.399z"
+  fill="#49bcff"></path>
+  <path data-name="opacity" d="M32 2A24 24 0 0 0 8 26c0 .786.047 1.564.117 2.335.008.092.019.183.029.274C10.057 47.556 32 62 32 62z"
+  fill="#000064" opacity=".15"></path>
+  <path data-name="layer1" d="M41.75 25H33v-9a1 1 0 1 0-2 0v9h-9.25a1 1 0 0 0 0 2H31v9a1 1 0 0 0 2 0v-9h8.75a1 1 0 0 0 0-2z"
+  fill="#fff"></path>
+</svg>
