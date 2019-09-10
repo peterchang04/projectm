@@ -45,6 +45,16 @@ function init() { perf.start('canvasSvg.init');
       $g.svg[svgId].canvas.width = 142;
       $g.svg[svgId].canvas.height = 142;
 
+      // make a 2nd canvas for simple rotate ops on turrets
+      if (svgId.toLowerCase().includes('turret')) {
+        $g.svg[svgId].canvas_rotate = document.createElement("canvas");
+        $g.svg[svgId].canvas_rotate.id = `${svgId}_rotate`;
+        $g.svg[svgId].canvas_rotate.style = 'width:15vw';
+        $g.svg[svgId].context_rotate = $g.svg[svgId].canvas_rotate.getContext('2d');
+        $g.svg[svgId].canvas_rotate.width = 142;
+        $g.svg[svgId].canvas_rotate.height = 142;
+      }
+
       if ($g.constants.DEBUG) elCanvasDiv.prepend($g.svg[svgId].canvas);
       svgToCanvas(svgId);
     }

@@ -3,6 +3,7 @@
   <div id="assets" :class="{ showAssets }">
     <MyShipSVG id="MyShipSVG" />
     <AsteroidSVG id="AsteroidSVG" />
+    <TurretSVG id="TurretSVG" height="100" width="100" />
   </div>
 </template>
 
@@ -10,12 +11,14 @@
   import canvasSvg from '../utils/canvasSvg.js';
   import MyShipSVG from '../../public/assets/svg/ships/myShip.svg';
   import AsteroidSVG from '../../public/assets/svg/asteroids/asteroid.svg';
+  import TurretSVG from '../../public/assets/svg/ships/turret.svg';
   import $g from '../utils/globals.js';
 
   export default {
     components: {
       MyShipSVG,
       AsteroidSVG,
+      TurretSVG,
     },
     computed: {
       showAssets() {

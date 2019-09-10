@@ -10,6 +10,7 @@ export default class Ship {
     const decoratorList = ['entity', 'drawable', 'settersAndHooks', 'updatable', 'physics', 'collidable', 'shipThrust', 'shipWeapons', 'shipTargeting'];
     decorate.add(this, initialObj, decoratorList);
     this.name = `S-${this.id}`;
+    this.svgComposites = ['target', 'turrets', 'rotate'];
 
     this.applyType();
 
@@ -214,8 +215,15 @@ const shipTypes = {
       { x: 29, y: -23 },
     ],
     turrets: [ // shoots in any direction
-      { x: -10, y: -10 },
-      { x: 10, y: -10 },
+      { x: -21, y: -26, d: 0, dTarget: 0, aS: 40, length: 6 },
+      {
+        x: 21,
+        y: -26,
+        d: 0, // direction turret is pointing, relative to ship
+        dTarget: 0, // direction the turrent is turning to, relative to ship
+        aS: 40, // angle per second, turning rate
+        length: 6
+      },
     ]
   }
 };

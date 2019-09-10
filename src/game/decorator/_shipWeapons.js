@@ -19,6 +19,9 @@ function add(obj) { perf.start('_shipWeapons.add');
   // attach functions to obj
   obj.fireCannon = fireCannon;
   obj.fireTurrets = fireTurrets;
+  obj.rotateTurretsToTarget = rotateTurretsToTarget;
+
+  obj.addUpdate('rotateTurretsToTarget', 100, 12);
 
   perf.stop('_shipWeapons.add');
 }
@@ -70,14 +73,52 @@ function fireTurrets() { perf.start('_shipWeapons.obj.fireTurrets');
     temp.projectile = $g.bank.projectiles.pop();
     // wipe this projectile
     temp.projectile.init({
-      type: 1,
+      type: 0,
       mX: this.mX + (temp.distX * this.length / 100),
       mY: this.mY - (temp.distY * this.length / 100),
-      d: 45 + temp.randDir, // for now always fire at 45 deg
+      d: turret.d + this.d + temp.randDir, // for now always fire at 45 deg
       exemptColliders: { [`${this.id}`]: this }
     });
   });
   perf.stop('_shipWeapons.obj.fireTurrets');
+}
+
+function rotateTurretsToTarget(elapsed) { perf.start('_shipWeapons.obj.rotateTurretsToTarget');
+  if (!this.target) return perf.stop('_shipWeapons.obj.rotateTurretsToTarget');
+  // solve for eventual target locaiton
+  temp.dist = maths.getDistance(this.mX, this.mY, $g.game.actors[this.target].mX, $g.game.actors[this.target].mY);
+  // at distance, how long projectile to get there?
+  temp.timeToTarget = temp.dist / 150; // speed of projectile. NEEDS UPDATE
+  temp.direction = maths.getDegree2P(
+    this.mX,
+    this.mY,
+    $g.game.actors[this.target].mX + (temp.timeToTarget * $g.game.actors[this.target].sX), // projecting out for eventual location
+    $g.game.actors[this.target].mY + (temp.timeToTarget * $g.game.actors[this.target].sY),
+  );
+  
+  this.turrets.map((turret) => {
+    turret.dTarget = Math.abs(temp.direction - this.d);
+    // get the difference between (turret.d - ship.d) and target direction
+    temp.dDiff = 180 - Math.abs(Math.abs(turret.dTarget - turret.d) - 180);
+    if (temp.dDiff === 0) return;
+    // now figure out if turn right or left
+    temp.isRight = 1;
+    if (Math.abs((turret.d - temp.dDiff + 360) % 360) === turret.dTarget) {
+      temp.isRight = -1;
+    }
+
+    // now turn the turrets accordingly
+    temp.turn = turret.aS * elapsed * temp.isRight;
+
+    // test for overturn
+    if (temp.dDiff - Math.abs(temp.turn) < 0) {
+      turret.d = turret.dTarget;
+      temp.turn = 0;
+    }
+    turret.d += temp.turn;
+    turret.d = turret.d % 360;
+  });
+  perf.stop('_shipWeapons.obj.rotateTurretsToTarget');
 }
 
 export default { add, getProperties };

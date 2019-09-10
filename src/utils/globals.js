@@ -53,11 +53,14 @@ const viewport = {
     this.vwPixels = this.pixelWidth / 100;
     /*
       IMPORTANT pixelsPerMeter IS FOR ACTOR SCALE ON SCREEN
-      we want to show ship scale commensurate with having 7 ships worth of forward visibility initially.
-      half as much (3.5 ships) behind
-      ship is 30 meters so 210 meters forward, 105 behind for a total screen height of 315m
+      we want to show ship scale commensurate with having 8 ships worth of forward visibility initially.
+      half as much (4 ships) behind
+      ship is 20 meters so 160 meters forward, 80 behind for a total screen height of 240m
     */
-    this.pixelsPerMeter = this.pixelHeight / 315;
+    this.pixelsPerMeter = this.pixelHeight / 210;
+    this.pixelsPerMeter = this.pixelHeight / 240; // default
+
+    // this.pixelsPerMeter = this.pixelHeight / 150;
   },
   shipPixelX: 0,
   shipPixelY: 0,
