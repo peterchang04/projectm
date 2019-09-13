@@ -95,12 +95,14 @@ function getViewportPixel(mX, mY, length = 10, isMyShip = false) { perf.start('_
 
   temp.pixelResult.x = $g.viewport.shipPixelX + (temp.distXPrime * $g.viewport.pixelsPerMeter);
   temp.pixelResult.y = $g.viewport.shipPixelY - (temp.distYPrime * $g.viewport.pixelsPerMeter);
+
   // see if this is close enough to draw
+  temp.lengthPixels = length * $g.viewport.pixelsPerMeter;
   temp.pixelResult.isVisible = (
-    temp.pixelResult.x > 0 - length
-    && temp.pixelResult.y > 0 - length
-    && temp.pixelResult.x < $g.viewport.pixelWidth + length
-    && temp.pixelResult.y < $g.viewport.pixelHeight + length
+    temp.pixelResult.x > 0 - temp.lengthPixels
+    && temp.pixelResult.y > 0 - temp.lengthPixels
+    && temp.pixelResult.x < $g.viewport.pixelWidth + temp.lengthPixels
+    && temp.pixelResult.y < $g.viewport.pixelHeight + temp.lengthPixels
   );
 
   perf.stop('_drawable.getViewportPixel');

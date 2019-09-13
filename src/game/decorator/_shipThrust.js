@@ -29,7 +29,7 @@ function add(obj) { perf.start('_shipThrust.add');
   obj.updateForwardThrustParticles = updateForwardThrustParticles;
   obj.updateBackwardThrustParticles = updateBackwardThrustParticles;
   obj.updateAngularThrustParticles = updateAngularThrustParticles;
-
+  obj.shipThrustInit = shipThrustInit;
 
   // register update functions
   obj.addUpdate('updateForceByThrustValue', 11);
@@ -37,6 +37,9 @@ function add(obj) { perf.start('_shipThrust.add');
   obj.addUpdate('calculateSpeed', 100, 10);
   obj.addUpdate('setAngularThrust', 13);
   obj.addUpdate('updateThrustParticles', 100, 2);
+
+  // register init function
+  obj.inits.push('shipThrustInit');
 
   perf.stop('_shipThrust.add');
 }
@@ -142,8 +145,6 @@ function updateThrustParticles() { perf.start('_shipThrust.updateThrustParticles
 
 function updateForwardThrustParticles() { perf.start('_shipThrust.updateForwardThrustParticles');
   this.thrusters.forward.map((thruster) => {
-    temp.particle = $g.bank.particles.pop();
-
     temp.distX = thruster.x / 100 * this.length;
     temp.distY = -thruster.y / 100 * this.length;
 
@@ -162,7 +163,7 @@ function updateForwardThrustParticles() { perf.start('_shipThrust.updateForwardT
     temp.length = this.size / 2;
     temp.length = temp.length / (Math.abs(this.thrustPercent) + 1);
 
-    temp.particle.init({
+    $g.bank.getParticle({
       mX: this.mX + temp.distX,
       mY: this.mY - temp.distY,
       d: this.d - 180,
@@ -170,7 +171,7 @@ function updateForwardThrustParticles() { perf.start('_shipThrust.updateForwardT
       sMax: 120,
       animateFrames: temp.animateFrames,
       length: 10,
-      type: 1
+      type: 'flash'
     });
   });
   perf.stop('_shipThrust.updateForwardThrustParticles');
@@ -178,8 +179,6 @@ function updateForwardThrustParticles() { perf.start('_shipThrust.updateForwardT
 
 function updateBackwardThrustParticles() { perf.start('_shipThrust.updateBackwardThrustParticles');
   this.thrusters.backward.map((thruster) => {
-    temp.particle = $g.bank.particles.pop();
-
     temp.distX = thruster.x / 100 * this.length;
     temp.distY = -thruster.y / 100 * this.length;
 
@@ -198,7 +197,7 @@ function updateBackwardThrustParticles() { perf.start('_shipThrust.updateBackwar
     temp.length = this.size / 2;
     temp.length = temp.length / (Math.abs(this.thrustPercent) + 1);
 
-    temp.particle.init({
+    $g.bank.getParticle({
       mX: this.mX + temp.distX,
       mY: this.mY - temp.distY,
       d: this.d,
@@ -206,7 +205,7 @@ function updateBackwardThrustParticles() { perf.start('_shipThrust.updateBackwar
       sMax: 120,
       animateFrames: temp.animateFrames,
       length: 10,
-      type: 1
+      type: 'flash'
     });
   });
   perf.stop('_shipThrust.updateBackwardThrustParticles');
@@ -223,8 +222,6 @@ function updateAngularThrustParticles() { perf.start('_shipThrust.updateAngularT
     temp.thrusters.push(this.thrusters.rightForward); // right second. there's a reason later for this
   }
   temp.thrusters.map((thruster, i) => {
-    temp.particle = $g.bank.particles.pop();
-
     temp.distX = thruster.x / 100 * this.length;
     temp.distY = -thruster.y / 100 * this.length;
 
@@ -243,7 +240,7 @@ function updateAngularThrustParticles() { perf.start('_shipThrust.updateAngularT
     temp.length = this.size / 4;
     temp.length = temp.length / (Math.abs(temp.aAPercent) + 1);
 
-    temp.particle.init({
+    $g.bank.getParticle({
       mX: this.mX + temp.distX,
       mY: this.mY - temp.distY,
       d: this.d + ((i == 0) ? -90 : 90),
@@ -251,11 +248,15 @@ function updateAngularThrustParticles() { perf.start('_shipThrust.updateAngularT
       sMax: 100,
       animateFrames: temp.animateFrames,
       length: 10,
-      type: 1
+      type: 'flash'
     });
   });
   perf.stop('_shipThrust.updateAngularThrustParticles');
 }
 
+function shipThrustInit() {
+  this.aSMax = this.aSMaxShip;
+  this.sMax = this.sMaxShip;
+}
 
 export default { add, getProperties };

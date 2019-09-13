@@ -2,11 +2,12 @@ import decorate from '../decorator/decorate.js';
 import compositeSvg from '../../utils/compositeSvg.js';
 import perf from '../../utils/perf.js';
 import $g from '../../utils/globals.js';
+import { shipTypes } from '../../definitions.js';
 
 const temp = {};
 
 export default class Ship {
-  constructor(initialObj = {}) { /* e.g. { x,y,w,h,d,s } */ perf.start('Ship.constructor');
+  constructor(initialObj = {}) { perf.start('Ship.constructor');
     const decoratorList = ['entity', 'drawable', 'settersAndHooks', 'updatable', 'physics', 'collidable', 'shipThrust', 'shipWeapons', 'shipTargeting'];
     decorate.add(this, initialObj, decoratorList);
     this.name = `S-${this.id}`;
@@ -183,47 +184,3 @@ export default class Ship {
     perf.stop('Ship.applyType');
   }
 }
-
-const shipTypes = {
-  0: { // 0
-    svg: 'MyShipSVG',
-    sMaxShip: 50, // this is the ship max speed value and fixed. sMax will vary depending on thrust
-    aSMaxShip: 20, // angular speed max for this ship
-    sMax: 40,
-    aSMax: 1,
-    length: 20,
-    mass: 80000, // kg
-    polygon: [ // 100 x 100, but with middle at 0, so -50 -> 50 bounds
-      { x: -4, y: 48, },
-      { x: -29, y: -30 },
-      { x: -18, y: -45 },
-       // other side
-      { x: 18, y: -45 },
-      { x: 29, y: -30 },
-      { x: 4, y: 48 }
-    ],
-    thrusters: { // using same 100x100 coordinate system as polygon
-      forward: [{ x: -16, y: -52, wMin: 10, wMax: 35 }, { x: 16, y: -52, wMin: 10, wMax: 35 }],
-      backward: [{ x: -16, y: -13, wMin: 10, wMax: 35 }, { x: 16, y: -13, wMin: 10, wMax: 35 }],
-      leftForward: { x: -8, y: 41, wMin: 5, wMax: 20 },
-      rightForward: { x: 8, y: 41, wMin: 5, wMax: 20 },
-      leftBackward: { x: -20, y: -25, wMin: 5, wMax: 30 },
-      rightBackward: { x: 20, y: -25, wMin: 5, wMax: 30 },
-    },
-    cannons: [ // forward facing
-      { x: -29, y: -23 },
-      { x: 29, y: -23 },
-    ],
-    turrets: [ // shoots in any direction
-      { x: -21, y: -26, d: 0, dTarget: 0, aS: 40, length: 6 },
-      {
-        x: 21,
-        y: -26,
-        d: 0, // direction turret is pointing, relative to ship
-        dTarget: 0, // direction the turrent is turning to, relative to ship
-        aS: 40, // angle per second, turning rate
-        length: 6
-      },
-    ]
-  }
-};

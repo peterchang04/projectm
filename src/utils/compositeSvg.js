@@ -1,6 +1,7 @@
 import $g from './globals.js';
 import perf from './perf.js';
 import canvasText from './canvasText.js';
+import { turretTypes } from '../definitions.js';
 // draws an actor, but uses layering of svgs to accomplish
 const canvasBank = []; // a stash of canvases to be allocated
 const temp = {};
@@ -222,24 +223,26 @@ const compositeFunctions = {
       entity.svgCompositeData.canvases.turretsOnly.context.clearRect(0, 0, entity.svgCompositeData.canvases.turretsOnly.canvas.width, entity.svgCompositeData.canvases.turretsOnly.canvas.height);
       entity.turrets.map((turret, i) => {
         // solve for size of relative to ship
-        temp.turretPixels = (turret.length / entity.length) * 142;
+        temp.turretPixels = (turretTypes[turret.type].length / entity.length) * 142;
+        // get the turret svg
+        temp.svg = $g.svg[turretTypes[turret.type].svg];
 
         // rotate the turret independently
-        $g.svg.TurretSVG.context_rotate.setTransform(1, 0, 0, 1, 0, 0);
-        $g.svg.TurretSVG.context_rotate.clearRect(0, 0, $g.svg.TurretSVG.canvas_rotate.width, $g.svg.TurretSVG.canvas_rotate.height);
-        $g.svg.TurretSVG.context_rotate.translate($g.svg.TurretSVG.canvas_rotate.width/2, $g.svg.TurretSVG.canvas_rotate.height/2);
-        $g.svg.TurretSVG.context_rotate.rotate(turret.d * $g.constants.RADIAN);
-        $g.svg.TurretSVG.context_rotate.drawImage(
-          $g.svg.TurretSVG.canvas, // from previous canvas
-          -$g.svg.TurretSVG.canvas.width/2,
-          -$g.svg.TurretSVG.canvas.height/2
+        temp.svg.context_rotate.setTransform(1, 0, 0, 1, 0, 0);
+        temp.svg.context_rotate.clearRect(0, 0, temp.svg.canvas_rotate.width, temp.svg.canvas_rotate.height);
+        temp.svg.context_rotate.translate(temp.svg.canvas_rotate.width/2, temp.svg.canvas_rotate.height/2);
+        temp.svg.context_rotate.rotate(turret.d * $g.constants.RADIAN);
+        temp.svg.context_rotate.drawImage(
+          temp.svg.canvas, // from previous canvas
+          -temp.svg.canvas.width/2,
+          -temp.svg.canvas.height/2
         );
 
         // solve for turret placement relative to ship.length
         temp.distX = turret.x;
         temp.distY = -turret.y;
         entity.svgCompositeData.canvases.turretsOnly.context.drawImage(
-          $g.svg.TurretSVG.canvas_rotate,
+          temp.svg.canvas_rotate,
           (entity.svgCompositeData.canvases.turretsOnly.canvas.width / 2) + temp.distX - (temp.turretPixels * 0.5),
           (entity.svgCompositeData.canvases.turretsOnly.canvas.height / 2) + temp.distY - (temp.turretPixels * 0.5),
           temp.turretPixels,
