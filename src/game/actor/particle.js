@@ -7,7 +7,7 @@ import { cloneDeep } from 'lodash';
 const temp = {};
 
 export default class Particle {
-  constructor(initialObj = { c: '#fff', opacity: 1 }) { /* e.g. { x,y,w,h,d,s } */ perf.start('Particle.constructor');
+  constructor(initialObj = { c: '#ffffff', opacity: 1 }) { /* e.g. { x,y,w,h,d,s } */ perf.start('Particle.constructor');
     decorate.add(this, initialObj, ['entity', 'drawable', 'updatable', 'physics']);
 
     // get rid of unneeded functions
@@ -81,10 +81,12 @@ export default class Particle {
 
   applyType(initialObj) { perf.start('Particle.applyType');
     Object.assign(this, cloneDeep(types[this.type]), initialObj);
+
     // don't let this value be overwritten by type
     this.c = color.toRGBA(this.c);
     // also update initialObj so it isn't overwritten
     initialObj.c = this.c;
+
     perf.stop('Particle.applyType');
   }
 
@@ -102,8 +104,7 @@ export default class Particle {
 }
 
 const types = {
-  0: {
-    name: 'standard',
+  standard: {
     drawFunc: '_circle',
     c: '#fff',
     length: 1,
@@ -119,8 +120,7 @@ const types = {
     },
     animateFrames: 20,
   },
-  1: {
-    name: 'flashFade',
+  flash: {
     drawFunc: '_blur',
     sMax: 0,
     c: 'rgba(255, 255, 255, 1)',

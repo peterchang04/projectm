@@ -49,7 +49,6 @@
 * windows firewall - inbound rule allow port 80. outbound rule allow port 80
 * load local IP on phone (192.168.1.1xx);
 
-
 ### Other software
 * Install Discord
   * create an account first, or the join channel flow can be tricky
@@ -138,6 +137,9 @@ docker exec -it <container_name> /bin/sh
 
 ### ISSUES
 - after trying to launch Docker, Yarn says package.json is not found (suggesting -v is not working)
-  - Windows Firewall has somehow broken Docker filesharing
+  - Windows Firewall has somehow broken Docker filesharing (Maybe you're on a public network instead of private on you usually work on)
+    - Update the current network to be private from public (right click on wifi > network internet settings > change connection properties)
+  - (OR maybe) local machine drive sharing auth has been broken (e.g. changed windows pw)
+  - Uncheck drive share and re-check it to trigger re-establishing connection
 - trying to start vue cli (through launchDocker.bat for example) but missing dependency.
   - could be new packages added to project that didn't install locally. In cmd run> yarn

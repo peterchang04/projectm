@@ -2,6 +2,7 @@ import decorate from '../decorator/decorate.js';
 import perf from '../../utils/perf.js';
 import maths from '../../utils/maths.js';
 import $g from '../../utils/globals.js';
+import { projectileTypes } from '../../definitions.js';
 
 const temp = {};
 
@@ -25,7 +26,7 @@ export default class Projectile {
   }
 
   onCollide(collidee, response) { perf.start('Projectile.onCollide');
-    if (this.collisionEffect) this.collisionEffect(this, collidee);
+    if (this.collisionEffect) collisionEffects[this.collisionEffect](this, collidee);
     this.remove();
     perf.stop('Projectile.onCollide');
   }
@@ -41,12 +42,12 @@ export default class Projectile {
     context.translate(temp.viewportPixel.x, temp.viewportPixel.y);
     context.rotate((this.d - $g.game.myShip.d) * $g.constants.RADIAN);
 
-    context.fillStyle = this.projectileColor;
+    context.fillStyle = this.c;
     context.fillRect(
       0 + this.widthOffsetX,
-      0 - this.length * $g.viewport.pixelsPerMeter * 0.5,
-      this.projectileWidth * $g.viewport.pixelsPerMeter,
-      this.length * $g.viewport.pixelsPerMeter,
+      0,
+      this.w * $g.viewport.pixelsPerMeter,
+      -this.length * $g.viewport.pixelsPerMeter,
     );
     perf.stop('Projectile.drawMe');
   };
@@ -68,9 +69,10 @@ export default class Projectile {
   }
 
   applyType() { perf.start('Projectile.applyType');
-    Object.assign(this, types[this.type]);
+    Object.assign(this, projectileTypes[this.type]);
+    console.log(this.type);
     // solve for widthOffsetX based on projectileWidth
-    this.widthOffsetX = -0.5 * (types[this.type].projectileWidth * $g.viewport.pixelsPerMeter);
+    this.widthOffsetX = -0.5 * (projectileTypes[this.type].w * $g.viewport.pixelsPerMeter);
 
     // record beginning mX mY
     this.mXStart = this.mX;
@@ -80,130 +82,78 @@ export default class Projectile {
   }
 }
 
-const types = {
-  0: { // standard
-    sMax: 150,
-    length: 2,
-    mass: 0.5, // kg
-    projectileColor: "#fff",
-    projectileWidth: 1, // in meters
-    maxDistance: 500,
-    polygon: [
-      { x:0, y:50 },
-      { x:0, y:-50 },
-    ],
-    collisionEffect: (projectile) => {
-      // center explosion
-      temp.particle = $g.bank.particles.pop();
-      temp.particle.init({
-        d: 0,
-        mX: projectile.mX,
-        mY: projectile.mY,
-        type: 1,
-        length: 20,
-      });
-      // 3 sparks
-      temp.particle = $g.bank.particles.pop();
-      temp.particle.init({
-        d: projectile.d + 180 + maths.random(-40, -20), // opposite of projectile, with a bit of random spread
-        mX: projectile.mX, mY: projectile.mY,
-        sMax: maths.random(40, 90),
-        type: 0,
-        animateFrames: maths.random(20, 45),
-      });
-      temp.particle = $g.bank.particles.pop();
-      temp.particle.init({
-        d: projectile.d + 180 + maths.random(-15, 15), // opposite of projectile, with a bit of random spread
-        mX: projectile.mX, mY: projectile.mY,
-        sMax: 60,
-        type: 0,
-        animateFrames: maths.random(20, 45),
-      });
-      temp.particle = $g.bank.particles.pop();
-      temp.particle.init({
-        d: projectile.d + 180 + maths.random(20, 40), // opposite of projectile, with a bit of random spread
-        mX: projectile.mX, mY: projectile.mY,
-        sMax: maths.random(40, 90),
-        type: 0,
-        animateFrames: maths.random(20, 45),
-      });
-      // optional 4th spark
-      if (maths.random(0, 1) === 1) {
-        temp.particle = $g.bank.particles.pop();
-        temp.particle.init({
-          d: projectile.d + 180 + maths.random(-40, 40), // opposite of projectile, with a bit of random spread
-          mX: projectile.mX, mY: projectile.mY,
-          sMax: maths.random(40, 90),
-          type: 0,
-          animateFrames: maths.random(6, 20),
-        });
-      }
-    },
+const collisionEffects = {
+  smallImpact: (projectile, collidee) => {
+    // center explosion
+    $g.bank.getParticle({
+      c: '#999999',
+      mX: projectile.mX,
+      mY: projectile.mY,
+      type: 'flash',
+      length: 15,
+    });
+    // 3 sparks
+    $g.bank.getParticle({
+      d: projectile.d + 180 + maths.random(-40, -20), // opposite of projectile, with a bit of random spread
+      mX: projectile.mX, mY: projectile.mY,
+      sMax: maths.random(20, 90),
+      type: 'standard',
+      c: '#ffbd49',
+      animateFrames: maths.random(10, 25),
+    });
+    $g.bank.getParticle({
+      d: projectile.d + 180 + maths.random(-15, 15), // opposite of projectile, with a bit of random spread
+      mX: projectile.mX, mY: projectile.mY,
+      sMax: maths.random(20, 90),
+      c: '#ffbd49',
+      type: 'standard',
+      animateFrames: maths.random(10, 25),
+    });
+    $g.bank.getParticle({
+      d: projectile.d + 180 + maths.random(20, 40), // opposite of projectile, with a bit of random spread
+      mX: projectile.mX, mY: projectile.mY,
+      sMax: maths.random(20, 90),
+      type: 'standard',
+      c: '#ffbd49',
+      animateFrames: maths.random(10, 25),
+    });
   },
-  1: { // lasery thing
-    sMax: 600,
-    length: 20,
-    mass: 0.5, // kg
-    projectileColor: "#FF0000",
-    projectileWidth: .5,
-    maxDistance: 200,
-    polygon: [
-      { x:0, y: 50 },
-      { x:0, y: -50 },
-    ],
-    collisionEffect: (projectile, collidee) => {
-      // burning effect
-      temp.particle = $g.bank.particles.pop();
-      temp.particle.init({
-        d: collidee.d, // match direction with collidee
-        sMax: collidee.sMax, // match speed with collidee.. as if it was burning
-        mX: projectile.mX,
-        mY: projectile.mY,
-        type: 1,
-        length: 5,
-        c: '#ff6868',
-        animateFrames: 60,
-      });
-      // 3 sparks
-      temp.particle = $g.bank.particles.pop();
-      temp.particle.init({
-        d: projectile.d + 180 + maths.random(-40, -20), // opposite of projectile, with a bit of random spread
-        mX: projectile.mX, mY: projectile.mY,
-        sMax: maths.random(40, 90),
-        type: 0,
-        animateFrames: maths.random(20, 45),
-        c: '#ff6868'
-      });
-      temp.particle = $g.bank.particles.pop();
-      temp.particle.init({
-        d: projectile.d + 180 + maths.random(-15, 15), // opposite of projectile, with a bit of random spread
-        mX: projectile.mX, mY: projectile.mY,
-        sMax: 60,
-        type: 0,
-        animateFrames: maths.random(20, 45),
-        c: '#ff6868'
-      });
-      temp.particle = $g.bank.particles.pop();
-      temp.particle.init({
-        d: projectile.d + 180 + maths.random(20, 40), // opposite of projectile, with a bit of random spread
-        mX: projectile.mX, mY: projectile.mY,
-        sMax: maths.random(40, 90),
-        type: 0,
-        animateFrames: maths.random(20, 45),
-        c: '#fff'
-      });
-      // optional 4th spark
-      if (maths.random(0, 1) === 1) {
-        temp.particle = $g.bank.particles.pop();
-        temp.particle.init({
-          d: projectile.d + 180 + maths.random(-40, 40), // opposite of projectile, with a bit of random spread
-          mX: projectile.mX, mY: projectile.mY,
-          sMax: maths.random(40, 90),
-          type: 0,
-          animateFrames: maths.random(6, 20),
-          c: '#ff6868'
-        });
-      }
-    },
-  },
+  laser: (projectile, collidee) => {
+    // burning effect
+    $g.bank.getParticle({
+      d: collidee.d, // match direction with collidee
+      sMax: collidee.sMax, // match speed with collidee.. as if it was burning
+      mX: projectile.mX,
+      mY: projectile.mY,
+      type: 'flash',
+      length: 5,
+      c: '#ff6868',
+      animateFrames: 60,
+    });
+    // 3 sparks
+    $g.bank.getParticle({
+      d: projectile.d + 180 + maths.random(-40, -20), // opposite of projectile, with a bit of random spread
+      mX: projectile.mX, mY: projectile.mY,
+      sMax: maths.random(40, 90),
+      type: 'standard',
+      animateFrames: maths.random(20, 45),
+      c: '#ff6868'
+    });
+    $g.bank.getParticle({
+      d: projectile.d + 180 + maths.random(-15, 15), // opposite of projectile, with a bit of random spread
+      mX: projectile.mX, mY: projectile.mY,
+      sMax: 60,
+      type: 'standard',
+      animateFrames: maths.random(20, 45),
+      c: '#ff6868'
+    });
+    $g.bank.getParticle({
+      d: projectile.d + 180 + maths.random(20, 40), // opposite of projectile, with a bit of random spread
+      mX: projectile.mX, mY: projectile.mY,
+      sMax: maths.random(40, 90),
+      type: 'standard',
+      animateFrames: maths.random(20, 45),
+      c: '#ff6868'
+    });
+  }
 };

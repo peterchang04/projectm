@@ -4,10 +4,10 @@
 
   To get an entity for use, pop() it from $g.bank.entity
 */
-import Projectile from './projectile.js';
-import Asteroid from './asteroid.js';
-import Particle from './particle.js';
-import Ship from './ship.js';
+import Projectile from './Projectile.js';
+import Asteroid from './Asteroid.js';
+import Particle from './Particle.js';
+import Ship from './Ship.js';
 import $g from '../../utils/globals.js';
 import perf from '../../utils/perf.js';
 
@@ -22,6 +22,14 @@ function init() { perf.start('_factory.init');
   $g.bank.ships = [];
   $g.bank.projectiles = [];
   $g.bank.asteroids = [];
+
+  // attach fetch function for each bank type
+  Object.keys($g.bank).map((bankName) => {
+    if (bankName.substring(0, 3) === 'get') return;
+    $g.bank[`get${bankName.charAt(0).toUpperCase()}${bankName.substring(1, bankName.length - 1)}`] = (initialObj) => {
+      return get(bankName, initialObj);
+    };
+  });
 
   // make 25 ships - ships are first to reserve id:0 for crew
   for (temp.x = 0; temp.x < 25; temp.x++) {
@@ -60,6 +68,13 @@ function remove() { perf.start('_factory.obj.remove');
   $g.bank[`${this.className.toLowerCase()}s`].push(this);
   delete $g.game[$g.whichBank[this.className]][this.id];
   return perf.stop('_factory.obj.remove');
+}
+
+function get(bankName, initialObj = {}) {perf.start('_factory.obj.get');
+  temp.entity = $g.bank[bankName].pop();
+  temp.entity.init(initialObj);
+  perf.stop('_factory.obj.get');
+  return temp.entity;
 }
 
 export default { init };
