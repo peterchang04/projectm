@@ -13,7 +13,7 @@
 </template>
 
 <script>
-  import def from '../../definitions';
+  import { roles } from '../../definitions';
   import { mapState } from 'vuex';
   import Role from './Role.vue';
 
@@ -30,7 +30,7 @@
         return {
           left: 0,
           width: `${this.currentRole * 25}%`,
-          'background-color': def.roles[this.currentRole].bgColor,
+          'background-color': roles[this.currentRole].bgColor,
         };
       },
       roleBarOutlineStyleRightObj() {
@@ -38,7 +38,7 @@
         return {
           left: `${(this.currentRole * 25) + 25}%`,
           width: `${75 - (this.currentRole * 25)}%`,
-          'background-color': def.roles[this.currentRole].bgColor,
+          'background-color': roles[this.currentRole].bgColor,
         };
       },
     },

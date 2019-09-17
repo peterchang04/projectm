@@ -113,8 +113,8 @@ const types = {
       // shrink
       this.length = this.originalLength - (this.frameCounter * this.originalLength / this.animateFrames);
       // slow the particles
-      this.sX = this.sX * .9;
-      this.sY = this.sY * .9;
+      this.sX = this.sX * .97;
+      this.sY = this.sY * .97;
       this.opacity = this.originalOpacity - (this.originalOpacity * (this.frameCounter / this.animateFrames));
       if (this.frameCounter === this.animateFrames) this.remove();
     },

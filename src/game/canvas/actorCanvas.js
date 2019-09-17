@@ -21,7 +21,6 @@ function init() { perf.start('actorCanvas.init');
 
 function draw() { perf.start('actorCanvas.draw');
   context.clearRect(0, 0, canvas.width, canvas.height);
-
   Object.keys($g.game.actors).map((id) => {
     $g.game.actors[id].draw(context);
   });

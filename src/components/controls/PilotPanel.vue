@@ -21,6 +21,10 @@
 
       <button v-on:click="fireProjectile2()" id="testButton2">Laser</button>
 
+      <button v-on:click="fireProjectile3()" id="testButton3">left tube</button>
+
+      <button v-on:click="fireProjectile4()" id="testButton4">right tube</button>
+
       <div class="angularThrustDiv">
         <Slider
           title="Angular Thrust"
@@ -40,7 +44,7 @@
   import Heading from './Heading.vue';
   import $g from '../../utils/globals.js';
   import { mapState } from 'vuex';
-  import def from '../../definitions';
+  import { roles } from '../../definitions';
 
   export default {
     name: 'pilotPanel',
@@ -63,7 +67,7 @@
         return $g.game.myShip.thrustValue;
       },
       borderStyle() {
-        return `border-color:${def.roles[2].bgColor}`;
+        return `border-color:${roles[2].bgColor}`;
       }
     },
     methods: {
@@ -80,6 +84,12 @@
       },
       fireProjectile2() {
         $g.game.myShip.fireTurrets();
+      },
+      fireProjectile3() {
+        $g.game.myShip.fireTorpedo();
+      },
+      fireProjectile4() {
+        $g.game.myShip.fireTorpedo(1);
       }
     },
     mounted() {
@@ -136,6 +146,20 @@
     grid-column-end: 7;
     grid-row-start: 2;
     grid-row-end: 3;
+  }
+
+  #testButton3 {
+    grid-column-start: 3;
+    grid-column-end: 4;
+    grid-row-start: 4;
+    grid-row-end: 5;
+  }
+
+  #testButton4 {
+    grid-column-start: 6;
+    grid-column-end: 7;
+    grid-row-start: 4;
+    grid-row-end: 5;
   }
 
   .console {

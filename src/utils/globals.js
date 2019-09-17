@@ -33,13 +33,6 @@ const bank = {
 
 const svg = {}; // see canvasSvg, the raw transfers from .svg files to canvas
 
-const whichBank = { // given a classname, which queue does it belong in?
-  Asteroid: 'actors',
-  Ship: 'actors',
-  Projectile: 'projectiles',
-  Particle: 'particles',
-};
-
 const viewport = {
   pixelRatio: window.devicePixelRatio,
   pixelsPerMeter: 0,
@@ -59,7 +52,9 @@ const viewport = {
     */
     this.pixelsPerMeter = this.pixelHeight / 210;
     this.pixelsPerMeter = this.pixelHeight / 240; // default
-
+    this.pixelsPerMeter = this.pixelHeight / 300
+    this.pixelsPerMeter = this.pixelHeight / 500;
+    // this.pixelsPerMeter = this.pixelHeight / 800;
     // this.pixelsPerMeter = this.pixelHeight / 150;
   },
   shipPixelX: 0,
@@ -67,6 +62,6 @@ const viewport = {
 };
 
 // set global javascript  references to these values
-global.$g = { viewport, game, constants, bank, whichBank, svg };
+global.$g = { viewport, game, constants, bank, svg };
 
-export default { constants, viewport, game, bank, whichBank, svg };
+export default { constants, viewport, game, bank, svg };

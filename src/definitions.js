@@ -16,6 +16,7 @@ const _shipTypes = {
     mass: 80000, // kg
     // physics characteristics
     sMaxShip: 50, // this is the ship max speed value and fixed. sMax will vary depending on thrust
+    aMax: 8, // acceleration at 100% thrust - used to calculate force
     aSMaxShip: 20, // angular speed max for this ship
     // collision poly
     polygon: [ // 100 x 100, but with middle at 0, so -50 -> 50 bounds
@@ -40,9 +41,13 @@ const _shipTypes = {
       { x: 29, y: -14, projectileType: '50mm' },
     ],
     turrets: [ // shoots in any direction
-      { x: -19, y: -15, type: '50mmMk1' },
-      { x: 19, y: -15, type: '50mmMk1' },
-    ]
+      { x: -19, y: -15, type: 'laserMk1' },
+      { x: 19, y: -15, type: 'laserMk1' },
+    ],
+    torpedoBays: [
+      { x: -10, y: 25, torpedoType: 'explosive', d: -12 },
+      { x: 10, y: 25, torpedoType: 'explosive', d: 12 },
+    ],
   }
 };
 
@@ -98,15 +103,34 @@ const _engineTypes = {
 
 };
 
-// traditional whole file export
-export default {
-  roles: _roles,
-  shipTypes: _shipTypes ,
-  projectileTypes: _projectileTypes,
-  turretTypes: _turretTypes,
+const _torpedoTypes = {
+  explosive: {
+    svg: 'TorpedoSVG',
+    length: 5,
+    mass: 50,
+    aMax: 16,
+    aSMaxShip: 40,
+    sMaxShip: 70,
+    maxDistance: 500,
+    thrustValue: 0, // torpedos will accelerate after being released from ship
+    thrusters: {
+      forward: [{ x: 0, y: -50, wMin: 1, wMax: 50 }],
+    },
+    polygon: [
+      { x: -12, y: 50 },
+      { x: -12, y: -50 },
+      { x: 12, y: -50 },
+      { x: 12, y: 50 },
+    ],
+    collisionEffect: 'explosion_1'
+  }
 };
+
+// traditional whole file export
+export default { useDeconstructedImport: true };
 // allow deconstructed imports
 export const projectileTypes = _projectileTypes;
 export const shipTypes = _shipTypes;
 export const roles = _roles;
 export const turretTypes = _turretTypes;
+export const torpedoTypes = _torpedoTypes;

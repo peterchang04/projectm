@@ -3,7 +3,6 @@ const it = global.it;
 const describe = global.describe;
 import maths from '../../src/utils/maths.js';
 
-
 describe('getRadian2P', () => {
   it('should return 0 if 3rd argument is false, but both points same', () => {
     expect(maths.getRadian2P(0, 0, 0, 0, false)).to.equal(0);
@@ -223,7 +222,7 @@ describe('random', () => {
     let has10 = false;
     let has0 = false
     for (var i = 0; i < 100; i++) {
-      let result = maths.random(10);
+      let result = maths.random(0, 10);
       if (result < 0 || result > 10) isValid = false;
       if (result === 10) has10 = 'has10';
       if (result === 0) has0 = 'has0';
@@ -231,5 +230,26 @@ describe('random', () => {
     expect(isValid).to.equal(true);
     expect(has10).to.equal('has10');
     expect(has0).to.equal('has0');
+  });
+});
+
+describe('getRotation', () => {
+  it('should solve in the following ways', () => {
+    // with base = 0
+    expect(maths.getRotation(0, 45)).to.equal(45);
+    expect(maths.getRotation(0, -45)).to.equal(-45);
+    expect(maths.getRotation(0, 270)).to.equal(-90);
+    expect(maths.getRotation(0, -270)).to.equal(90);
+    expect(maths.getRotation(0, 180)).to.equal(180);
+    expect(maths.getRotation(0, -180)).to.equal(180);
+    // with base -45
+    expect(maths.getRotation(-45, 0)).to.equal(45);
+    expect(maths.getRotation(-45, 180)).to.equal(-135);
+    expect(maths.getRotation(-45, -46)).to.equal(-1);
+    expect(maths.getRotation(-45, 315)).to.equal(0);
+    // with base 180
+    expect(maths.getRotation(180, 0)).to.equal(180);
+    expect(maths.getRotation(180, -1)).to.equal(179);
+    expect(maths.getRotation(180, 45)).to.equal(-135);
   });
 });

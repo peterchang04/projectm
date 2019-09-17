@@ -7,7 +7,7 @@ let stop = function() { return; };
 
 const temp = {};
 
-if (activate) {
+if (activate && global.performance) {
   start = function(key) {
     if (!logs[key]) {
       logs[key] = []; // FIFO

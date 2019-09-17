@@ -20,6 +20,7 @@ function add(obj) { perf.start('_shipWeapons.add');
   // attach functions to obj
   obj.fireCannon = fireCannon;
   obj.fireTurrets = fireTurrets;
+  obj.fireTorpedo = fireTorpedo;
   obj.updateTurretTargetDirection = updateTurretTargetDirection;
   obj.rotateTurrets = rotateTurrets;
 
@@ -33,7 +34,7 @@ function add(obj) { perf.start('_shipWeapons.add');
 function fireCannon() { perf.start('_shipWeapons.obj.fireCannon');
   temp.cannon = this.cannons[this.cannonShots % this.cannons.length];
   this.cannonShots++;
-  
+
   temp.distX = temp.cannon.x;
   temp.distY = -temp.cannon.y;
 
@@ -106,6 +107,40 @@ function fireTurrets() { perf.start('_shipWeapons.obj.fireTurrets');
   perf.stop('_shipWeapons.obj.fireTurrets');
 }
 
+// more thrust eq more force (eq more speed)
+function fireTorpedo(index = 0) { perf.start('_shipWeapons.obj.fireTorpedo');
+
+  temp.distX = this.torpedoBays[index].x;
+  temp.distY = -this.torpedoBays[index].y;
+
+  if (this.id == $g.game.myShip.id) { // rotate for self perspective
+    temp.distXPrime = (temp.distX * $g.game.myShip.dY) - (temp.distY * $g.game.myShip.dX);
+    temp.distYPrime = (temp.distY * $g.game.myShip.dY) + (temp.distX * $g.game.myShip.dX);
+    temp.distX = temp.distXPrime;
+    temp.distY = temp.distYPrime;
+  }
+
+  // torpedos leave ship at a slight angle
+  // do the trig calculations once here
+  temp.dX = Math.sin((this.d + this.torpedoBays[index].d) * $g.constants.RADIAN);
+  temp.dY = Math.cos((this.d + this.torpedoBays[index].d) * $g.constants.RADIAN);
+
+  $g.bank.getTorpedo({
+    type: this.torpedoBays[index].torpedoType,
+    mX: this.mX + (temp.distX * this.length / 100),
+    mY: this.mY - (temp.distY * this.length / 100),
+    d: this.d,
+    // the torpedo should fire just a bit faster than ship is travelling
+    sX: this.sX + (8 * temp.dX),
+    sY: this.sY + (8 * temp.dY),
+    exemptColliders: { [`${this.id}`]: this },
+    // set the target if there is one
+    target: this.target,
+  });
+
+  perf.stop('_shipWeapons.obj.fireTorpedo');
+}
+
 function updateTurretTargetDirection() { perf.start('_shipWeapons.obj.updateTurretTargetDirection');
   if (!this.target) {
     // point forward if no target
@@ -114,6 +149,9 @@ function updateTurretTargetDirection() { perf.start('_shipWeapons.obj.updateTurr
     });
     return perf.stop('_shipWeapons.obj.updateTurretTargetDirection');
   }
+
+  if (!$g.game.actors[this.target]) return perf.stop('_shipWeapons.obj.updateTurretTargetDirection');
+
   // solve for target locaiton, used to predict eventual target position
   temp.dist = maths.getDistance(this.mX, this.mY, $g.game.actors[this.target].mX, $g.game.actors[this.target].mY);
   this.turrets.map((turret) => {

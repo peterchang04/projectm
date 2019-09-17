@@ -108,6 +108,16 @@ function random(a = 0, b = 10) { perf.start('maths.random'); // accepts a range 
   return temp.result;
 }
 
+function getRotation(baseDegree, otherDegree) {
+  baseDegree = baseDegree % 360;
+  otherDegree = otherDegree % 360;
+  temp.diff = Math.abs(otherDegree - baseDegree);
+  temp.result = temp.diff > 180 ? 360 - temp.diff : temp.diff;
+  // solve for direction
+  temp.clockwise = (otherDegree - baseDegree >= 0 && otherDegree - baseDegree <= 180) || (otherDegree - baseDegree <=-180 && otherDegree- baseDegree >= -360) ? 1 : -1;
+  return temp.result *= temp.clockwise;
+}
+
 export default {
   getAngle2P,
   getRadian2P,
@@ -121,4 +131,5 @@ export default {
   radianToAngle,
   roundHalf,
   random,
+  getRotation,
 };

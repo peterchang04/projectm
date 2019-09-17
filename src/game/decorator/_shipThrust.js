@@ -30,6 +30,7 @@ function add(obj) { perf.start('_shipThrust.add');
   obj.updateBackwardThrustParticles = updateBackwardThrustParticles;
   obj.updateAngularThrustParticles = updateAngularThrustParticles;
   obj.shipThrustInit = shipThrustInit;
+  obj.updateSimpleDirection = updateSimpleDirection;
 
   // register update functions
   obj.addUpdate('updateForceByThrustValue', 11);
@@ -45,11 +46,10 @@ function add(obj) { perf.start('_shipThrust.add');
 }
 
 // more thrust eq more force (eq more speed)
-const metersPerSecondAcceleration = 8; // how fast to accelerate
 function updateForceByThrustValue() { perf.start('_shipThrust.obj.updateForceByThrustValue');
   // thrustValue is up to 100.
   this.thrustPercent = (this.thrustValue / 100);
-  this.thrustForce = this.thrustPercent * this.mass * metersPerSecondAcceleration; // can be negative if reversing
+  this.thrustForce = this.thrustPercent * this.mass * this.aMax; // can be negative if reversing
   // adjust for direction
   this.forceY = this.dY * this.thrustForce;
   this.forceX = this.dX * this.thrustForce;
@@ -136,6 +136,23 @@ function setAngularThrust(elapsed) { perf.start('_shipThrust.obj.setAngularThrus
   perf.stop('_shipThrust.obj.setAngularThrust');
 }
 
+// this is the simple version of turning. fixed rate, no acceleration
+function updateSimpleDirection(elapsed) { perf.start('_shipThrust.obj.updateSimpleDirection');
+  if (this.dTurn < 0) {
+    this.aS = -this.aSMax;
+  }
+  if (this.dTurn > 0) {
+    this.aS = this.aSMax;
+  }
+  if (Math.abs(this.dTurn) < 1) {
+    this.d -= this.dTurn;
+    this.dTurn = 0;
+  }
+
+  perf.stop('_shipThrust.obj.updateSimpleDirection');
+}
+
+
 function updateThrustParticles() { perf.start('_shipThrust.updateThrustParticles');
   if (this.thrustForce > 0) this.updateForwardThrustParticles();
   if (this.thrustForce < 0) this.updateBackwardThrustParticles();
@@ -154,10 +171,15 @@ function updateForwardThrustParticles() { perf.start('_shipThrust.updateForwardT
       temp.distYPrime = (temp.distY * $g.game.myShip.dY) + (temp.distX * $g.game.myShip.dX);
       temp.distX = temp.distXPrime;
       temp.distY = temp.distYPrime;
+    } else {
+      temp.distXPrime = (temp.distX * this.dY) - (temp.distY * this.dX);
+      temp.distYPrime = (temp.distY * this.dY) + (temp.distX * this.dX);
+      temp.distX = temp.distXPrime;
+      temp.distY = temp.distYPrime;
     }
 
     // calc particle travel
-    temp.animateFrames = Math.ceil((15 * Math.abs(this.thrustPercent)) + 5); // 5-20
+    temp.animateFrames = Math.ceil((7 * Math.abs(this.thrustPercent)) + 3); // 2-6
 
     // calc particle size
     temp.length = this.size / 2;
@@ -191,7 +213,7 @@ function updateBackwardThrustParticles() { perf.start('_shipThrust.updateBackwar
     }
 
     // calc particle travel
-    temp.animateFrames = Math.ceil((15 * Math.abs(this.thrustPercent)) + 5); // 5-20
+    temp.animateFrames = Math.ceil((6 * Math.abs(this.thrustPercent)) + 3); // 2-7
 
     // calc particle size
     temp.length = this.size / 2;
@@ -212,6 +234,8 @@ function updateBackwardThrustParticles() { perf.start('_shipThrust.updateBackwar
 }
 
 function updateAngularThrustParticles() { perf.start('_shipThrust.updateAngularThrustParticles');
+  // exit early if there are no defined thrusters
+  if (!this.thrusters || !this.thrusters.leftForward) return perf.stop('_shipThrust.updateAngularThrustParticles');
   temp.thrusters = [];
   temp.aAPercent = Math.abs(this.aA / (this.aSMaxShip / 2));
   if (this.aA > 0) {
@@ -234,7 +258,7 @@ function updateAngularThrustParticles() { perf.start('_shipThrust.updateAngularT
     }
 
     // calc particle travel
-    temp.animateFrames = Math.ceil((5 * Math.abs(temp.aAPercent)) + 3); // 2-7
+    temp.animateFrames = Math.ceil((4 * Math.abs(temp.aAPercent)) + 2); // 2-6
 
     // calc particle size
     temp.length = this.size / 4;

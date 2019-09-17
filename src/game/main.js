@@ -11,6 +11,7 @@ import perf from '../utils/perf.js';
 import Ship from '../game/actor/Ship.js';
 import Projectile from '../game/actor/Projectile.js';
 import Asteroid from '../game/actor/Asteroid.js';
+import Torpedo from '../game/actor/Torpedo.js';
 import _factory from '../game/actor/_factory.js';
 import decorate from '../game/decorator/decorate.js';
 
@@ -60,9 +61,9 @@ function init() {
   starCanvas.init();
 
   // PLACEHOLDER - initialize 3 asteroids
-  $g.bank.getAsteroid({ length: 100, mX: 50, mY: 50, d: 0, sMax: 0, aS: 0 });
-  $g.bank.getAsteroid({ length: 20, mX: -100, mY: 100, d: -12, sMax: 5, aS: 15 });
-  $g.bank.getAsteroid({ length: 40, mX: 0, mY: 100, d: 0, sMax: 3, aS: -6 });
+  // $g.bank.getAsteroid({ length: 100, mX: 50, mY: 50, d: 0, sMax: 0, aS: 0 });
+  $g.bank.getAsteroid({ length: 20, mX: -0, mY: 220, d: 90, sMax: 8, aS: 15 });
+  // $g.bank.getAsteroid({ length: 40, mX: 0, mY: 100, d: 0, sMax: 3, aS: -6 });
   $g.bank.getAsteroid({ length: 80, mX: -30, mY: -50, d: -60, sMax: 9, aS: 52 });
   $g.bank.getAsteroid({ length: 15, mX: -300, mY: -100, d: 26, sMax: 7, aS: -32 });
   $g.bank.getAsteroid({ length: 6, mX: -600, mY: -100, d: 26, sMax: 7, aS: -32 });

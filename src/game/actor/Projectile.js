@@ -59,9 +59,11 @@ export default class Projectile {
     perf.stop('Projectile.removeByDistance');
   }
 
-  factoryInit() { perf.start('Projectile.factoryInit');
+  factoryInit(initialObj) { perf.start('Projectile.factoryInit');
     // set speed to sMax
     this.updateTrig();
+
+    if (initialObj.sMax) this.sMax = initialObj.sMax;
 
     this.sX = this.dX * this.sMax;
     this.sY = this.dY * this.sMax;
@@ -70,7 +72,6 @@ export default class Projectile {
 
   applyType() { perf.start('Projectile.applyType');
     Object.assign(this, projectileTypes[this.type]);
-    console.log(this.type);
     // solve for widthOffsetX based on projectileWidth
     this.widthOffsetX = -0.5 * (projectileTypes[this.type].w * $g.viewport.pixelsPerMeter);
 
@@ -96,26 +97,26 @@ const collisionEffects = {
     $g.bank.getParticle({
       d: projectile.d + 180 + maths.random(-40, -20), // opposite of projectile, with a bit of random spread
       mX: projectile.mX, mY: projectile.mY,
-      sMax: maths.random(20, 90),
+      sMax: maths.random(20, 70),
       type: 'standard',
       c: '#ffbd49',
-      animateFrames: maths.random(10, 25),
+      animateFrames: maths.random(10, 18),
     });
     $g.bank.getParticle({
       d: projectile.d + 180 + maths.random(-15, 15), // opposite of projectile, with a bit of random spread
       mX: projectile.mX, mY: projectile.mY,
-      sMax: maths.random(20, 90),
+      sMax: maths.random(20, 70),
       c: '#ffbd49',
       type: 'standard',
-      animateFrames: maths.random(10, 25),
+      animateFrames: maths.random(10, 18),
     });
     $g.bank.getParticle({
       d: projectile.d + 180 + maths.random(20, 40), // opposite of projectile, with a bit of random spread
       mX: projectile.mX, mY: projectile.mY,
-      sMax: maths.random(20, 90),
+      sMax: maths.random(20, 70),
       type: 'standard',
       c: '#ffbd49',
-      animateFrames: maths.random(10, 25),
+      animateFrames: maths.random(10, 18),
     });
   },
   laser: (projectile, collidee) => {

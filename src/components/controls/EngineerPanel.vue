@@ -13,7 +13,7 @@
 
 <script>
   import $g from '../../utils/globals.js';
-  import def from '../../definitions';
+  import { roles } from '../../definitions';
   import Heading from './Heading.vue';
   import SliderVertical from './SliderVertical.vue';
 
@@ -22,7 +22,7 @@
     components: { Heading, SliderVertical },
     computed: {
       borderStyle() {
-        return `border-color:${def.roles[0].bgColor}`;
+        return `border-color:${roles[0].bgColor}`;
       }
     },
   };
