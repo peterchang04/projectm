@@ -69,7 +69,7 @@
         return temp.opacity;
       },
       arrowTransform() {
-        return ($g.game.actors[this.id]) ? `transform:rotate(${this.direction}deg);` : null;
+        return ($g.game.actors[this.id]) ? `transform:rotate(${this.direction - $g.game.myShip.d}deg);` : null;
       },
     },
     mounted: function() {
@@ -93,7 +93,7 @@
         }
       },
       updateCanvas() { perf.start('IntelTarget.methods.updateCanvas');
-        if (this.id) {
+        if (this.id && $g.game.actors[this.id]) {
           this.distance = $g.game.actors[this.id].distanceFromMyShip;
           this.direction = $g.game.actors[this.id].directionFromMyShip;
           this.name = $g.game.actors[this.id].name;

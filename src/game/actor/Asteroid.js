@@ -10,6 +10,7 @@ export default class Asteroid {
   constructor() { /* e.g. { x,y,w,h,d,s } */ perf.start('Asteroid.constructor');
     decorate.add(this, {}, ['entity', 'drawable', 'updatable', 'physics', 'collidable']);
     this.name = `A-${this.id}`;
+    
     // get rid of unneeded functions
     this.removeUpdate('applyResistanceForce');
     this.removeUpdate('updateSpeedByForce');

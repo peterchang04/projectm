@@ -11,7 +11,7 @@
 
 <script>
   import $g from '../../utils/globals.js';
-  import def from '../../definitions';
+  import { roles } from '../../definitions';
   import Heading from './Heading.vue';
 
   export default {
@@ -21,7 +21,7 @@
     },
     computed: {
       borderStyle() {
-        return `border-color:${def.roles[1].bgColor}`;
+        return `border-color:${roles[1].bgColor}`;
       }
     },
     methods: {

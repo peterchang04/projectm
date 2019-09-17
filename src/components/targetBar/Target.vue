@@ -108,7 +108,7 @@
 
       // kick off draw loop
       this.timer = setInterval(() => {
-        if (!this.id) return;
+        if (!this.id || !$g.game.actors[this.id]) return;
         this.direction = $g.game.actors[this.id].directionFromMyShip - $g.game.myShip.d;
         this.distance = $g.game.actors[this.id].distanceFromMyShip;
         this.target = $g.game.myShip.target;

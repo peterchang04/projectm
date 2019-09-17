@@ -9,7 +9,7 @@
 
 <script>
   import $g from '../../utils/globals.js';
-  import def from '../../definitions';
+  import { roles } from '../../definitions';
   import Heading from './Heading.vue';
   import IntelTargetList from './IntelTargetList.vue';
 
@@ -18,7 +18,7 @@
     components: { Heading, IntelTargetList },
     computed: {
       borderStyle() {
-        return `border-color:${def.roles[3].bgColor}`;
+        return `border-color:${roles[3].bgColor}`;
       }
     },
   };

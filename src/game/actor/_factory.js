@@ -8,6 +8,7 @@ import Projectile from './Projectile.js';
 import Asteroid from './Asteroid.js';
 import Particle from './Particle.js';
 import Ship from './Ship.js';
+import Torpedo from './Torpedo.js';
 import $g from '../../utils/globals.js';
 import perf from '../../utils/perf.js';
 
@@ -20,6 +21,7 @@ function init() { perf.start('_factory.init');
   $g.game.particles = {};
 
   $g.bank.ships = [];
+  $g.bank.torpedos = [];
   $g.bank.projectiles = [];
   $g.bank.asteroids = [];
 
@@ -34,13 +36,23 @@ function init() { perf.start('_factory.init');
   // make 25 ships - ships are first to reserve id:0 for crew
   for (temp.x = 0; temp.x < 25; temp.x++) {
     $g.bank.ships[temp.x] = new Ship();
+    $g.bank.ships[temp.x].queue = 'actors';
     $g.bank.ships[temp.x].className = 'Ship'; // need this because the built version loses constructor.name
     $g.bank.ships[temp.x].remove = remove;
   }
 
+  // make 10 torpedos
+  for (temp.x = 0; temp.x < 10; temp.x++) {
+    $g.bank.torpedos[temp.x] = new Torpedo();
+    $g.bank.torpedos[temp.x].queue = 'actors';
+    $g.bank.torpedos[temp.x].className = 'Torpedo'; // need this because the built version loses constructor.name
+    $g.bank.torpedos[temp.x].remove = remove;
+  }
+
   // make 200 projectiles
-  for (temp.x = 0; temp.x < 100; temp.x++) {
+  for (temp.x = 0; temp.x < 300; temp.x++) {
     $g.bank.projectiles[temp.x] = new Projectile();
+    $g.bank.projectiles[temp.x].queue = 'projectiles';
     $g.bank.projectiles[temp.x].className = 'Projectile';
     $g.bank.projectiles[temp.x].remove = remove;
   }
@@ -48,13 +60,15 @@ function init() { perf.start('_factory.init');
   // make 20 asteroids
   for (temp.x = 0; temp.x < 40; temp.x++) {
     $g.bank.asteroids[temp.x] = new Asteroid();
+    $g.bank.asteroids[temp.x].queue = 'actors';
     $g.bank.asteroids[temp.x].className = 'Asteroid';
     $g.bank.asteroids[temp.x].remove = remove;
   }
 
   // make 200 particles
-  for (temp.x = 0; temp.x < 100; temp.x++) {
+  for (temp.x = 0; temp.x < 200; temp.x++) {
     $g.bank.particles[temp.x] = new Particle();
+    $g.bank.particles[temp.x].queue = 'particles';
     $g.bank.particles[temp.x].className = 'Particle';
     $g.bank.particles[temp.x].remove = remove;
   }
@@ -64,9 +78,8 @@ function init() { perf.start('_factory.init');
 }
 
 function remove() { perf.start('_factory.obj.remove');
-  $g.whichBank[this.className];
   $g.bank[`${this.className.toLowerCase()}s`].push(this);
-  delete $g.game[$g.whichBank[this.className]][this.id];
+  delete $g.game[this.queue][this.id];
   return perf.stop('_factory.obj.remove');
 }
 

@@ -17,12 +17,15 @@ function getProperties() {
 function add(obj) { perf.start('_shipTargeting.add');
   Object.assign(obj, cloneDeep(properties)); // merge properties
 
+  obj.addUpdate('checkTargetsValid', 100, 12);
+
   // attach functions
   obj.addTarget = addTarget;
   obj.removeTarget = removeTarget;
   obj.getTargetSlot = getTargetSlot;
   obj.selectTarget = selectTarget;
   obj.deselectTarget = deselectTarget;
+  obj.checkTargetsValid = checkTargetsValid;
 
   perf.stop('_shipTargeting.add');
 }
@@ -63,6 +66,16 @@ function selectTarget(id) { perf.start('_shipTargeting.obj.selectTarget');
 function deselectTarget(id) { perf.start('_shipTargeting.obj.deselectTarget');
   this.target = null;
   perf.stop('_shipTargeting.obj.deselectTarget');
+}
+
+function checkTargetsValid() { perf.start('_shipTargeting.obj.checkTargetsValid');
+  this.targets.map((id, i) => {
+    if (!$g.game.actors[id]) {
+      this.targets[i] = null;
+      if (this.target === id) this.target = null;
+    }
+  });
+  perf.stop('_shipTargeting.obj.checkTargetsValid');
 }
 
 export default { add, getProperties };

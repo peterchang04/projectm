@@ -21,9 +21,10 @@ function add(obj) { perf.start('_entity.add');
 
 function init(initialObj) { perf.start('_entity.init'); // run own init functions
   // add entity to a queue if it isn't already there
-  if (!(this.id in $g.game[$g.whichBank[this.className]])) {
-    $g.game[$g.whichBank[this.className]][this.id] = this;
+  if (!(this.id in $g.game[this.queue])) {
+    $g.game[this.queue][this.id] = this;
   }
+
   // apply initialObj to this
   Object.assign(this, initialObj); // merge properties
 
@@ -34,6 +35,7 @@ function init(initialObj) { perf.start('_entity.init'); // run own init function
   });
   // apply initialObj again, to overwrite any type specifics
   Object.assign(this, initialObj); // merge properties
+
   perf.stop('_entity.init');
 }
 

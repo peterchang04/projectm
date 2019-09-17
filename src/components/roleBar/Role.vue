@@ -19,7 +19,7 @@
 
 <script>
   import { mapState } from 'vuex';
-  import def from '../../definitions';
+  import { roles } from '../../definitions';
   import IconCaptain from '../../../public/assets/svg/roleIcons/medal.svg';
   import IconPilot from '../../../public/assets/svg/roleIcons/pilot.svg';
   import IconEngineer from '../../../public/assets/svg/roleIcons/wrench.svg';
@@ -46,21 +46,21 @@
     computed: {
       ...mapState(['currentRole']),
       roleName() {
-        return def.roles[this.index].name;
+        return roles[this.index].name;
       },
       classObj() {
         const c = { role: true };
-        c[`${def.roles[this.index].name}`] = true; // add 'roleName' as a class
+        c[`${roles[this.index].name}`] = true; // add 'roleName' as a class
         return c;
       },
       styleObj() {
         return {
-          'background-color': `${def.roles[this.index].bgColor}`
+          'background-color': `${roles[this.index].bgColor}`
         };
       },
       iconStyleObj() {
         return {
-          fill: `${def.roles[this.index].iconColor}`
+          fill: `${roles[this.index].iconColor}`
         };
       }
     },

@@ -4,6 +4,7 @@
     <MyShipSVG id="MyShipSVG" />
     <AsteroidSVG id="AsteroidSVG" />
     <TurretSVG id="TurretSVG" height="100" width="100" />
+    <TorpedoSVG id="TorpedoSVG" height="100" width="100" />
   </div>
 </template>
 
@@ -12,6 +13,7 @@
   import MyShipSVG from '../../public/assets/svg/ships/myShip.svg';
   import AsteroidSVG from '../../public/assets/svg/asteroids/asteroid.svg';
   import TurretSVG from '../../public/assets/svg/ships/turret.svg';
+  import TorpedoSVG from '../../public/assets/svg/torpedos/torpedo.svg';
   import $g from '../utils/globals.js';
 
   export default {
@@ -19,6 +21,7 @@
       MyShipSVG,
       AsteroidSVG,
       TurretSVG,
+      TorpedoSVG
     },
     computed: {
       showAssets() {
