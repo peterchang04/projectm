@@ -34,6 +34,10 @@ function init(width, height) { perf.start('steeringCanvas.init');
   perf.stop('steeringCanvas.init');
 }
 
+function update() { perf.start('steeringCanvas.update');
+  perf.stop('steeringCanvas.update');
+}
+
 let lastEndRadian = -1;
 let endRadian = -1;
 function draw() { perf.start('steeringCanvas.draw');

@@ -1,14 +1,10 @@
 <template>
   <div
     class="target"
-    v-bind:class="{
-      hasTarget: Boolean(id),
-      lastTarget: index === 3,
-      leftBorder: noLeftNeighbor,
-      hideRightBorder: hideRightBorder,
-      isSelected: isSelected
-    }"
+    v-bind:class="classObj"
     v-on:click="toggleSelected"
+    :_index="index"
+    :_id="id"
   >
     <canvas class="targetCanvas" :id="'targetCanvas_' + index"></canvas>
     <div class="entityName">{{ this.entityName }}</div>
@@ -17,6 +13,7 @@
       <div class="direction-arrow" :style="arrowOpacity"></div>
       <div class="distance" :style="reverseArrowTransform">{{ this.distanceOutput }}</div>
     </div>
+    <!-- <div>{{ index }}</div> -->
   </div>
 </template>
 
@@ -41,8 +38,8 @@
     props: {
       id: Number,
       index: Number,
-      noLeftNeighbor: Boolean, // whether or not to show a left border
-      hasRightNeighbor: Boolean, // whether or not to hide a right border
+      targets: Array,
+      parentClass: { type: String, default: '' },
     },
     methods: {
       drawCanvas() { perf.start('Target.methods.drawCanvas');
@@ -71,9 +68,6 @@
       isSelected() {
         return (this.id && this.target == this.id);
       },
-      hideRightBorder() {
-        return (!this.id && this.hasRightNeighbor);
-      },
       arrowOpacity() {
         if (this.distance < 300) {
           temp.opacity = 0.9 - (this.distance * 0.6 / 300); // grade from 1 - 0.4
@@ -92,12 +86,26 @@
       entityName() {
         return ($g.game.actors[this.id]) ? $g.game.actors[this.id].name : null;
       },
+      classObj() {
+        return {
+          hasTarget: Boolean(this.id),
+          isSelected: this.isSelected,
+          // these are used by viewport css generator to handle target borders
+          nextHasTarget: Boolean(this.targets[this.index + 1]),
+          lastHasTarget: Boolean(this.targets[this.index - 1]),
+          hasTarget0: Boolean(this.targets[0]),
+          hasTarget1: Boolean(this.targets[1]),
+          hasTarget2: Boolean(this.targets[2]),
+          hasTarget3: Boolean(this.targets[3]),
+        };
+      },
       className() {
+        // the is the class of the obj, not the css class
         return ($g.game.actors[this.id]) ? $g.game.actors[this.id].className : null;
       },
       distanceOutput() {
         return format.distance(this.distance);
-      }
+      },
     },
     mounted() {
       // setup canvas
@@ -123,24 +131,27 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .target {
+  #targetsBar .target {
     position: relative;
-    border-right: .6vw dashed rgba(255, 255, 255, 0.1);
-    border-bottom: .6vw dashed rgba(255, 255, 255, 0.1);
+    border-color: #222222;
+    border-style: dashed;
     overflow: hidden;
   }
-  .hasTarget {
-    border-right: .6vw solid rgba(255, 255, 255, 0.1);
-    border-bottom: .6vw solid rgba(255, 255, 255, 0.1);
+  #targetsBar .content .target.hasTarget {
+    border-style: solid;
     background-color: #21292f77;
   }
-  .lastTarget {
-    border-right: none;
+  #targetsBar .content .target.isSelected {
+    outline-style: solid;
+    outline-color: #00c4ff;
+  }
+  .isSelected .className, .isSelected .entityName {
+    color: #00c4ffDD;
   }
   canvas.targetCanvas {
     display: none;
     width: 100%;
-    margin-top: -12.5vw;
+    margin-top: -50%;
     top: 50%;
     left: 0;
     position: absolute;
@@ -150,71 +161,56 @@
   }
   .entityName {
     position: absolute;
-    top: 0.3vw;
+    top: 5%;
     width: 100%;
     left: 0;
     text-align: center;
     color: rgba(255, 255, 255, 0.8);
-    font-size: 3vw;
-    font-family: 'Raleway';
+    font-size: 0.6em;
     text-transform: uppercase;
     letter-spacing: 0.1vw;
   }
   .className {
     position: absolute;
-    bottom: 0.3vw;
+    bottom: 5%;
     width: 100%;
     left: 0;
     text-align: center;
     color: rgba(255, 255, 255, 0.8);
-    font-size: 2.7vw;
-    font-family: 'Raleway';
+    font-size: 0.6em;
     text-transform: uppercase;
     letter-spacing: 0.1vw;
   }
   .direction {
     display: none;
-    height: 6vw;
-    width: 6vw;
+    width: 25%;
+    padding-top: 25%; /* fake same as width */
     position: absolute;
     left: 50%;
     top: 50%;
-    margin-top: -3vw;
-    margin-left: -3vw;
+    margin-top: -12.5%;
+    margin-left: -12.5%;
   }
   .direction-arrow {
     position: absolute;
-    left: 2vw;
-    bottom: 2.5vw;
-    border-top: 20vw solid rgb(255, 45, 72);
-    border-left: 1vw solid transparent;
-    border-right: 1vw solid transparent;
+    left: 8%;
+    bottom: 50%;
+    border-top: 5em solid rgb(255, 45, 72);
+    border-left: 0.5em solid transparent;
+    border-right: 0.5em solid transparent;
   }
   .hasTarget .direction {
     display: block;
   }
   .distance {
     position: absolute;
-    top: 3vw;
-    left: 0.3vw;
+    top: 50%;
+    left: 5%;
     letter-spacing: 0.1vw;
     color: rgba(255, 255, 255, 0.6);
-    font-size: 2.3vw;
+    font-size: 0.5em;
     font-family: 'Raleway';
     text-transform: uppercase;
     letter-spacing: 0.1vw;
-  }
-  .leftBorder {
-    border-left: .6vw solid rgba(255, 255, 255, 0.1);
-  }
-  .hideRightBorder {
-    border-right: none;
-  }
-  .isSelected {
-    outline: 0.5vw solid #00c4ffDD;
-    outline-offset: -0.5vw;
-  }
-  .isSelected .className, .isSelected .entityName {
-    color: #00c4ffDD;
   }
 </style>

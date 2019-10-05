@@ -28,6 +28,7 @@
   import Portrait2 from '../../../public/assets/svg/portraits/portrait2.svg';
   import Portrait3 from '../../../public/assets/svg/portraits/portrait3.svg';
   import Portrait4 from '../../../public/assets/svg/portraits/portrait4.svg';
+  import $g from '../../utils/globals.js';
 
   export default {
     name: 'role',
@@ -41,6 +42,7 @@
     methods: {
       setRole: function (role) {
         this.$store.dispatch('setCurrentRole', role);
+        $g.viewport.update();
       },
     },
     computed: {
@@ -71,7 +73,6 @@
 <style scoped>
   /* All sizes in vw to preserve proportions across different resolutions */
   .role {
-    font-size: 3vw;
     color: #ddd;
     text-transform: uppercase;
     position: relative;
@@ -82,9 +83,9 @@
     z-index: 1150;
     text-align: center;
     position: absolute;
-    top: .3vw;
-    right: .8vw;
-    width: 12vw
+    top: 4%;
+    right: 3%;
+    width: 50%;
   }
 
   .role .roleText.current {
@@ -94,18 +95,18 @@
   .role .portrait {
     position: absolute;
     left: 0vw;
-    top: -.5vw;
-    height: 15vw;
+    top: -5%;
+    height: 129%;
     width: auto;
     z-index: 1120;
   }
 
   .role .roleIcon {
     position: absolute;
-    bottom: 1.4vw;
-    height: 6vw;
+    bottom: 11%;
+    height: 50%;
     width: auto;
-    right: 3.7vw;
+    right: 16%;
   }
 
   .role > div {
@@ -127,7 +128,6 @@
   .role.engineer .roleIcon {
   }
   .role.captain .roleIcon {
-    bottom: 1.3vw;
   }
   .role.pilot .roleIcon {
   }
@@ -136,12 +136,13 @@
 
   .roleLink {
     position: absolute;
-    top: 10%;
-    left: 50%;
-    width: 50%;
+    top: 5%;
+    left: 5%;
+    width: 90%;
     height: 90%;
     background-color: transparent;
     border: none;
     outline: none;
+    z-index: 1130;
   }
 </style>

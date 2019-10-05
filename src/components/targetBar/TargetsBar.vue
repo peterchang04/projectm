@@ -1,10 +1,14 @@
 <template>
-  <div id="targetsBar" class="proportionateHeightWrapper">
-    <div class="content">
-      <Target :index="0" :id="targets[0]" :hasRightNeighbor="hasRightNeighbor0" />
-      <Target :index="1" :id="targets[1]" :noLeftNeighbor="noLeftNeighbor1" :hasRightNeighbor="hasRightNeighbor1" />
-      <Target :index="2" :id="targets[2]" :noLeftNeighbor="noLeftNeighbor2" :hasRightNeighbor="hasRightNeighbor2" />
-      <Target :index="3" :id="targets[3]" :noLeftNeighbor="noLeftNeighbor3"  />
+  <div id="targetsBar">
+    <div class="content left">
+      <Target :index="0" :id="targets[0]" :targets="targets" />
+      <Target :index="1" :id="targets[1]" :targets="targets" />
+    </div>
+
+    <div class="content right">
+      <!-- NOTE: CSS is displaying these two from right to left (reverse) to accommodate vertical sorting for stackLayout -->
+      <Target :index="3" :id="targets[3]" :targets="targets" />
+      <Target :index="2" :id="targets[2]" :targets="targets" />
     </div>
   </div>
 </template>
@@ -12,6 +16,7 @@
 <script>
   import Target from './Target.vue';
   import perf from '../../utils/perf.js';
+  import { mapState } from 'vuex';
 
   const temp = {};
 
@@ -19,7 +24,7 @@
     name: 'targetsBar',
     components: { Target },
     props: {
-      msg: String
+      msg: String,
     },
     data() {
       return {
@@ -27,24 +32,9 @@
       };
     },
     computed: {
-      noLeftNeighbor1() {
-        return (this.targets[1] && !this.targets[0]);
-      },
-      noLeftNeighbor2() {
-        return (this.targets[2] && !this.targets[1]);
-      },
-      noLeftNeighbor3() {
-        return (this.targets[3] && !this.targets[2]);
-      },
-      hasRightNeighbor0() {
-        return Boolean(this.targets[1]);
-      },
-      hasRightNeighbor1() {
-        return Boolean(this.targets[2]);
-      },
-      hasRightNeighbor2() {
-        return Boolean(this.targets[3]);
-      }
+      ...mapState([
+        'currentRole',
+      ]),
     },
     methods: {
       updateTargets() { perf.start('TargetsBar.updateTargets');
@@ -89,23 +79,27 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  /* START This allows even height / width ratios across viewports */
-  .proportionateHeightWrapper { position: absolute; width: 100%; }
-  .proportionateHeightWrapper:before{ content: ""; display: block;
-    padding-top: 16%; /* HEIGHT PROPORTION */
+  #targetsBar {
+    font-size: 60%;
+    font-family: 'Raleway';
+    position: absolute;
+    z-index: 1100;
   }
-  .proportionateHeightWrapper .content {
-    position: absolute; top: 0; left: 0; bottom: 0; right: 0;
-  }
-  /* END This allows for proportionate height / width ratio across viewports */
-
   .content {
     text-align:left;
+    position: absolute;
+    left: 0;
+    display: inline-block;
     z-index: 1100;
+  }
+  .content.right {
+    left: auto;
+    right: 0;
+    direction: rtl; /* flips the draw flow of targets from right to left. This is helpful when we go to vertical quad grid arrangement, and want to fill from top to bottom */
   }
   .content .target {
     display: inline-block;
-    width: 25%;
-    height: 100%;
+    width: 50%;
+    padding-top: 32%; /* fake the height to be 64% proportionally to width */
   }
 </style>

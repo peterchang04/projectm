@@ -253,3 +253,49 @@ describe('getRotation', () => {
     expect(maths.getRotation(180, 45)).to.equal(-135);
   });
 });
+
+describe('getRotation', () => {
+  it('should solve in the following ways', () => {
+    // with base = 0
+    expect(maths.getRotation(0, 45)).to.equal(45);
+    expect(maths.getRotation(0, -45)).to.equal(-45);
+    expect(maths.getRotation(0, 270)).to.equal(-90);
+    expect(maths.getRotation(0, -270)).to.equal(90);
+    expect(maths.getRotation(0, 180)).to.equal(180);
+    expect(maths.getRotation(0, -180)).to.equal(180);
+    // with base -45
+    expect(maths.getRotation(-45, 0)).to.equal(45);
+    expect(maths.getRotation(-45, 180)).to.equal(-135);
+    expect(maths.getRotation(-45, -46)).to.equal(-1);
+    expect(maths.getRotation(-45, 315)).to.equal(0);
+    // with base 180
+    expect(maths.getRotation(180, 0)).to.equal(180);
+    expect(maths.getRotation(180, -1)).to.equal(179);
+    expect(maths.getRotation(180, 45)).to.equal(-135);
+  });
+});
+
+describe('roundTo', () => {
+  it('multiple of 2', () => {
+    // with base = 0
+    expect(maths.roundTo(0, 2)).to.equal(0);
+    expect(maths.roundTo(0.9, 2)).to.equal(0);
+    expect(maths.roundTo(1, 2)).to.equal(2);
+    expect(maths.roundTo(1.1, 2)).to.equal(2);
+    expect(maths.roundTo(1.5, 2)).to.equal(2);
+    expect(maths.roundTo(-3.6, 2)).to.equal(-4);
+    expect(maths.roundTo(-3.4, 2)).to.equal(-4);
+  });
+  it('multiple of 3', () => {
+    // with base = 0
+    expect(maths.roundTo(0, 3)).to.equal(0);
+    expect(maths.roundTo(0.9, 3)).to.equal(0);
+    expect(maths.roundTo(1, 3)).to.equal(0);
+    expect(maths.roundTo(1.1, 3)).to.equal(0);
+    expect(maths.roundTo(1.5, 3)).to.equal(3);
+    expect(maths.roundTo(-3.6, 3)).to.equal(-3);
+    expect(maths.roundTo(-5.5, 3)).to.equal(-6);
+    expect(maths.roundTo(23, 3)).to.equal(24);
+    expect(maths.roundTo(15, 3)).to.equal(15);
+  });
+});

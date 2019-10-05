@@ -1,6 +1,7 @@
 import $g from '../../utils/globals.js';
 import maths from '../../utils/maths.js';
 import perf from '../../utils/perf.js';
+import eventManager from '../../utils/eventManager.js';
 
 const temp = {
   sectors: [
@@ -50,17 +51,22 @@ function prepopulateStars() {
 }
 
 // pregenerate particles enough to populate a screen's worth.
-
-
 function init() { perf.start('starCanvas.init');
   // setup draw canvas
   canvas = document.getElementById('canvas_stars');
   context = canvas.getContext('2d');
-  canvas.width = $g.viewport.pixelWidth;
-  canvas.height = $g.viewport.pixelHeight;
+
+  update();
+  eventManager.add(window, 'viewportUpdated.starCanvas', (e) => { update(); });
 
   stars = prepopulateStars();
   perf.stop('starCanvas.init');
+}
+
+function update() { perf.start('starCanvas.update');
+  canvas.width = $g.viewport.pixelGameWidth;
+  canvas.height = $g.viewport.pixelGameHeight;
+  perf.start('starCanvas.update');
 }
 
 function getSectors(sectorLength) {
@@ -88,7 +94,7 @@ function draw() { perf.start('starCanvas.draw');
 function drawStarsProjectedBySector(stars) { perf.start('starCanvas.drawStarsProjectedBySector');
   // sector upper right
   stars.map((star) => {
-    temp.sectorLength = $g.viewport.pixelWidth / 2 / star.scale;
+    temp.sectorLength = $g.viewport.pixelGameWidth / 2 / star.scale;
     temp.sectors = getSectors(temp.sectorLength);
     temp.sectors.map((sector) => {
       // scale the star (defined as 0-99) to sectorLength
@@ -117,8 +123,8 @@ function drawStarsProjectedBySector(stars) { perf.start('starCanvas.drawStarsPro
       temp.viewportPixel.scaleX = (temp.viewportPixel.x * star.scale) + $g.viewport.shipPixelX - (star.scale * $g.viewport.shipPixelX);
       temp.viewportPixel.scaleY = (temp.viewportPixel.y * star.scale) + $g.viewport.shipPixelY - (star.scale * $g.viewport.shipPixelY);
 
-      if (temp.viewportPixel.scaleX > $g.viewport.pixelWidth || temp.viewportPixel.scaleX < 0) return;
-      if (temp.viewportPixel.scaleY > $g.viewport.pixelHeight || temp.viewportPixel.scaleY < 0) return;
+      if (temp.viewportPixel.scaleX > $g.viewport.pixelGameWidth || temp.viewportPixel.scaleX < 0) return;
+      if (temp.viewportPixel.scaleY > $g.viewport.pixelGameHeight || temp.viewportPixel.scaleY < 0) return;
 
       context.fillStyle = star.c;
       context.fillRect(

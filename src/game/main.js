@@ -1,12 +1,9 @@
 import backgroundGridCanvas from './canvas/backgroundGridCanvas.js';
 import steeringCanvas from './canvas/steeringCanvas.js';
 import actorCanvas from './canvas/actorCanvas.js';
-import projectileCanvas from './canvas/projectileCanvas.js';
-import particleCanvas from './canvas/particleCanvas.js';
 import starCanvas from './canvas/starCanvas.js';
 import $g from '../utils/globals.js';
 import canvasText from '../utils/canvasText.js';
-import compositeSvg from '../utils/compositeSvg.js';
 import perf from '../utils/perf.js';
 import Ship from '../game/actor/Ship.js';
 import Projectile from '../game/actor/Projectile.js';
@@ -14,6 +11,8 @@ import Asteroid from '../game/actor/Asteroid.js';
 import Torpedo from '../game/actor/Torpedo.js';
 import _factory from '../game/actor/_factory.js';
 import decorate from '../game/decorator/decorate.js';
+import { initViewport } from '../utils/viewport.js';
+import noSleep from '../utils/noSleep.js';
 
 const temp = {};
 const stats = {
@@ -43,7 +42,8 @@ function incrementFramesUpdated() {
 
 function init() {
   // get the gameView's dimensions
-  $g.viewport.update(document.getElementById('shipView').offsetWidth, document.getElementById('shipView').offsetHeight);
+  initViewport();
+  noSleep.init();
 
   _factory.init();
   // register myShip with constants
@@ -51,19 +51,20 @@ function init() {
   $g.game.myShip.init({ type: 'transportMk1', mX: -10, mY: 10, d: 3 });
 
   // init dependencies
-  compositeSvg.init();
   canvasText.init();
   actorCanvas.init();
   backgroundGridCanvas.init();
-  projectileCanvas.init();
-  particleCanvas.init();
   steeringCanvas.init();
   starCanvas.init();
+
+  document.addEventListener('touchmove',function (){
+    document.body.scrollTop = 0
+  })
 
   // PLACEHOLDER - initialize 3 asteroids
   // $g.bank.getAsteroid({ length: 100, mX: 50, mY: 50, d: 0, sMax: 0, aS: 0 });
   $g.bank.getAsteroid({ length: 20, mX: -0, mY: 220, d: 90, sMax: 8, aS: 15 });
-  // $g.bank.getAsteroid({ length: 40, mX: 0, mY: 100, d: 0, sMax: 3, aS: -6 });
+  $g.bank.getAsteroid({ length: 40, mX: 0, mY: 100, d: 0, sMax: 3, aS: -6 });
   $g.bank.getAsteroid({ length: 80, mX: -30, mY: -50, d: -60, sMax: 9, aS: 52 });
   $g.bank.getAsteroid({ length: 15, mX: -300, mY: -100, d: 26, sMax: 7, aS: -32 });
   $g.bank.getAsteroid({ length: 6, mX: -600, mY: -100, d: 26, sMax: 7, aS: -32 });
@@ -105,8 +106,6 @@ function draw() { perf.start('main.draw');
   backgroundGridCanvas.draw();
   actorCanvas.draw();
   steeringCanvas.draw();
-  projectileCanvas.draw();
-  particleCanvas.draw();
   starCanvas.draw();
 
   perf.stop('main.draw');

@@ -1,8 +1,7 @@
 <template>
-  <div id="intelPanel" class="leftPanel">
+  <div id="intelPanel" class="rightPanel">
     <div class="panelGrid">
       <Heading text="Targets" :gridColumnStart="1" :gridColumns="3" />
-      <IntelTargetList />
     </div>
   </div>
 </template>
@@ -11,12 +10,12 @@
   import $g from '../../utils/globals.js';
   import { roles } from '../../definitions';
   import Heading from './Heading.vue';
-  import IntelTargetList from './IntelTargetList.vue';
 
   export default {
-    name: 'intelPanel',
-    components: { Heading, IntelTargetList },
+    name: 'intelPanelRight',
+    components: { Heading },
     computed: {
+
     },
   };
 </script>

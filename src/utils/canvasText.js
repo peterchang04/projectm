@@ -37,8 +37,8 @@ function init() { perf.start('canvasText.init'); // init called by index.html fo
   textCanvas = document.createElement("canvas");
   textContext = textCanvas.getContext('2d');
   textCanvas.id = 'textCanvas';
-  textCanvas.height = $g.viewport.pixelWidth * 1.5; // 1.5 to help all the letters fit
-  textCanvas.width = $g.viewport.pixelWidth * 1.5; // 1.5 to help all the letters fit
+  textCanvas.height = $g.viewport.pixelGameWidth * 1.5; // 1.5 to help all the letters fit
+  textCanvas.width = $g.viewport.pixelGameWidth * 1.5; // 1.5 to help all the letters fit
   // set the font
   textContext.font = `${15*$g.viewport.pixelRatio}px 'Share Tech Mono', 'Courier New'`;
 
@@ -48,7 +48,7 @@ function init() { perf.start('canvasText.init'); // init called by index.html fo
   letterSpacing = letterWidth - (2 * $g.viewport.pixelRatio);
 
   if ($g.constants.DEBUG) {
-    elShipView = document.getElementById('shipView');
+    elShipView = document.getElementById('gameView');
     elShipView.prepend(textCanvas);
     textCanvas.style = "top:15%; left:0; border: 2px solid rgb(40, 0, 0);width: 100%;position:absolute;"
   }

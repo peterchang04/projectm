@@ -1,9 +1,9 @@
 <template>
-  <div id="captainPanel" class="leftPanel">
+  <div id="captainPanelRight" class="rightPanel" >
     <div class="panelGrid">
       <Heading text="Cap'n Panel" :gridColumnStart="1" :gridColumns="3" />
 
-      <button v-on:click="toggleCollision" id="toggleCollision">Collision</button>
+      <button v-on:click="reload" id="reload">reload</button>
     </div>
   </div>
 </template>
@@ -14,16 +14,16 @@
   import Heading from './Heading.vue';
 
   export default {
-    name: 'captainPanel',
+    name: 'captainPanelRight',
     components: { Heading },
     mounted: function() {
     },
     computed: {
     },
     methods: {
-      toggleCollision() {
-        $g.constants.DRAWCOLLISION = !$g.constants.DRAWCOLLISION;
-      },
+      reload() {
+        location.reload(true);
+      }
     }
   };
 </script>
@@ -34,9 +34,9 @@
     text-align: left;
   }
   /* END This allows for proportionate height / width ratio across viewports */
-  #toggleCollision {
-    grid-column-start: 1;
-    grid-column-end: 3;
+  #reload {
+    grid-column-start: 4;
+    grid-column-end: 5;
     grid-row-start: 11;
     grid-row-end: 12;
     width: 100%;

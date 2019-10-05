@@ -8,6 +8,9 @@ const initialState = {
   // pilot controls
   thrustValue: 0, // the position of the thruster control,
   console: [0],
+  layoutString: null,
+  test: '',
+  test2: '',
 };
 
 export default {
