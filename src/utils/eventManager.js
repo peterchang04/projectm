@@ -4,9 +4,10 @@ function add(el, name, fn) { // i.e. click.me, click.hello
   if (!validateName(name)) return;
   if (!el) el = document.documentElement; // default el
   initEl(el);
-  const nameArray = name.toLowerCase().split('.');
+  const nameArray = name.split('.');
   // if base event doesn't exist, add it
   if (!(nameArray[0] in el.eventManagerTypes)) {
+
     el.addEventListener(nameArray[0], function(e) {
       // call all namespaced functions of for this event
       for (let namespace in el.eventManagerTypes[nameArray[0]]) {
@@ -24,7 +25,7 @@ function remove(el, name, fn) { // i.e. click.me, click.hello
   if (!validateName(name)) return;
   if (!el) el = document.documentElement; // default el
   if (!el.eventManagerTypes) return; // nothing to remove
-  const nameArray = name.toLowerCase().split('.');
+  const nameArray = name.split('.');
   delete el.eventManagerTypes[nameArray[0]][nameArray[1]];
 }
 

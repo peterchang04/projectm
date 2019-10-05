@@ -1,10 +1,18 @@
 import $g from './globals.js';
 import perf from './perf.js';
+import maths from './maths.js';
 import canvasText from './canvasText.js';
 import { turretTypes } from '../definitions.js';
 // draws an actor, but uses layering of svgs to accomplish
 const canvasBank = []; // a stash of canvases to be allocated
 const temp = {};
+const counts = { // count the draw ops
+  base: 0,
+  rotate: 0,
+  target: 0,
+  turrets: 0,
+};
+global.counts = counts;
 
 // for each entity rendered using composite svg. has an array of render layers as steps e.g. ['damage', 'turrets', 'rotate', 'target']
 // each layer will copy form the previous layer, then assign itself as the 'last' layer.
@@ -93,6 +101,8 @@ const compositeFunctions = {
     // simply set 'last canvas as base, that way the next layer (if any) can pick up from there
     // base entity is directly from svg, so no assignment from canvasBank needed
     entity.svgCompositeData.canvases.last = entity.svgCompositeData.canvases.base;
+
+    counts.base++; // count for performance
     perf.stop('compositeSvg.render.base');
   },
   rotate: function(entity) { perf.start('compositeSvg.render.rotate');
@@ -103,7 +113,10 @@ const compositeFunctions = {
     if (!entity.svgCompositeData.canvases.rotate) entity.svgCompositeData.canvases.rotate = canvasBank.pop();
 
     // figure out the angle to draw the svg relative to myShip
-    temp.d = entity.d - $g.game.myShip.d;
+    temp.d = ((entity.d - $g.game.myShip.d + 360) % 360);
+    // round to nearest 3rd degree to reduce redraws
+    temp.d = maths.roundTo(temp.d, 1);
+    // TODO: make roundTo scale based on object size. Smaller objects need less precision - faster rotating objects needs less precision
 
     // see if a redraw is needed
     if (entity.svgCompositeData.last.d === temp.d && !entity.svgCompositeData.update /* a previous layer made update - redraw needed */) {
@@ -128,6 +141,9 @@ const compositeFunctions = {
     );
     // set to 'last' to maintain draw order
     entity.svgCompositeData.canvases.last = entity.svgCompositeData.canvases.rotate;
+
+    // count this as a draw
+    counts.rotate++;
     perf.stop('compositeSvg.render.rotate');
   },
   target: function(entity) { perf.start('compositeSvg.render.target');
@@ -178,6 +194,8 @@ const compositeFunctions = {
           entity.svgCompositeData.canvases.targetingOnly.canvas.width, // width
           entity.svgCompositeData.canvases.targetingOnly.canvas.height - (temp.lineWidth * entity.length / 3) // height
         );
+
+        counts.target++; // count this as a draw
       }
     }
 
@@ -200,6 +218,7 @@ const compositeFunctions = {
         entity.svgCompositeData.canvases.target.canvas.width,
         entity.svgCompositeData.canvases.target.canvas.height,
       );
+      counts.target++; // count this as a draw
     }
 
     // set to 'last' to maintain draw order
@@ -214,7 +233,7 @@ const compositeFunctions = {
     // see if turrets have changed
     temp.turretsUpdated = entity.svgCompositeData.update;
     entity.turrets.map((turret, i) => {
-      if (entity.svgCompositeData.last[`turretDirection_${i}`] !== turret.d) temp.turretsUpdated = true;
+      if (entity.svgCompositeData.last[`turretDirection_${i}`] !== maths.roundTo(turret.d, 3)) temp.turretsUpdated = true;
     });
 
     // update turretsOnly layer
@@ -249,7 +268,8 @@ const compositeFunctions = {
           temp.turretPixels,
         );
         // set turrent last
-        entity.svgCompositeData.last[`turretDirection_${i}`] = turret.d;
+        entity.svgCompositeData.last[`turretDirection_${i}`] = maths.roundTo(turret.d, 3);
+        counts.turrets++; // count this as a draw
       });
       // set updated
       entity.svgCompositeData.update = true;
@@ -275,6 +295,7 @@ const compositeFunctions = {
         entity.svgCompositeData.canvases.turrets.canvas.width,
         entity.svgCompositeData.canvases.turrets.canvas.height,
       );
+      counts.turrets++; // count this as a draw
     }
 
     // set 'last' to maintain draw order

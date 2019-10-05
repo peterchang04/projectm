@@ -101,8 +101,8 @@ function getViewportPixel(mX, mY, length = 10, isMyShip = false) { perf.start('_
   temp.pixelResult.isVisible = (
     temp.pixelResult.x > 0 - temp.lengthPixels
     && temp.pixelResult.y > 0 - temp.lengthPixels
-    && temp.pixelResult.x < $g.viewport.pixelWidth + temp.lengthPixels
-    && temp.pixelResult.y < $g.viewport.pixelHeight + temp.lengthPixels
+    && temp.pixelResult.x < $g.viewport.pixelGameWidth + temp.lengthPixels
+    && temp.pixelResult.y < $g.viewport.pixelGameHeight + temp.lengthPixels
   );
 
   perf.stop('_drawable.getViewportPixel');

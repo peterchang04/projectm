@@ -1,6 +1,7 @@
 import $g from '../../utils/globals.js';
 import canvasText from '../../utils/canvasText.js';
 import perf from '../../utils/perf.js';
+import eventManager from '../../utils/eventManager.js';
 
 // declarations
 let canvas = null;
@@ -25,19 +26,30 @@ let screenGridCount = 0; // how many grids can fit on screen?
 function init(width, height) { perf.start('backgroundGridCanvas.init');
   canvas = document.getElementById('canvas_grid');
   context = canvas.getContext('2d');
+
+  update();
+
+  eventManager.add(window, 'viewportUpdated.backgroundGridCanvas', (e) => { update(); });
+
+  perf.stop('backgroundGridCanvas.init');
+}
+
+function update() { perf.start('backgroundGridCanvas.update');
   // set canvas resolution
-  canvas.width = $g.viewport.pixelWidth;
-  canvas.height = $g.viewport.pixelHeight;
-  // set styles for lines
-  context.strokeStyle = 'rgba(255, 255, 255, .1)';
-  context.lineWidth = $g.viewport.vwPixels * .5;
+  canvas.width = $g.viewport.pixelGameWidth;
+  canvas.height = $g.viewport.pixelGameHeight;
+
   // do some pre calculations, assume we render twice as many lines as would fit on a screen
   gridPixels = $g.viewport.pixelsPerMeter * gridDistance;
   screenGridCount = (canvas.height - (canvas.height % gridPixels)) / gridPixels;
   screenGridCount++; // if grid bigger than screen, the count would be zero.
   // double it to represent what's drawn above, and below the ship
   screenGridCount = screenGridCount * 4;
-  perf.stop('backgroundGridCanvas.init');
+
+  // set styles for lines
+  context.strokeStyle = 'rgba(255, 255, 255, .1)';
+  context.lineWidth = $g.viewport.pixelRatio * 2;
+  perf.stop('backgroundGridCanvas.update');
 }
 
 let coordinates = '';
@@ -89,7 +101,7 @@ function drawLatitudes() { perf.start('backgroundGridCanvas.drawLatitudes');
     context.beginPath();
     context.moveTo(
       // x coordinate
-      0 - ($g.viewport.pixelWidth / 2) // begin line offscreen
+      0 - ($g.viewport.pixelGameWidth / 2) // begin line offscreen
       - canvas.width, // rotational transform offset
       // y coordinate
       currentYPixel - $g.viewport.shipPixelY

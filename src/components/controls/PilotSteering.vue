@@ -74,9 +74,9 @@
 
           this.screenDegree = maths.getDegree2P(
             this.centerX,
-            $g.viewport.viewportHeight - this.centerY,
+            $g.viewport.gameHeight - this.centerY,
             clientX,
-            $g.viewport.viewportHeight - clientY
+            $g.viewport.gameHeight - clientY
           );
           this.screenDegree = maths.roundHalf(this.screenDegree);
 

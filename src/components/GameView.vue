@@ -1,5 +1,5 @@
 <template>
-  <div id="shipView">
+  <div id="gameView">
     <!-- BOTTOM LAYER -->
     <canvas id="canvas_stars"></canvas>
     <canvas id="canvas_grid"></canvas>
@@ -35,7 +35,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  #shipView {
+  #gameView {
     position: relative;
     z-index: 1000;
     background-color: black;

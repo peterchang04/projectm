@@ -120,38 +120,38 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   ul.intelTarget {
-    border-bottom: .3vw solid rgba(255, 255, 255, .04);
+    height: 4em;
+    border-bottom: .1em solid rgba(255, 255, 255, .04);
   }
   ul.intelTarget > li {
     display: inline-block;
-    height: 11vw; /* matches canvas dimensions */
+    height: 100%; /* matches canvas dimensions */
     position: relative;
     background-color: rgba(0, 0, 0, .5);
   }
   canvas.targetListCanvas {
-    width: 12vw;
-    margin-top: -0.5vw;
-    margin-bottom: -0.5vw;
+    width: 100%;
+    height: 100%;
   }
   li.open {
     width: 15%;
   }
   li.canvas {
     position: relative;
-    width: 23%;
+    width: 25%;
     overflow: hidden;
   }
   li.canvas > .entityName {
     position: absolute;
-    top: 0.3vw;
+    top: 5%;
     left: 0;
     width: 100%;
     color: #bbb;
     text-align: center;
-    font-size: 2.5vw;
+    font-size: 0.8em;
   }
   li.body {
-    width: 45%;
+    width: 43%;
   }
   li.action {
     width: 17%;
@@ -161,8 +161,10 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    margin-top: -3vw;
-    margin-left: -3vw;
+    width: 80%;
+    height: 52%; /* this is proportionate to width */
+    margin-left: -40%;
+    margin-top: -40%;
   }
   .addTargetSVG {
     opacity: 0.4;
@@ -171,13 +173,13 @@
   .hullBar {
     background-color: rgb(94, 167, 38, .4);
     position: absolute;
-    width: 8vw;
-    left: 2vw;
-    bottom: 1.5vw;
-    height: 1vw;
+    width: 86%;
+    left: 7%;
+    bottom: 7%;
+    height: 8%;
   }
   .distance {
-    font-size: 2.3vw;
+    font-size: 0.65em;
     color: #bbb;
     text-align: center;
     left: -14%;
@@ -186,24 +188,24 @@
     position: absolute;
   }
   .open svg {
-    top: 63% !important;
+    top: 50% !important;
     opacity: .6;
   }
   .direction {
-    height: 6vw;
-    width: 6vw;
+    height: 50%;
+    width: 50%;
     position: absolute;
     left: 50%;
     top: 50%;
-    margin-top: -3vw;
-    margin-left: -3vw;
+    margin-top: -25%;
+    margin-left: -25%;
   }
   .direction-arrow {
     position: absolute;
-    left: 2vw;
-    bottom: 2vw;
-    border-top: 10vw solid rgb(255, 45, 72);
-    border-left: 1vw solid transparent;
-    border-right: 1vw solid transparent;
+    left: 25%;
+    bottom: 50%;
+    border-top: 5em solid rgb(255, 45, 72);
+    border-left: 0.5em solid transparent;
+    border-right: 0.5em solid transparent;
   }
 </style>

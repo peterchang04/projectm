@@ -24,7 +24,6 @@
 </template>
 
 <script>
-  import multiDrag from '../../utils/multiDrag.js';
   import perf from '../../utils/perf.js';
   import IntelTarget from './IntelTarget.vue';
   import $g from '../../utils/globals.js';
@@ -38,7 +37,7 @@
       gridColumnStart: { type: Number, default: 1 },
       gridColumns: { type: Number, default: 4 },
       gridRowStart: { type: Number, default: 2 },
-      gridRows: { type: Number, default: 13 },
+      gridRows: { type: Number, default: 11 },
     },
     data() {
       return {
@@ -116,7 +115,7 @@
     font-family: 'Raleway';
     text-transform: uppercase;
     letter-spacing: 0.1vw;
-    font-size: 2.7vw;
+    font-size: 1em;
     height: 105%;
     overflow: hidden;
   }
@@ -143,8 +142,8 @@
   li.heading {
     text-align: center;
     color: #bbb;
-    font-size: 2.3vw;
-    line-height: 3.5vw;
+    font-size: 0.8em;
+    line-height: 1.7em;
     background-color: rgba(0, 0, 0, .2);
   }
 </style>

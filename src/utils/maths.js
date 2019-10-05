@@ -118,6 +118,10 @@ function getRotation(baseDegree, otherDegree) {
   return temp.result *= temp.clockwise;
 }
 
+function roundTo(number, multiple) {
+  return Math.round(number / multiple) * multiple;
+}
+
 export default {
   getAngle2P,
   getRadian2P,
@@ -132,4 +136,5 @@ export default {
   roundHalf,
   random,
   getRotation,
+  roundTo,
 };

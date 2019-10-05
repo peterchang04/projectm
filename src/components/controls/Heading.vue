@@ -38,17 +38,17 @@
     /* the actual text is vertically centered on parent */
     position: absolute;
     width: 100%;
-    height: 5vw;
-    line-height: 5vw;
+    line-height: 1em;
+    height: 1em;
     top: 50%;
     left: 0;
-    margin-top: -2.5vw;
-    font-size: 3.5vw;
-    margin-left: 2vw;
+    margin-top: -0.5em;
+    font-size: 1em;
+    margin-left: 0.5em;
     color: white;
-    text-shadow: 0 0 3vw rgba(255, 255, 255, .3);
+    text-shadow: 0 0 .2em rgba(255, 255, 255, .3);
     text-transform: uppercase;
     font-family: 'Raleway';
-    letter-spacing: 0.1vw;
+    letter-spacing: 0.05em;
   }
 </style>

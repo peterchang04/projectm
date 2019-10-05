@@ -1,82 +1,90 @@
 <template>
-  <div id="roleBar" class="proportionateHeightWrapper">
-    <div class="content">
-      <Role :index="0" />
-      <Role :index="1" />
-      <Role :index="2" />
-      <Role :index="3" />
-    </div>
-
-    <div class="roleBarOutline left" :style="roleBarOutlineStyleLeftObj"></div>
-    <div class="roleBarOutline right" :style="roleBarOutlineStyleRightObj"></div>
+  <div id="roleBar">
+    <Role :index="0" />
+    <Role :index="1" />
+    <Role :index="2" />
+    <Role :index="3" />
   </div>
 </template>
 
 <script>
   import { roles } from '../../definitions';
-  import { mapState } from 'vuex';
   import Role from './Role.vue';
 
   export default {
     name: 'roleBar',
     components: { Role },
     props: {
-      msg: String
+      msg: String,
     },
     computed: {
-      ...mapState(['currentRole']),
-      roleBarOutlineStyleLeftObj() {
-        if (this.currentRole === null) return {};
-        return {
-          left: 0,
-          width: `${this.currentRole * 25}%`,
-          'background-color': roles[this.currentRole].bgColor,
-        };
-      },
-      roleBarOutlineStyleRightObj() {
-        if (this.currentRole === null) return {};
-        return {
-          left: `${(this.currentRole * 25) + 25}%`,
-          width: `${75 - (this.currentRole * 25)}%`,
-          'background-color': roles[this.currentRole].bgColor,
-        };
-      },
     },
   };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-  /* START This allows even height / width ratios across viewports */
-  .proportionateHeightWrapper { position: relative; width: 100%; }
-  .proportionateHeightWrapper:before{ content: ""; display: block;
-  	padding-top: 12%; /* HEIGHT PROPORTION */
-  }
-  .proportionateHeightWrapper .content {
-    position: absolute; top: 0; left: 0; bottom: 0; right: 0;
-  }
-  /* END This allows for proportionate height / width ratio across viewports */
-  .content {
+<style>
+  #roleBar {
+    position: absolute;
     z-index: 1100;
-    position: relative;
+    box-shadow: 0 0 0.7em rgba(0, 0, 0, 0.8);
   }
-
-  .content .role {
+  .role {
+    position: relative;
     display: inline-block;
     vertical-align: top;
     width: 25%;
-    height: 100%;
+    /* relative height hack - instead of 100% use half of width as padding */
+    padding-top: 12.5%;
   }
 
-  .roleBarOutline {
-    position: absolute;
-    width: 0;
+  #roleBar.stackLayout .role {
+    width: 50%;
+    padding-top: 25%;
+  }
+
+  #roleBar.fullLayout {
+    width: 50%;
+    left: 50%;
+    margin-left: -25%;
     bottom: 0;
-    left: 0;
-    background-color: red;
-    height: .6vw;
-    z-index: 1100;
   }
 
+  #roleBar.rowLayout .role {
+    width: 25%;
+    padding-top: 12.5%;
+  }
+
+
+  .pc-portrait #roleBar.stackLayout, .tablet-portrait #roleBar.stackLayout {
+    width: 34vw;
+    left: 33vw;
+  }
+  .pc-portrait #roleBar.stackLayout .role, .tablet-portrait #roleBar.stackLayout .role {
+    font-size: 2.1vw;
+  }
+
+  .pc-landscape #roleBar.fullLayout {
+    width: 50vh;
+    left: 50%;
+    margin-left: -25vh;
+  }
+  .pc-landscape #roleBar.fullLayout .role {
+    font-size: 1.6vh;
+  }
+
+  /* font-size control */
+  .phone-landscape .fullLayout .role {
+    font-size: 1.6vw;
+  }
+  .tablet-portrait .fullLayout .role {
+    font-size: 1.6vw;
+  }
+  .tablet-portrait .stackLayout .role {
+    font-size: 2.1vw;
+  }
+  .tablet-landscape .fullLayout .role {
+    font-size: 2.1vh;
+  }
 
 </style>

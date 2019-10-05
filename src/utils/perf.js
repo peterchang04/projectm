@@ -1,4 +1,5 @@
-let activate = true;
+let activate = (window.location.href.includes('localhost')); // only active for localhost
+
 let logs = {};
 let metrics = {};
 
