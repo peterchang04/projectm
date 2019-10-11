@@ -85,6 +85,19 @@ function update() {
   }));
 }
 
+function getViewportDevice() {
+  if (viewport.isPortrait) {
+    viewport.device = 'phone';
+    if (viewport.width > 599) viewport.device = 'tablet';
+    if (viewport.width > 1024) viewport.device = 'pc';
+  } else if (viewport.isLandscape) {
+    viewport.device = 'phone';
+    if (viewport.width > 900) viewport.device = 'tablet';
+    if (viewport.width > 1366) viewport.device = 'pc';
+  }
+  return viewport.device;
+}
+
 function isPortrait() {
   // if (window.orientation !== undefined) { // for IOS - NOTE: DO NOT USE THIS. Orientation 0 means different things to different devices.
   //   return (window.orientation === 0);
@@ -660,19 +673,6 @@ function setViewLayout(layoutString) { // do various calculations required for s
   }
 }
 
-function getViewportDevice() {
-  if (viewport.isPortrait) {
-    viewport.device = 'phone';
-    if (viewport.width > 599) viewport.device = 'tablet';
-    if (viewport.width > 1024) viewport.device = 'pc';
-  } else if (viewport.isLandscape) {
-    viewport.device = 'phone';
-    if (viewport.width > 900) viewport.device = 'tablet';
-    if (viewport.width > 1366) viewport.device = 'pc';
-  }
-  return viewport.device;
-}
-
 function initBaseStylesheet() {
   // phone portrait
   stylesheet.apply('phone-portrait_BASE', {
@@ -737,6 +737,9 @@ function initBaseStylesheet() {
 
 // traditional whole file export
 export default { useDeconstructedImport: true };
+export function updateViewport() {
+  return update;
+};
 export function getViewport() {
   return viewport;
 };
