@@ -10,7 +10,7 @@
     "test": "vue-cli-service test:unit \"./src/**/*.test.js\" --recursive"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "canvg": "^1.5.3",
     "cookie_js": "^1.2.2",
     "ejs": "^2.6.1",
